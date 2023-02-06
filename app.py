@@ -1,24 +1,12 @@
 #
-import torch
-from diffusers import (
-    StableDiffusionPipeline,
-    EulerDiscreteScheduler,
-    DPMSolverMultistepScheduler,
-)
-from diffusers.models import AutoencoderKL
 import gradio as gr
+from computing import Computing
+from stablediffusion.text_to_image import get_text_to_image_pipleline
 
-model_id = "stabilityai/stable-diffusion-2-1-base"
-vae = AutoencoderKL.from_pretrained("stabilityai/sd-vae-ft-mse")
+computing = Computing()
+
 # model_id = "dreamlike-art/dreamlike-diffusion-1.0"
-scheduler = DPMSolverMultistepScheduler.from_pretrained(
-    model_id, vae=vae, subfolder="scheduler"
-)
-pipeline = StableDiffusionPipeline.from_pretrained(
-    model_id, torch_dtype=torch.float16, scheduler=scheduler
-)
-pipeline = pipeline.to("cuda")
-
+pipeline = get_text_to_image_pipleline()
 
 def diffusion_text_to_image(
     prompt,
