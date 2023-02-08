@@ -9,7 +9,9 @@ from computing import Computing
 
 
 computing = Computing()
+#pipeline = None
 
+     
 def get_text_to_image_pipleline(model_id:str="stabilityai/stable-diffusion-2-1-base",vae_id:str="stabilityai/sd-vae-ft-mse",):
     vae = AutoencoderKL.from_pretrained(vae_id)
     scheduler = DPMSolverMultistepScheduler.from_pretrained(
@@ -22,3 +24,5 @@ def get_text_to_image_pipleline(model_id:str="stabilityai/stable-diffusion-2-1-b
         pipeline = pipeline.to("cuda")
 
     return pipeline
+
+

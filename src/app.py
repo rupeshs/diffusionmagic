@@ -1,4 +1,4 @@
-#
+import torch
 import gradio as gr
 from computing import Computing
 from stablediffusion.text_to_image import get_text_to_image_pipleline
@@ -7,6 +7,7 @@ computing = Computing()
 
 # model_id = "dreamlike-art/dreamlike-diffusion-1.0"
 pipeline = get_text_to_image_pipleline()
+
 
 def diffusion_text_to_image(
     prompt,
@@ -18,7 +19,12 @@ def diffusion_text_to_image(
     num_images,
     attention_slicing,
     vae_slicing,
+    seed,
 ):
+    generator = None
+    if seed != -1:
+        generator = torch.Generator(computing.name).manual_seed(seed)
+
     if attention_slicing:
         pipeline.enable_attention_slicing()
     else:
@@ -37,7 +43,9 @@ def diffusion_text_to_image(
         width=image_width,
         negative_prompt=neg_prompt,
         num_images_per_prompt=num_images,
+        generator=generator,
     ).images
+
     return images
 
 
@@ -54,19 +62,30 @@ with gr.Blocks() as sd_text_to_image:
                 label="Don't want to see",
                 lines=1,
                 placeholder="",
-                value="ugly, deformed, extra limbs, text",
+                value="bad, deformed, ugly, bad Anatomy",
             )
-            image_height = gr.Slider(512, 2048, value=512, step=64)
-            image_width = gr.Slider(512, 2048, value=512, step=64)
-            num_inference_steps = gr.Slider(1, 100, value=20, step=1)
-            guidance_scale = gr.Slider(1.0, 30.0, value=7.5, step=0.5)
-            num_images = gr.Slider(1, 50, value=1, step=1)
+            image_height = gr.Slider(
+                512, 2048, value=512, step=64, label="Image Height"
+            )
+            image_width = gr.Slider(512, 2048, value=512, step=64, label="Image Width")
+            num_inference_steps = gr.Slider(
+                1, 100, value=20, step=1, label="Inference Steps"
+            )
+            guidance_scale = gr.Slider(
+                1.0, 30.0, value=7.5, step=0.5, label="Guidance Scale"
+            )
+            num_images = gr.Slider(
+                1, 50, value=1, step=1, label="Number of images to generate"
+            )
             attn_slicing = gr.Checkbox(
                 label="Attention slicing (Enable if low VRAM)", value=True
             )
+
             vae_slicing = gr.Checkbox(
                 label="VAE slicing  (Enable if low VRAM)", value=True
             )
+
+            seed = gr.Number(label="Seed", value=-1, precision=0)
 
             input_params = [
                 prompt,
@@ -78,6 +97,7 @@ with gr.Blocks() as sd_text_to_image:
                 num_images,
                 attn_slicing,
                 vae_slicing,
+                seed,
             ]
             print(input_params)
             generate_btn = gr.Button("Generate")
