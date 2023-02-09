@@ -1,12 +1,14 @@
 import torch
 import gradio as gr
 from computing import Computing
-from stablediffusion.text_to_image import get_text_to_image_pipleline
-
-computing = Computing()
+from stablediffusion.text_to_image import StableDiffusion
+from stablediffusion.samplers import Sampler
 
 # model_id = "dreamlike-art/dreamlike-diffusion-1.0"
-pipeline = get_text_to_image_pipleline()
+# spipeline = get_text_to_image_pipleline()
+compute = Computing()
+stable_diffusion = StableDiffusion(compute)
+stable_diffusion.get_text_to_image_pipleline()
 
 
 def diffusion_text_to_image(
@@ -15,37 +17,28 @@ def diffusion_text_to_image(
     image_height,
     image_width,
     inference_steps,
+    scheduler,
     guidance_scale,
     num_images,
     attention_slicing,
     vae_slicing,
     seed,
 ):
-    generator = None
-    if seed != -1:
-        generator = torch.Generator(computing.name).manual_seed(seed)
 
-    if attention_slicing:
-        pipeline.enable_attention_slicing()
-    else:
-        pipeline.disable_attention_slicing()
-
-    if vae_slicing:
-        pipeline.enable_vae_slicing()
-    else:
-        pipeline.disable_vae_slicing()
-
-    images = pipeline(
-        prompt,
+    images = stable_diffusion.text_to_image(
+        prompt=prompt,
+        neg_prompt=neg_prompt,
         guidance_scale=guidance_scale,
-        num_inference_steps=inference_steps,
-        height=image_height,
-        width=image_width,
-        negative_prompt=neg_prompt,
-        num_images_per_prompt=num_images,
-        generator=generator,
-    ).images
-
+        inference_steps=inference_steps,
+        image_height=image_height,
+        image_width=image_width,
+        num_images=num_images,
+        attention_slicing=attention_slicing,
+        vae_slicing=vae_slicing,
+        seed=seed,
+        scheduler=scheduler
+        # generator=generator,
+    )
     return images
 
 
@@ -64,12 +57,20 @@ with gr.Blocks() as sd_text_to_image:
                 placeholder="",
                 value="bad, deformed, ugly, bad Anatomy",
             )
+            generate_btn = gr.Button("Generate")
+
             image_height = gr.Slider(
                 512, 2048, value=512, step=64, label="Image Height"
             )
             image_width = gr.Slider(512, 2048, value=512, step=64, label="Image Width")
             num_inference_steps = gr.Slider(
                 1, 100, value=20, step=1, label="Inference Steps"
+            )
+            samplers = [sampler.value for sampler in Sampler]
+            scheduler = gr.Dropdown(
+                samplers,
+                value=Sampler.DPMSolverMultistepScheduler.value,
+                label="Sampler",
             )
             guidance_scale = gr.Slider(
                 1.0, 30.0, value=7.5, step=0.5, label="Guidance Scale"
@@ -93,14 +94,13 @@ with gr.Blocks() as sd_text_to_image:
                 image_height,
                 image_width,
                 num_inference_steps,
+                scheduler,
                 guidance_scale,
                 num_images,
                 attn_slicing,
                 vae_slicing,
                 seed,
             ]
-            print(input_params)
-            generate_btn = gr.Button("Generate")
 
         with gr.Column():
             output = gr.Gallery(
