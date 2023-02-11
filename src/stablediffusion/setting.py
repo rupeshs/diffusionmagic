@@ -1,4 +1,4 @@
-from typing import Optional, Union
+from typing import Optional, Union,Any
 
 from pydantic import BaseModel, Field, validator
 from stablediffusion.samplers import Sampler
@@ -16,3 +16,11 @@ class StableDiffusionSetting(BaseModel):
     seed: Optional[int] = -1
     attention_slicing: Optional[bool] = True
     vae_slicing: Optional[bool] = True
+
+class StableDiffusionImageToImageSetting(StableDiffusionSetting):
+    image : Any
+    strength: Optional[float] = 0.75
+
+
+
+

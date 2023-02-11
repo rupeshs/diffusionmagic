@@ -1,9 +1,9 @@
 import torch
-from diffusers import StableDiffusionPipeline
+from diffusers import StableDiffusionPipeline,StableDiffusionImg2ImgPipeline
 
 from computing import Computing
 from stablediffusion.samplers import Sampler, SamplerMixin
-from stablediffusion.setting import StableDiffusionSetting
+from stablediffusion.setting import StableDiffusionSetting,StableDiffusionImageToImageSetting
 
 
 class StableDiffusion(SamplerMixin):
@@ -31,6 +31,9 @@ class StableDiffusion(SamplerMixin):
         )
         if self.compute.name == "cuda":
             self.pipeline = pipeline.to("cuda")
+        
+        components = self.pipeline.components
+        self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components)
 
     def text_to_image(self, setting: StableDiffusionSetting):
         print(setting.scheduler)
@@ -60,4 +63,32 @@ class StableDiffusion(SamplerMixin):
             num_images_per_prompt=setting.number_of_images,
             generator=generator,
         ).images
+        return images
+
+    def image_to_image(self, setting: StableDiffusionImageToImageSetting):
+        print("Running image to image pipeline")
+        self.pipeline.scheduler = self.find_sampler(setting.scheduler)
+        generator = None
+        if setting.seed != -1:
+            print(f"Using seed {setting.seed}")
+            generator = torch.Generator(self.compute.name).manual_seed(setting.seed)
+
+        if setting.attention_slicing:
+            self.img_to_img_pipeline.enable_attention_slicing()
+        else:
+            self.img_to_img_pipeline.disable_attention_slicing()
+
+        init_image = setting.image.resize((setting.image_width, setting.image_height))
+
+        images = self.img_to_img_pipeline(
+                image=init_image,
+                strength=setting.strength,
+                prompt = setting.prompt,
+                guidance_scale=setting.guidance_scale,
+                num_inference_steps=setting.inference_steps,
+                negative_prompt=setting.negative_prompt,
+                num_images_per_prompt=setting.number_of_images,
+                generator=generator,
+            ).images
+        print(images)
         return images
