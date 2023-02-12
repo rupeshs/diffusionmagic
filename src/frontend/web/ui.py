@@ -10,10 +10,11 @@ from backend.stablediffusion.setting import (
 from backend.stablediffusion.stablediffusion import StableDiffusion
 from frontend.web.image_to_image_ui import get_image_to_image_ui
 from frontend.web.text_to_image_ui import get_text_to_image_ui
+from frontend.web.settings_ui import get_settings_ui
+from models.settings import DiffusionMagicSettings
 
 compute = Computing()
 stable_diffusion = StableDiffusion(compute)
-stable_diffusion.get_text_to_image_pipleline()
 
 
 def diffusion_text_to_image(
@@ -78,7 +79,9 @@ def diffusion_image_to_image(
     return images
 
 
-def diffusionmagic_web_ui() -> gr.Blocks:
+def diffusionmagic_web_ui(settings: DiffusionMagicSettings) -> gr.Blocks:
+    model_id = settings.model_settings.model_id
+    stable_diffusion.get_text_to_image_pipleline(model_id)
     with gr.Blocks() as diffusion_magic_ui:
         gr.Label("DiffusionMagic")
         with gr.Tabs():
@@ -86,4 +89,6 @@ def diffusionmagic_web_ui() -> gr.Blocks:
                 get_text_to_image_ui(diffusion_text_to_image)
             with gr.TabItem("Image to image"):
                 get_image_to_image_ui(diffusion_image_to_image)
+            with gr.TabItem("Settings"):
+                get_settings_ui()
     return diffusion_magic_ui

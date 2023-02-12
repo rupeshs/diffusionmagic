@@ -23,6 +23,7 @@ class StableDiffusion(SamplerMixin):
     ):
         # Samplers
         print(f"StableDiffusion - {self.compute.name},{self.compute.datatype}")
+        print(f"using model {model_id}")
         self.load_samplers(model_id, vae_id)
         default_sampler = self.default_sampler()
 

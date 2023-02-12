@@ -1,0 +1,3 @@
+stabilityai/stable-diffusion-2-1-base
+dreamlike-art/dreamlike-diffusion-1.0
+prompthero/openjourney-v2
