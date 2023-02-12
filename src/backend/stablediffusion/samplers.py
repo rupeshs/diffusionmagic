@@ -33,7 +33,6 @@ class SamplerMixin:
         repo_id: str,
         vae_id: str,
     ) -> None:
-
         vae = AutoencoderKL.from_pretrained(vae_id)
 
         # https://github.com/huggingface/diffusers/issues/706

@@ -1,17 +1,20 @@
 import torch
-from diffusers import StableDiffusionPipeline,StableDiffusionImg2ImgPipeline
+from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
 
-from computing import Computing
-from stablediffusion.samplers import Sampler, SamplerMixin
-from stablediffusion.setting import StableDiffusionSetting,StableDiffusionImageToImageSetting
+from backend.computing import Computing
+from backend.stablediffusion.samplers import SamplerMixin
+from backend.stablediffusion.setting import (
+    StableDiffusionSetting,
+    StableDiffusionImageToImageSetting,
+)
 
 
 class StableDiffusion(SamplerMixin):
     def __init__(self, compute: Computing):
         self.compute = compute
         self.pipeline = None
+        self.device = self.compute.name
         super().__init__()
-
 
     def get_text_to_image_pipleline(
         self,
@@ -22,7 +25,6 @@ class StableDiffusion(SamplerMixin):
         print(f"StableDiffusion - {self.compute.name},{self.compute.datatype}")
         self.load_samplers(model_id, vae_id)
         default_sampler = self.default_sampler()
-        print(default_sampler)
 
         pipeline = StableDiffusionPipeline.from_pretrained(
             model_id,
@@ -31,7 +33,7 @@ class StableDiffusion(SamplerMixin):
         )
         if self.compute.name == "cuda":
             self.pipeline = pipeline.to("cuda")
-        
+
         components = self.pipeline.components
         self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components)
 
@@ -41,7 +43,7 @@ class StableDiffusion(SamplerMixin):
         generator = None
         if setting.seed != -1:
             print(f"Using seed {setting.seed}")
-            generator = torch.Generator(self.compute.name).manual_seed(setting.seed)
+            generator = torch.Generator(self.device).manual_seed(setting.seed)
 
         if setting.attention_slicing:
             self.pipeline.enable_attention_slicing()
@@ -71,24 +73,28 @@ class StableDiffusion(SamplerMixin):
         generator = None
         if setting.seed != -1:
             print(f"Using seed {setting.seed}")
-            generator = torch.Generator(self.compute.name).manual_seed(setting.seed)
+            generator = torch.Generator(self.device).manual_seed(setting.seed)
 
         if setting.attention_slicing:
             self.img_to_img_pipeline.enable_attention_slicing()
         else:
             self.img_to_img_pipeline.disable_attention_slicing()
 
-        init_image = setting.image.resize((setting.image_width, setting.image_height))
+        init_image = setting.image.resize(
+            (
+                setting.image_width,
+                setting.image_height,
+            )
+        )
 
         images = self.img_to_img_pipeline(
-                image=init_image,
-                strength=setting.strength,
-                prompt = setting.prompt,
-                guidance_scale=setting.guidance_scale,
-                num_inference_steps=setting.inference_steps,
-                negative_prompt=setting.negative_prompt,
-                num_images_per_prompt=setting.number_of_images,
-                generator=generator,
-            ).images
-        print(images)
+            image=init_image,
+            strength=setting.strength,
+            prompt=setting.prompt,
+            guidance_scale=setting.guidance_scale,
+            num_inference_steps=setting.inference_steps,
+            negative_prompt=setting.negative_prompt,
+            num_images_per_prompt=setting.number_of_images,
+            generator=generator,
+        ).images
         return images

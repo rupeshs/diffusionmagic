@@ -1,7 +1,7 @@
-from typing import Optional, Union,Any
+from typing import Optional, Any
 
-from pydantic import BaseModel, Field, validator
-from stablediffusion.samplers import Sampler
+from pydantic import BaseModel
+from backend.stablediffusion.samplers import Sampler
 
 
 class StableDiffusionSetting(BaseModel):
@@ -17,10 +17,7 @@ class StableDiffusionSetting(BaseModel):
     attention_slicing: Optional[bool] = True
     vae_slicing: Optional[bool] = True
 
+
 class StableDiffusionImageToImageSetting(StableDiffusionSetting):
-    image : Any
+    image: Any
     strength: Optional[float] = 0.75
-
-
-
-

@@ -6,7 +6,6 @@ class Computing:
     __fetch = True
 
     def __new__(cls):
-        print(cls.__instance)
         if Computing.__instance is None:
             Computing.__instance = super().__new__(cls)
         return Computing.__instance
