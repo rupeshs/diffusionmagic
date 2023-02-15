@@ -22,6 +22,7 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                         interactive=not random_enabled, value=seed_val
                     )
 
+                # with gr.Row():
                 prompt = gr.Textbox(
                     label="Describe the image you'd like to see",
                     lines=3,
@@ -33,7 +34,6 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                     placeholder="",
                     value="bad, deformed, ugly, bad Anatomy",
                 )
-                generate_btn = gr.Button("Generate")
 
                 image_height = gr.Slider(
                     512, 2048, value=512, step=64, label="Image Height"
@@ -96,6 +96,7 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                 ]
 
             with gr.Column():
+                generate_btn = gr.Button("Generate", elem_id="generate_button")
                 output = gr.Gallery(
                     label="Generated images",
                     show_label=True,

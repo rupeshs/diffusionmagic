@@ -34,3 +34,15 @@ class DiffusionMagicPaths:
             constants.APP_SETTINGS_FILE,
         )
         return settings_path
+
+    @staticmethod
+    def get_css_path():
+        app_dir = os.path.dirname(__file__)
+        css_path = os.path.join(
+            app_dir,
+            "frontend",
+            "web",
+            "css",
+            "style.css",
+        )
+        return css_path

@@ -23,7 +23,7 @@ def get_settings_ui() -> None:
                     value="stable-diffusion-2-1-base",
                     label="Stable diffusion model ",
                 )
-                save_button = gr.Button("Save")
+                save_button = gr.Button("Save", elem_id="save_button")
     save_button.click(
         fn=save_app_settings,
         inputs=[model_id],

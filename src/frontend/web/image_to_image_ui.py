@@ -37,13 +37,13 @@ def get_image_to_image_ui(generate_callback_fn: Any) -> None:
                     lines=3,
                     placeholder="A fantasy landscape",
                 )
+
                 neg_prompt = gr.Textbox(
                     label="Don't want to see",
                     lines=1,
                     placeholder="",
                     value="bad, deformed, ugly, bad Anatomy",
                 )
-                generate_btn = gr.Button("Generate")
 
                 image_height = gr.Slider(
                     512, 2048, value=512, step=64, label="Image Height"
@@ -106,6 +106,7 @@ def get_image_to_image_ui(generate_callback_fn: Any) -> None:
                 ]
 
             with gr.Column():
+                generate_btn = gr.Button("Generate", elem_id="generate_button")
                 output = gr.Gallery(
                     label="Generated images",
                     show_label=True,
