@@ -82,13 +82,13 @@ def diffusion_image_to_image(
 
 def diffusionmagic_web_ui(settings: DiffusionMagicSettings) -> gr.Blocks:
     model_id = settings.model_settings.model_id
-    # stable_diffusion.get_text_to_image_pipleline(model_id)
+    stable_diffusion.get_text_to_image_pipleline(model_id)
 
     with gr.Blocks(
         css=DiffusionMagicPaths.get_css_path(),
         title="DiffusionMagic",
     ) as diffusion_magic_ui:
-        gr.Label("DiffusionMagic")
+        gr.HTML("<center><H3>DiffusionMagic</H3></center>")
         with gr.Tabs():
             with gr.TabItem("Text to image"):
                 get_text_to_image_ui(diffusion_text_to_image)
