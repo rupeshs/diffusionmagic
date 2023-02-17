@@ -21,3 +21,8 @@ class StableDiffusionSetting(BaseModel):
 class StableDiffusionImageToImageSetting(StableDiffusionSetting):
     image: Any
     strength: Optional[float] = 0.75
+
+
+class StableDiffusionImageInpaintingSetting(StableDiffusionSetting):
+    image: Any
+    mask_image: Any

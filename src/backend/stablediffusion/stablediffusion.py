@@ -1,12 +1,13 @@
 import torch
-from diffusers import StableDiffusionPipeline, StableDiffusionImg2ImgPipeline
+from diffusers import (StableDiffusionImg2ImgPipeline,
+                       StableDiffusionInpaintPipelineLegacy,
+                       StableDiffusionPipeline)
+from PIL import Image
 
 from backend.computing import Computing
 from backend.stablediffusion.samplers import SamplerMixin
 from backend.stablediffusion.setting import (
-    StableDiffusionSetting,
-    StableDiffusionImageToImageSetting,
-)
+    StableDiffusionImageToImageSetting, StableDiffusionSetting)
 
 
 class StableDiffusion(SamplerMixin):
@@ -37,6 +38,9 @@ class StableDiffusion(SamplerMixin):
 
         components = self.pipeline.components
         self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components)
+        self.img_inpainting_pipeline = StableDiffusionInpaintPipelineLegacy(
+            **components
+        )
 
     def text_to_image(self, setting: StableDiffusionSetting):
         print(setting.scheduler)
@@ -70,7 +74,7 @@ class StableDiffusion(SamplerMixin):
 
     def image_to_image(self, setting: StableDiffusionImageToImageSetting):
         print("Running image to image pipeline")
-        self.pipeline.scheduler = self.find_sampler(setting.scheduler)
+        self.img_to_img_pipeline.scheduler = self.find_sampler(setting.scheduler)
         generator = None
         if setting.seed != -1:
             print(f"Using seed {setting.seed}")
@@ -85,7 +89,8 @@ class StableDiffusion(SamplerMixin):
             (
                 setting.image_width,
                 setting.image_height,
-            )
+            ),
+            Image.Resampling.LANCZOS,
         )
 
         images = self.img_to_img_pipeline(
@@ -99,3 +104,5 @@ class StableDiffusion(SamplerMixin):
             generator=generator,
         ).images
         return images
+
+    

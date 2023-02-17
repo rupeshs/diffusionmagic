@@ -1,3 +1,5 @@
 stabilityai/stable-diffusion-2-1-base
 dreamlike-art/dreamlike-diffusion-1.0
+runwayml/stable-diffusion-v1-5
 prompthero/openjourney-v2
+stabilityai/stable-diffusion-2-inpainting
