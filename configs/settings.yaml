@@ -1,3 +1,3 @@
 model_settings:
-  model_id: stabilityai/stable-diffusion-2-1-base
+  model_id: stabilityai/stable-diffusion-2-inpainting
   use_local: false

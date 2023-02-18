@@ -9,7 +9,7 @@ from backend.stablediffusion.setting import (
     StableDiffusionImageInpaintingSetting,
 )
 from backend.stablediffusion.stablediffusion import StableDiffusion
-from backend.stablediffusion.stablediffusion_inpainting import StableDiffusionInpainting
+from backend.stablediffusion.inpainting import StableDiffusionInpainting
 from frontend.web.image_to_image_ui import get_image_to_image_ui
 from frontend.web.settings_ui import get_settings_ui
 from frontend.web.text_to_image_ui import get_text_to_image_ui

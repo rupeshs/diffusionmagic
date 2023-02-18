@@ -97,7 +97,7 @@ def get_image_inpainting_ui(generate_callback_fn: Any) -> None:
                 ]
 
             with gr.Column():
-                generate_btn = gr.Button("Generate", elem_id="generate_button")
+                generate_btn = gr.Button("Inpaint!", elem_id="generate_button")
                 output = gr.Gallery(
                     label="Generated images",
                     show_label=True,
