@@ -2,3 +2,4 @@ env
 *.bak
 *.pyc
 __pycache__
+results

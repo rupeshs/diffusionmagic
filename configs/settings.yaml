@@ -1,3 +1,7 @@
 model_settings:
-  model_id: stabilityai/stable-diffusion-2-inpainting
+  model_id: stable-diffusion-2-1-base
   use_local: false
+output_images:
+  format: png
+  path: D:\lab\diffusionmagic\results
+  use_seperate_folders: false

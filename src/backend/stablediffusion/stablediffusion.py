@@ -9,13 +9,14 @@ from backend.stablediffusion.samplers import SamplerMixin
 from backend.stablediffusion.setting import (
     StableDiffusionImageToImageSetting, StableDiffusionSetting)
 
-
 class StableDiffusion(SamplerMixin):
     def __init__(self, compute: Computing):
         self.compute = compute
         self.pipeline = None
         self.device = self.compute.name
         super().__init__()
+        
+
 
     def get_text_to_image_pipleline(
         self,

@@ -46,3 +46,10 @@ class DiffusionMagicPaths:
             "style.css",
         )
         return css_path
+
+    @staticmethod
+    def get_results_path():
+        app_dir = os.path.dirname(__file__)
+        work_dir = os.path.dirname(app_dir)
+        config_path = join_paths(work_dir, constants.RESULTS_DIRECTORY)
+        return config_path

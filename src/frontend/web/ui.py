@@ -16,10 +16,32 @@ from frontend.web.text_to_image_ui import get_text_to_image_ui
 from models.settings import DiffusionMagicSettings
 from utils import DiffusionMagicPaths
 from frontend.web.image_inpainting import get_image_inpainting_ui
+from backend.imagesaver import ImageSaver
+from settings import AppSettings
 
 compute = Computing()
 stable_diffusion = StableDiffusion(compute)
 stable_diffusion_inpainting = StableDiffusionInpainting(compute)
+
+
+def save_images(
+    images: Any,
+    folder: str,
+):
+    if AppSettings().get_settings().output_images.use_seperate_folders:
+        ImageSaver.save_images(
+            AppSettings().get_settings().output_images.path,
+            images,
+            folder,
+            AppSettings().get_settings().output_images.format,
+        )
+    else:
+        ImageSaver.save_images(
+            AppSettings().get_settings().output_images.path,
+            images,
+            None,
+            AppSettings().get_settings().output_images.format,
+        )
 
 
 def diffusion_text_to_image(
@@ -49,6 +71,10 @@ def diffusion_text_to_image(
         vae_slicing=vae_slicing,
     )
     images = stable_diffusion.text_to_image(stable_diffusion_settings)
+    save_images(
+        images,
+        "text2img",
+    )
     return images
 
 
@@ -81,6 +107,10 @@ def diffusion_image_to_image(
         attention_slicing=attention_slicing,
     )
     images = stable_diffusion.image_to_image(stable_diffusion_image_settings)
+    save_images(
+        images,
+        "img2img",
+    )
     return images
 
 
@@ -113,6 +143,10 @@ def diffusion_image_inpainting(
     )
     images = stable_diffusion_inpainting.image_inpainting(
         stable_diffusion_image_settings
+    )
+    save_images(
+        images,
+        "inpainting",
     )
     return images
 
