@@ -24,7 +24,7 @@ def get_settings_ui() -> None:
             with gr.Column():
                 model_id = gr.Dropdown(
                     sd_models.get_models(),
-                    value="stabilityai/stable-diffusion-2-1-base",
+                    value=app_settings.model_settings.model_id,
                     label="Stable diffusion model ",
                 )
                 result_path = gr.TextArea(

@@ -36,7 +36,7 @@ class StableDiffusion(SamplerMixin):
         )
         if self.compute.name == "cuda":
             self.pipeline = pipeline.to("cuda")
-
+    
         components = self.pipeline.components
         self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components)
         self.img_inpainting_pipeline = StableDiffusionInpaintPipelineLegacy(
