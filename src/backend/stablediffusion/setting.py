@@ -26,3 +26,9 @@ class StableDiffusionImageToImageSetting(StableDiffusionSetting):
 class StableDiffusionImageInpaintingSetting(StableDiffusionSetting):
     image: Any
     mask_image: Any
+
+
+class StableDiffusionImageDepthToImageSetting(StableDiffusionSetting):
+    image: Any
+    depth_image: Optional[Any]
+    strength: Optional[float] = 0.8

@@ -4,4 +4,4 @@ model_settings:
 output_images:
   format: png
   path: D:\lab\diffusionmagic\results
-  use_seperate_folders: false
+  use_seperate_folders: true
