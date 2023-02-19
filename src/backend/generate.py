@@ -4,23 +4,28 @@ from backend.computing import Computing
 from backend.imagesaver import ImageSaver
 from backend.stablediffusion.depth_to_image import StableDiffusionDepthToImage
 from backend.stablediffusion.inpainting import StableDiffusionInpainting
+from backend.stablediffusion.instructpix import StableDiffusionInstructPixToPix
 from backend.stablediffusion.setting import (
     StableDiffusionImageDepthToImageSetting,
     StableDiffusionImageInpaintingSetting,
     StableDiffusionImageToImageSetting,
     StableDiffusionSetting,
+    StableDiffusionImageInstructPixToPixSetting,
 )
 from backend.stablediffusion.stablediffusion import StableDiffusion
 from settings import AppSettings
+
 
 class Generate:
     def __init__(self, compute: Computing):
         self.pipe_initialized = False
         self.inpaint_pipe_initialized = False
         self.depth_pipe_initialized = False
+        self.pix_to_pix_initialized = False
         self.stable_diffusion = StableDiffusion(compute)
         self.stable_diffusion_inpainting = StableDiffusionInpainting(compute)
         self.stable_diffusion_depth = StableDiffusionDepthToImage(compute)
+        self.stable_diffusion_pix_to_pix = StableDiffusionInstructPixToPix(compute)
 
     def diffusion_text_to_image(
         self,
@@ -206,3 +211,46 @@ class Generate:
                 None,
                 AppSettings().get_settings().output_images.format,
             )
+
+    def diffusion_pix_to_pix(
+        self,
+        image,
+        image_guidance,
+        prompt,
+        neg_prompt,
+        image_height,
+        image_width,
+        inference_steps,
+        scheduler,
+        guidance_scale,
+        num_images,
+        attention_slicing,
+        seed,
+    ) -> Any:
+        stable_diffusion_image_settings = StableDiffusionImageInstructPixToPixSetting(
+            image=image,
+            image_guidance=image_guidance,
+            prompt=prompt,
+            negative_prompt=neg_prompt,
+            image_height=image_height,
+            image_width=image_width,
+            inference_steps=inference_steps,
+            guidance_scale=guidance_scale,
+            number_of_images=num_images,
+            scheduler=scheduler,
+            seed=seed,
+            attention_slicing=attention_slicing,
+        )
+        if not self.pix_to_pix_initialized:
+            print("Initializing stable diffusion instruct pix to pix pipeline")
+            self.stable_diffusion_pix_to_pix.get_instruct_pix_to_pix_pipleline()
+            self.pix_to_pix_initialized = True
+
+        images = self.stable_diffusion_pix_to_pix.instruct_pix_to_pix(
+            stable_diffusion_image_settings
+        )
+        self._save_images(
+            images,
+            "instrcutpix2pix",
+        )
+        return images

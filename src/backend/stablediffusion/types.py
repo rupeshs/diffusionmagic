@@ -7,3 +7,4 @@ class StableDiffusionType(str, Enum):
     base = "Base"
     inpainting = "InPainting"
     depth2img = "DepthToImage"
+    instruct_pix2pix = "InstructPixToPix"

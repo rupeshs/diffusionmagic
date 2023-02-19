@@ -32,3 +32,8 @@ class StableDiffusionImageDepthToImageSetting(StableDiffusionSetting):
     image: Any
     depth_image: Optional[Any]
     strength: Optional[float] = 0.8
+
+
+class StableDiffusionImageInstructPixToPixSetting(StableDiffusionSetting):
+    image: Any
+    image_guidance_scale: float = 1.5
