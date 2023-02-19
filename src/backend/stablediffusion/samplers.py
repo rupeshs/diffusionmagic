@@ -8,6 +8,7 @@ from diffusers import (
     EulerDiscreteScheduler,
     LMSDiscreteScheduler,
     PNDMScheduler,
+    DEISMultistepScheduler,
 )
 from diffusers.models import AutoencoderKL
 
@@ -15,13 +16,14 @@ from diffusers.models import AutoencoderKL
 class Sampler(Enum):
     """Diffuser schedulers"""
 
-    DDPMScheduler = "DDPM"
+    # DDPMScheduler = "DDPM"
     DPMSolverMultistepScheduler = "DPMSolverMultistep"
     DDIMScheduler = "DDIM"
     EulerDiscreteScheduler = "EulerDiscrete"
     EulerAncestralDiscreteScheduler = "EulerAncestralDiscrete"
     LMSDiscreteScheduler = "LMSDiscrete"
     PNDMScheduler = "PNDM"
+    DEISScheduler = "DEISMultistep"
 
 
 class SamplerMixin:
@@ -75,6 +77,13 @@ class SamplerMixin:
         self.samplers[
             Sampler.DPMSolverMultistepScheduler.value
         ] = DPMSolverMultistepScheduler.from_pretrained(
+            repo_id,
+            vae=vae,
+            subfolder="scheduler",
+        )
+        self.samplers[
+            Sampler.DEISScheduler.value
+        ] = DEISMultistepScheduler.from_pretrained(
             repo_id,
             vae=vae,
             subfolder="scheduler",
