@@ -43,11 +43,11 @@ class SamplerMixin:
             vae=vae,
             subfolder="scheduler",
         )
-        self.samplers[Sampler.DDPMScheduler.value] = DDPMScheduler.from_pretrained(
-            repo_id,
-            vae=vae,
-            subfolder="scheduler",
-        )
+        # self.samplers[Sampler.DDPMScheduler.value] = DDPMScheduler.from_pretrained(
+        #     repo_id,
+        #     vae=vae,
+        #     subfolder="scheduler",
+        # )
         self.samplers[Sampler.PNDMScheduler.value] = PNDMScheduler.from_pretrained(
             repo_id,
             vae=vae,
