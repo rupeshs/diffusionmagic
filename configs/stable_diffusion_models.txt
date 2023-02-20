@@ -5,4 +5,3 @@ timbrooks/instruct-pix2pix
 dreamlike-art/dreamlike-diffusion-1.0
 runwayml/stable-diffusion-v1-5
 prompthero/openjourney-v2
-

@@ -11,8 +11,6 @@ class Computing:
         return Computing.__instance
 
     def __init__(self):
-        self._device = None
-        self._torch_datatype = None
         if Computing.__fetch:
             self._device = self._detect_processor()
             self._torch_datatype = (
@@ -34,8 +32,11 @@ class Computing:
         if torch.cuda.is_available():
             current_device_index = torch.cuda.current_device()
             gpu_name = torch.cuda.get_device_name(current_device_index)
-            print(f"DEVICE: {gpu_name} detected")
+            print(f"DEVICE: {gpu_name} ")
             return "cuda"
+        elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+            # Apple silicon (M1/M2) hardware
+            print("DEVICE,MPS backend detected")
         else:
             print("DEVICE: GPU not found,using CPU")
             return "cpu"

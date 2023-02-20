@@ -11,8 +11,9 @@ class StableDiffusionModels:
         with open(self.config_path, "r") as file:
             lines = file.readlines()
         for repo_id in lines:
-            if repo_id != "":
+            if repo_id.strip() != "":
                 self.__models.append(repo_id.strip())
 
     def get_models(self):
+        print(self.__models)
         return self.__models
