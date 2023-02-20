@@ -10,5 +10,5 @@ if __name__ == "__main__":
         print(f"ERROR in loading application settings {ex}")
         print("Exiting...")
         exit()
-    dm_web_ui = diffusionmagic_web_ui(app_settings.get_settings())
+    dm_web_ui = diffusionmagic_web_ui()
     dm_web_ui.launch()
