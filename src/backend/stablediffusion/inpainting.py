@@ -3,8 +3,8 @@ from diffusers import StableDiffusionInpaintPipeline
 from PIL import Image
 
 from backend.computing import Computing
-from backend.stablediffusion.samplers import SamplerMixin
-from backend.stablediffusion.setting import StableDiffusionImageInpaintingSetting
+from backend.stablediffusion.models.samplers import SamplerMixin
+from backend.stablediffusion.models.setting import StableDiffusionImageInpaintingSetting
 
 
 class StableDiffusionInpainting(SamplerMixin):
@@ -23,19 +23,23 @@ class StableDiffusionInpainting(SamplerMixin):
         self.load_samplers(model_id, vae_id)
         default_sampler = self.default_sampler()
 
-        inpainting_pipeline = StableDiffusionInpaintPipeline.from_pretrained(
+        self.inpainting_pipeline = StableDiffusionInpaintPipeline.from_pretrained(
             model_id,
             torch_dtype=torch.float16,
             scheduler=default_sampler,
         )
         if self.compute.name == "cuda":
-            self.inpainting_pipeline = inpainting_pipeline.to("cuda")
+            self.inpainting_pipeline = self.inpainting_pipeline.to("cuda")
+        elif self.compute.name == "mps":
+            self.inpainting_pipeline = self.inpainting_pipeline.to("mps")
 
     def image_inpainting(self, setting: StableDiffusionImageInpaintingSetting):
+        if setting.scheduler is None:
+            raise Exception("Scheduler cannot be  empty")
         print("Running image inpainting pipeline")
         self.inpainting_pipeline.scheduler = self.find_sampler(setting.scheduler)
         generator = None
-        if setting.seed != -1:
+        if setting.seed != -1 and setting.seed:
             print(f"Using seed {setting.seed}")
             generator = torch.Generator(self.device).manual_seed(setting.seed)
 

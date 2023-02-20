@@ -36,7 +36,8 @@ class Computing:
             return "cuda"
         elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
             # Apple silicon (M1/M2) hardware
-            print("DEVICE,MPS backend detected")
+            print("DEVICE: MPS backend")
+            return "mps"
         else:
             print("DEVICE: GPU not found,using CPU")
             return "cpu"

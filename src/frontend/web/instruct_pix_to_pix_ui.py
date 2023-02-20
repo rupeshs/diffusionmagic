@@ -7,7 +7,7 @@ from backend.stablediffusion.models.samplers import Sampler
 random_enabled = True
 
 
-def get_text_to_image_ui(generate_callback_fn: Any) -> None:
+def get_instruct_pix_to_pix_ui(generate_callback_fn: Any) -> None:
     with gr.Blocks():
         with gr.Row():
             with gr.Column():
@@ -18,16 +18,26 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                     seed_val = -1
                     if not random_enabled:
                         seed_val = 42
+
                     return gr.Number.update(
                         interactive=not random_enabled, value=seed_val
                     )
 
-                # with gr.Row():
+                input_image = gr.Image(label="Input image", type="pil")
+                image_guidance_scale = gr.Slider(
+                    0.0,
+                    2.0,
+                    value=1.5,
+                    step=0.05,
+                    label="Image Guidance Scale",
+                )
+
                 prompt = gr.Textbox(
                     label="Describe the image you'd like to see",
                     lines=3,
                     placeholder="A fantasy landscape",
                 )
+
                 neg_prompt = gr.Textbox(
                     label="Don't want to see",
                     lines=1,
@@ -51,7 +61,11 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                     label="Sampler",
                 )
                 guidance_scale = gr.Slider(
-                    1.0, 30.0, value=7.5, step=0.5, label="Guidance Scale"
+                    1.0,
+                    30.0,
+                    value=7.5,
+                    step=0.5,
+                    label="Guidance Scale",
                 )
                 num_images = gr.Slider(
                     1,
@@ -62,11 +76,6 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                 )
                 attn_slicing = gr.Checkbox(
                     label="Attention slicing (Enable if low VRAM)",
-                    value=True,
-                )
-
-                vae_slicing = gr.Checkbox(
-                    label="VAE slicing  (Enable if low VRAM)",
                     value=True,
                 )
                 seed = gr.Number(
@@ -82,6 +91,8 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                 )
 
                 input_params = [
+                    input_image,
+                    image_guidance_scale,
                     prompt,
                     neg_prompt,
                     image_height,
@@ -91,7 +102,6 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                     guidance_scale,
                     num_images,
                     attn_slicing,
-                    vae_slicing,
                     seed,
                 ]
 
@@ -102,9 +112,9 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                     show_label=True,
                     elem_id="gallery",
                 )
-    seed_checkbox.change(fn=random_seed, outputs=seed)
-    generate_btn.click(
-        fn=generate_callback_fn,
-        inputs=input_params,
-        outputs=output,
-    )
+        generate_btn.click(
+            fn=generate_callback_fn,
+            inputs=input_params,
+            outputs=output,
+        )
+        seed_checkbox.change(fn=random_seed, outputs=seed)

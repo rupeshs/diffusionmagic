@@ -2,7 +2,7 @@ from typing import Any
 
 import gradio as gr
 
-from backend.stablediffusion.samplers import Sampler
+from backend.stablediffusion.models.samplers import Sampler
 
 random_enabled = True
 

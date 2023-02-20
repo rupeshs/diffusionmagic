@@ -4,14 +4,14 @@ import gradio as gr
 
 from backend.computing import Computing
 from backend.generate import Generate
-from backend.stablediffusion.types import StableDiffusionType
+from backend.stablediffusion.stable_diffusion_types import StableDiffusionType
 from frontend.web.depth_to_image_ui import get_depth_to_image_ui
 from frontend.web.image_inpainting_ui import get_image_inpainting_ui
 from frontend.web.image_to_image_ui import get_image_to_image_ui
 from frontend.web.instruct_pix_to_pix_ui import get_instruct_pix_to_pix_ui
 from frontend.web.settings_ui import get_settings_ui
 from frontend.web.text_to_image_ui import get_text_to_image_ui
-from models.settings import DiffusionMagicSettings
+from models.configs import DiffusionMagicSettings
 from utils import DiffusionMagicPaths
 
 compute = Computing()

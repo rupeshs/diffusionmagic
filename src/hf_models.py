@@ -15,5 +15,4 @@ class StableDiffusionModels:
                 self.__models.append(repo_id.strip())
 
     def get_models(self):
-        print(self.__models)
         return self.__models

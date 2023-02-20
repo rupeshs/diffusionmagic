@@ -1,14 +1,14 @@
 from enum import Enum
+from typing import Union
 
 from diffusers import (
     DDIMScheduler,
-    DDPMScheduler,
+    DEISMultistepScheduler,
     DPMSolverMultistepScheduler,
     EulerAncestralDiscreteScheduler,
     EulerDiscreteScheduler,
     LMSDiscreteScheduler,
     PNDMScheduler,
-    DEISMultistepScheduler,
 )
 from diffusers.models import AutoencoderKL
 
@@ -24,6 +24,17 @@ class Sampler(Enum):
     LMSDiscreteScheduler = "LMSDiscrete"
     PNDMScheduler = "PNDM"
     DEISScheduler = "DEISMultistep"
+
+
+schedulers = Union[
+    DDIMScheduler,
+    DEISMultistepScheduler,
+    DPMSolverMultistepScheduler,
+    EulerAncestralDiscreteScheduler,
+    EulerDiscreteScheduler,
+    LMSDiscreteScheduler,
+    PNDMScheduler,
+]
 
 
 class SamplerMixin:
@@ -92,7 +103,7 @@ class SamplerMixin:
     def find_sampler(
         self,
         scheduler_name: str,
-    ):
+    ) -> schedulers:
         return self.samplers.get(scheduler_name)
 
     def default_sampler(self):

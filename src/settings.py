@@ -1,6 +1,6 @@
 import yaml
 
-from models.settings import DiffusionMagicSettings
+from models.configs import DiffusionMagicSettings
 from utils import DiffusionMagicPaths
 import os
 

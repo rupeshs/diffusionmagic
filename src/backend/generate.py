@@ -5,7 +5,7 @@ from backend.imagesaver import ImageSaver
 from backend.stablediffusion.depth_to_image import StableDiffusionDepthToImage
 from backend.stablediffusion.inpainting import StableDiffusionInpainting
 from backend.stablediffusion.instructpix import StableDiffusionInstructPixToPix
-from backend.stablediffusion.setting import (
+from backend.stablediffusion.models.setting import (
     StableDiffusionImageDepthToImageSetting,
     StableDiffusionImageInpaintingSetting,
     StableDiffusionImageToImageSetting,
@@ -208,7 +208,7 @@ class Generate:
             ImageSaver.save_images(
                 AppSettings().get_settings().output_images.path,
                 images,
-                None,
+                "",
                 AppSettings().get_settings().output_images.format,
             )
 

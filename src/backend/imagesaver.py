@@ -11,7 +11,7 @@ class ImageSaver:
     def save_images(
         output_path: str,
         images: Any,
-        folder_name: str = None,
+        folder_name: str = "",
         format: str = ".png",
     ) -> None:
         for image in images:

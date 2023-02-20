@@ -1,7 +1,7 @@
 from typing import Optional, Any
 
 from pydantic import BaseModel
-from backend.stablediffusion.samplers import Sampler
+from backend.stablediffusion.models.samplers import Sampler
 
 
 class StableDiffusionSetting(BaseModel):
