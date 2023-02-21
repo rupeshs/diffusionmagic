@@ -29,17 +29,17 @@ class AppSettings:
         try:
             with open(self.config_path) as file:
                 settings_dict = yaml.safe_load(file)
-                self.config = DiffusionMagicSettings.parse_obj(settings_dict)
+                self._config = DiffusionMagicSettings.parse_obj(settings_dict)
         except Exception as ex:
             print(f"Error in loading settings : {ex}")
 
     def get_settings(self) -> DiffusionMagicSettings:
-        return self.config
+        return self._config
 
     def save(self):
         try:
             with open(self.config_path, "w") as file:
-                yaml.dump(self.config.dict(), file)
+                yaml.dump(self._config.dict(), file)
         except Exception as ex:
             print(f"Error in saving settings : {ex}")
 

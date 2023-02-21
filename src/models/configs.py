@@ -16,3 +16,4 @@ class OutputImages(BaseModel):
 class DiffusionMagicSettings(BaseModel):
     model_settings: StableDiffusionModel = StableDiffusionModel()
     output_images: OutputImages = OutputImages()
+    low_memory_mode: bool = False

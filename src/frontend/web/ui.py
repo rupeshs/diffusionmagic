@@ -15,11 +15,8 @@ from frontend.web.text_to_image_ui import get_text_to_image_ui
 from settings import AppSettings
 from utils import DiffusionMagicPaths
 
-compute = Computing()
-generate = Generate(compute)
 
-
-def diffusionmagic_web_ui() -> gr.Blocks:
+def diffusionmagic_web_ui(generate) -> gr.Blocks:
     model_id = AppSettings().get_settings().model_settings.model_id
     stable_diffusion_type = get_diffusion_type(model_id)
     with gr.Blocks(

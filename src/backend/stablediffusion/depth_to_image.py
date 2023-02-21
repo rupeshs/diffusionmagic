@@ -25,7 +25,7 @@ class StableDiffusionDepthToImage(SamplerMixin):
 
         self.depth_pipeline = StableDiffusionDepth2ImgPipeline.from_pretrained(
             model_id,
-            torch_dtype=torch.float16,
+            torch_dtype=self.compute.datatype,
             scheduler=default_sampler,
         )
         if self.compute.name == "cuda":

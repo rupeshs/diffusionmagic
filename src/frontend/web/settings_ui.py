@@ -5,12 +5,19 @@ from hf_models import StableDiffusionModels
 from settings import AppSettings
 
 
-def save_app_settings(model_id, result_path, img_format, use_seperate_folder):
+def save_app_settings(
+    model_id,
+    result_path,
+    img_format,
+    use_seperate_folder,
+    enable_low_vram,
+):
     app_settings = AppSettings()
     app_settings.get_settings().model_settings.model_id = model_id
     app_settings.get_settings().output_images.format = img_format
     app_settings.get_settings().output_images.path = result_path
     app_settings.get_settings().output_images.use_seperate_folders = use_seperate_folder
+    app_settings.get_settings().low_memory_mode = enable_low_vram
     app_settings.save()
 
 
@@ -41,8 +48,18 @@ def get_settings_ui() -> None:
                     label="Save in images in seperate folders (text2img,img2img etc)",
                     value=app_settings.output_images.use_seperate_folders,
                 )
+                enable_low_vram = gr.Checkbox(
+                    label="Enable Low VRAM mode (GPUs with VRAM <3GB, slower to generate images)",
+                    value=app_settings.low_memory_mode,
+                )
                 save_button = gr.Button("Save", elem_id="save_button")
     save_button.click(
         fn=save_app_settings,
-        inputs=[model_id, result_path, img_format, use_seperate_folder],
+        inputs=[
+            model_id,
+            result_path,
+            img_format,
+            use_seperate_folder,
+            enable_low_vram,
+        ],
     )

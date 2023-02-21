@@ -28,7 +28,7 @@ class StableDiffusionInstructPixToPix(SamplerMixin):
         self.instruct_pix_pipeline = (
             StableDiffusionInstructPix2PixPipeline.from_pretrained(
                 model_id,
-                torch_dtype=torch.float16,
+                torch_dtype=self.compute.datatype,
                 scheduler=default_sampler,
             )
         )

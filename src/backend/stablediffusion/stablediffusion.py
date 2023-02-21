@@ -1,18 +1,20 @@
 import torch
-from diffusers import (StableDiffusionImg2ImgPipeline,
-                       StableDiffusionPipeline,)
+from diffusers import StableDiffusionImg2ImgPipeline, StableDiffusionPipeline
 from PIL import Image
 
 from backend.computing import Computing
 from backend.stablediffusion.models.samplers import SamplerMixin
 from backend.stablediffusion.models.setting import (
-    StableDiffusionImageToImageSetting, StableDiffusionSetting,)
+    StableDiffusionImageToImageSetting, StableDiffusionSetting)
+from settings import AppSettings
+
 
 class StableDiffusion(SamplerMixin):
     def __init__(self, compute: Computing):
         self.compute = compute
         self.pipeline = None
         self.device = self.compute.name
+        self.app_settings = AppSettings().get_settings()
         super().__init__()
         
 
@@ -23,6 +25,7 @@ class StableDiffusion(SamplerMixin):
         vae_id: str = "stabilityai/sd-vae-ft-mse",
     ):
         # Samplers
+        model_id = self.app_settings.model_settings.model_id
         print(f"StableDiffusion - {self.compute.name},{self.compute.datatype}")
         print(f"using model {model_id}")
         self.load_samplers(model_id, vae_id)
@@ -30,17 +33,21 @@ class StableDiffusion(SamplerMixin):
 
         self.pipeline = StableDiffusionPipeline.from_pretrained(
             model_id,
-            torch_dtype=torch.float16,
+            torch_dtype=self.compute.datatype,
             scheduler=default_sampler,
+
         )
-        
+
         if  self.pipeline is None:
             raise Exception("Text to image pipeline not initialized") 
         
-        if self.compute.name == "cuda" :
-            self.pipeline =  self.pipeline .to("cuda")
-        elif self.compute.name == "mps":
-            self.pipeline =  self.pipeline .to("mps")
+        if self.app_settings.low_memory_mode:
+            self.pipeline.enable_sequential_cpu_offload()
+        else:
+            if self.compute.name == "cuda" :
+                self.pipeline =  self.pipeline .to("cuda")
+            elif self.compute.name == "mps":
+                self.pipeline =  self.pipeline .to("mps")
 
         components = self.pipeline.components
         self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components) 

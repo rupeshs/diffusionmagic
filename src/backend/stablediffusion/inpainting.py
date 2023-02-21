@@ -5,12 +5,14 @@ from PIL import Image
 from backend.computing import Computing
 from backend.stablediffusion.models.samplers import SamplerMixin
 from backend.stablediffusion.models.setting import StableDiffusionImageInpaintingSetting
+from settings import AppSettings
 
 
 class StableDiffusionInpainting(SamplerMixin):
     def __init__(self, compute: Computing):
         self.compute = compute
         self.device = self.compute.name
+        self.app_settings = AppSettings().get_settings()
         super().__init__()
 
     def get_inpainting_pipleline(
@@ -18,6 +20,7 @@ class StableDiffusionInpainting(SamplerMixin):
         model_id: str = "stabilityai/stable-diffusion-2-inpainting",
         vae_id: str = "stabilityai/sd-vae-ft-mse",
     ):
+        model_id = self.app_settings.model_settings().model_id
         print(f"StableDiffusion - {self.compute.name},{self.compute.datatype}")
         print(f"using model {model_id}")
         self.load_samplers(model_id, vae_id)
@@ -25,7 +28,7 @@ class StableDiffusionInpainting(SamplerMixin):
 
         self.inpainting_pipeline = StableDiffusionInpaintPipeline.from_pretrained(
             model_id,
-            torch_dtype=torch.float16,
+            torch_dtype=self.compute.datatype,
             scheduler=default_sampler,
         )
         if self.compute.name == "cuda":
