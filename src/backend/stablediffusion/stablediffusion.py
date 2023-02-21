@@ -5,7 +5,9 @@ from PIL import Image
 from backend.computing import Computing
 from backend.stablediffusion.models.samplers import SamplerMixin
 from backend.stablediffusion.models.setting import (
-    StableDiffusionImageToImageSetting, StableDiffusionSetting)
+    StableDiffusionImageToImageSetting,
+    StableDiffusionSetting,
+)
 from settings import AppSettings
 
 
@@ -16,8 +18,6 @@ class StableDiffusion(SamplerMixin):
         self.device = self.compute.name
         self.app_settings = AppSettings().get_settings()
         super().__init__()
-        
-
 
     def get_text_to_image_pipleline(
         self,
@@ -35,27 +35,18 @@ class StableDiffusion(SamplerMixin):
             model_id,
             torch_dtype=self.compute.datatype,
             scheduler=default_sampler,
-
         )
 
-        if  self.pipeline is None:
-            raise Exception("Text to image pipeline not initialized") 
-        
-        if self.app_settings.low_memory_mode:
-            self.pipeline.enable_sequential_cpu_offload()
-        else:
-            if self.compute.name == "cuda" :
-                self.pipeline =  self.pipeline .to("cuda")
-            elif self.compute.name == "mps":
-                self.pipeline =  self.pipeline .to("mps")
-
+        if self.pipeline is None:
+            raise Exception("Text to image pipeline not initialized")
+        self._pipeline_to_device()
         components = self.pipeline.components
-        self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components) 
+        self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components)
 
     def text_to_image(self, setting: StableDiffusionSetting):
         if self.pipeline is None:
-            raise Exception("Text to image pipeline not initialized") 
-        
+            raise Exception("Text to image pipeline not initialized")
+
         self.pipeline.scheduler = self.find_sampler(setting.scheduler)
         generator = None
         if setting.seed != -1:
@@ -87,18 +78,18 @@ class StableDiffusion(SamplerMixin):
     def image_to_image(self, setting: StableDiffusionImageToImageSetting):
         if setting.scheduler is None:
             raise Exception("Scheduler cannot be  empty")
-            
+
         print("Running image to image pipeline")
-        self.img_to_img_pipeline.scheduler = self.find_sampler(setting.scheduler)# type: ignore
+        self.img_to_img_pipeline.scheduler = self.find_sampler(setting.scheduler)  # type: ignore
         generator = None
-        if setting.seed != -1 and  setting.seed:
+        if setting.seed != -1 and setting.seed:
             print(f"Using seed {setting.seed}")
             generator = torch.Generator(self.device).manual_seed(setting.seed)
 
         if setting.attention_slicing:
-            self.img_to_img_pipeline.enable_attention_slicing() # type: ignore
+            self.img_to_img_pipeline.enable_attention_slicing()  # type: ignore
         else:
-            self.img_to_img_pipeline.disable_attention_slicing() # type: ignore
+            self.img_to_img_pipeline.disable_attention_slicing()  # type: ignore
 
         init_image = setting.image.resize(
             (
@@ -117,7 +108,14 @@ class StableDiffusion(SamplerMixin):
             negative_prompt=setting.negative_prompt,
             num_images_per_prompt=setting.number_of_images,
             generator=generator,
-        ).images 
+        ).images
         return images
 
-    
+    def _pipeline_to_device(self):
+        if self.app_settings.low_memory_mode:
+            self.pipeline.enable_sequential_cpu_offload()
+        else:
+            if self.compute.name == "cuda":
+                self.pipeline = self.pipeline.to("cuda")
+            elif self.compute.name == "mps":
+                self.pipeline = self.pipeline.to("mps")

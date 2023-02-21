@@ -20,7 +20,7 @@ class StableDiffusionInpainting(SamplerMixin):
         model_id: str = "stabilityai/stable-diffusion-2-inpainting",
         vae_id: str = "stabilityai/sd-vae-ft-mse",
     ):
-        model_id = self.app_settings.model_settings().model_id
+        model_id = self.app_settings.model_settings.model_id
         print(f"StableDiffusion - {self.compute.name},{self.compute.datatype}")
         print(f"using model {model_id}")
         self.load_samplers(model_id, vae_id)
@@ -31,10 +31,8 @@ class StableDiffusionInpainting(SamplerMixin):
             torch_dtype=self.compute.datatype,
             scheduler=default_sampler,
         )
-        if self.compute.name == "cuda":
-            self.inpainting_pipeline = self.inpainting_pipeline.to("cuda")
-        elif self.compute.name == "mps":
-            self.inpainting_pipeline = self.inpainting_pipeline.to("mps")
+
+        self._pipeline_to_device()
 
     def image_inpainting(self, setting: StableDiffusionImageInpaintingSetting):
         if setting.scheduler is None:
@@ -79,3 +77,12 @@ class StableDiffusionInpainting(SamplerMixin):
             generator=generator,
         ).images
         return images
+
+    def _pipeline_to_device(self):
+        if self.app_settings.low_memory_mode:
+            self.inpainting_pipeline.enable_sequential_cpu_offload()
+        else:
+            if self.compute.name == "cuda":
+                self.inpainting_pipeline = self.inpainting_pipeline.to("cuda")
+            elif self.compute.name == "mps":
+                self.inpainting_pipeline = self.inpainting_pipeline.to("mps")

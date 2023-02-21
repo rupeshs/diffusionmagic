@@ -7,12 +7,14 @@ from backend.stablediffusion.models.samplers import SamplerMixin
 from backend.stablediffusion.models.setting import (
     StableDiffusionImageInstructPixToPixSetting,
 )
+from settings import AppSettings
 
 
 class StableDiffusionInstructPixToPix(SamplerMixin):
     def __init__(self, compute: Computing):
         self.compute = compute
         self.device = self.compute.name
+        self.app_settings = AppSettings().get_settings()
         super().__init__()
 
     def get_instruct_pix_to_pix_pipleline(
@@ -32,10 +34,7 @@ class StableDiffusionInstructPixToPix(SamplerMixin):
                 scheduler=default_sampler,
             )
         )
-        if self.compute.name == "cuda":
-            self.instruct_pix_pipeline = self.instruct_pix_pipeline.to("cuda")
-        elif self.compute.name == "mps":
-            self.instruct_pix_pipeline = self.instruct_pix_pipeline.to("mps")
+        self._pipeline_to_device()
 
     def instruct_pix_to_pix(self, setting: StableDiffusionImageInstructPixToPixSetting):
         if setting.scheduler is None:
@@ -71,3 +70,12 @@ class StableDiffusionInstructPixToPix(SamplerMixin):
             generator=generator,
         ).images
         return images
+
+    def _pipeline_to_device(self):
+        if self.app_settings.low_memory_mode:
+            self.instruct_pix_pipeline.enable_sequential_cpu_offload()
+        else:
+            if self.compute.name == "cuda":
+                self.instruct_pix_pipeline = self.instruct_pix_pipeline.to("cuda")
+            elif self.compute.name == "mps":
+                self.instruct_pix_pipeline = self.instruct_pix_pipeline.to("mps")

@@ -4,13 +4,17 @@ from PIL import Image
 
 from backend.computing import Computing
 from backend.stablediffusion.models.samplers import SamplerMixin
-from backend.stablediffusion.models.setting import StableDiffusionImageDepthToImageSetting
+from backend.stablediffusion.models.setting import (
+    StableDiffusionImageDepthToImageSetting,
+)
+from settings import AppSettings
 
 
 class StableDiffusionDepthToImage(SamplerMixin):
     def __init__(self, compute: Computing):
         self.compute = compute
         self.device = self.compute.name
+        self.app_settings = AppSettings().get_settings()
         super().__init__()
 
     def get_depth_to_image_pipleline(
@@ -28,18 +32,18 @@ class StableDiffusionDepthToImage(SamplerMixin):
             torch_dtype=self.compute.datatype,
             scheduler=default_sampler,
         )
-        if self.compute.name == "cuda":
-            self.depth_pipeline =  self.depth_pipeline.to("cuda")
-        elif self.compute.name == "mps":
-            self.depth_pipeline =  self.depth_pipeline .to("mps")
-    
-    def depth_to_image(self, setting: StableDiffusionImageDepthToImageSetting,):
+        self._pipeline_to_device()
+
+    def depth_to_image(
+        self,
+        setting: StableDiffusionImageDepthToImageSetting,
+    ):
         if setting.scheduler is None:
             raise Exception("Scheduler cannot be  empty")
         print("Running depth to image pipeline")
         self.depth_pipeline.scheduler = self.find_sampler(setting.scheduler)
         generator = None
-        if setting.seed != -1 and  setting.seed:
+        if setting.seed != -1 and setting.seed:
             print(f"Using seed {setting.seed}")
             generator = torch.Generator(self.device).manual_seed(setting.seed)
 
@@ -57,7 +61,7 @@ class StableDiffusionDepthToImage(SamplerMixin):
         )
         images = self.depth_pipeline(
             image=base_image,
-            strength = setting.strength,
+            strength=setting.strength,
             prompt=setting.prompt,
             guidance_scale=setting.guidance_scale,
             num_inference_steps=setting.inference_steps,
@@ -67,4 +71,11 @@ class StableDiffusionDepthToImage(SamplerMixin):
         ).images
         return images
 
-        
+    def _pipeline_to_device(self):
+        if self.app_settings.low_memory_mode:
+            self.depth_pipeline.enable_sequential_cpu_offload()
+        else:
+            if self.compute.name == "cuda":
+                self.depth_pipeline = self.depth_pipeline.to("cuda")
+            elif self.compute.name == "mps":
+                self.depth_pipeline = self.depth_pipeline.to("mps")
