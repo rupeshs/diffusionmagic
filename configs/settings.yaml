@@ -1,6 +1,6 @@
-low_memory_mode: true
+low_memory_mode: false
 model_settings:
-  model_id: timbrooks/instruct-pix2pix
+  model_id: stabilityai/stable-diffusion-2-1-base
   use_local: false
 output_images:
   format: png

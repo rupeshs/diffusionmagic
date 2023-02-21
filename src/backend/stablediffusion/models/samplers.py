@@ -10,7 +10,6 @@ from diffusers import (
     LMSDiscreteScheduler,
     PNDMScheduler,
 )
-from diffusers.models import AutoencoderKL
 
 
 class Sampler(Enum):
@@ -46,12 +45,8 @@ class SamplerMixin:
         repo_id: str,
         vae_id: str,
     ) -> None:
-        vae = AutoencoderKL.from_pretrained(vae_id)
-
-        # https://github.com/huggingface/diffusers/issues/706
         self.samplers[Sampler.DDIMScheduler.value] = DDIMScheduler.from_pretrained(
             repo_id,
-            vae=vae,
             subfolder="scheduler",
         )
         # self.samplers[Sampler.DDPMScheduler.value] = DDPMScheduler.from_pretrained(
@@ -61,42 +56,36 @@ class SamplerMixin:
         # )
         self.samplers[Sampler.PNDMScheduler.value] = PNDMScheduler.from_pretrained(
             repo_id,
-            vae=vae,
             subfolder="scheduler",
         )
         self.samplers[
             Sampler.LMSDiscreteScheduler.value
         ] = LMSDiscreteScheduler.from_pretrained(
             repo_id,
-            vae=vae,
             subfolder="scheduler",
         )
         self.samplers[
             Sampler.EulerAncestralDiscreteScheduler.value
         ] = EulerAncestralDiscreteScheduler.from_pretrained(
             repo_id,
-            vae=vae,
             subfolder="scheduler",
         )
         self.samplers[
             Sampler.EulerDiscreteScheduler.value
         ] = EulerDiscreteScheduler.from_pretrained(
             repo_id,
-            vae=vae,
             subfolder="scheduler",
         )
         self.samplers[
             Sampler.DPMSolverMultistepScheduler.value
         ] = DPMSolverMultistepScheduler.from_pretrained(
             repo_id,
-            vae=vae,
             subfolder="scheduler",
         )
         self.samplers[
             Sampler.DEISScheduler.value
         ] = DEISMultistepScheduler.from_pretrained(
             repo_id,
-            vae=vae,
             subfolder="scheduler",
         )
 
