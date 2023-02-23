@@ -26,6 +26,9 @@ class Generate:
         self.stable_diffusion_inpainting = StableDiffusionInpainting(compute)
         self.stable_diffusion_depth = StableDiffusionDepthToImage(compute)
         self.stable_diffusion_pix_to_pix = StableDiffusionInstructPixToPix(compute)
+        self.app_settings = AppSettings().get_settings()
+        self.model_id = self.app_settings.model_settings.model_id
+        self.low_vram_mode = self.app_settings.low_memory_mode
 
     def diffusion_text_to_image(
         self,
@@ -65,7 +68,10 @@ class Generate:
     def _init_stable_diffusion(self):
         if not self.pipe_initialized:
             print("Initializing stable diffusion pipeline")
-            self.stable_diffusion.get_text_to_image_pipleline()
+            self.stable_diffusion.get_text_to_image_pipleline(
+                self.model_id,
+                self.low_vram_mode,
+            )
             self.pipe_initialized = True
 
     def diffusion_image_to_image(
@@ -137,7 +143,10 @@ class Generate:
 
         if not self.inpaint_pipe_initialized:
             print("Initializing stable diffusion inpainting pipeline")
-            self.stable_diffusion_inpainting.get_inpainting_pipleline()
+            self.stable_diffusion_inpainting.get_inpainting_pipleline(
+                self.model_id,
+                self.low_vram_mode,
+            )
             self.inpaint_pipe_initialized = True
 
         images = self.stable_diffusion_inpainting.image_inpainting(
@@ -181,7 +190,11 @@ class Generate:
 
         if not self.depth_pipe_initialized:
             print("Initializing stable diffusion depth to image pipeline")
-            self.stable_diffusion_depth.get_depth_to_image_pipleline()
+
+            self.stable_diffusion_depth.get_depth_to_image_pipleline(
+                self.model_id,
+                self.low_vram_mode,
+            )
             self.depth_pipe_initialized = True
         images = self.stable_diffusion_depth.depth_to_image(
             stable_diffusion_image_settings
@@ -243,7 +256,10 @@ class Generate:
         )
         if not self.pix_to_pix_initialized:
             print("Initializing stable diffusion instruct pix to pix pipeline")
-            self.stable_diffusion_pix_to_pix.get_instruct_pix_to_pix_pipleline()
+            self.stable_diffusion_pix_to_pix.get_instruct_pix_to_pix_pipleline(
+                self.model_id,
+                self.low_vram_mode,
+            )
             self.pix_to_pix_initialized = True
 
         images = self.stable_diffusion_pix_to_pix.instruct_pix_to_pix(

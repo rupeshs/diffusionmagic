@@ -43,7 +43,7 @@ class SamplerMixin:
     def load_samplers(
         self,
         repo_id: str,
-        vae_id: str,
+        vae_id: str = None,
     ) -> None:
         self.samplers[Sampler.DDIMScheduler.value] = DDIMScheduler.from_pretrained(
             repo_id,

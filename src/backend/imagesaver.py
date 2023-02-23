@@ -2,7 +2,6 @@ import os
 from typing import Any
 from uuid import uuid4
 
-from settings import AppSettings
 from utils import join_paths
 
 
