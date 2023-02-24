@@ -1,7 +1,7 @@
 from typing import Optional, Any
 
 from pydantic import BaseModel
-from backend.stablediffusion.models.samplers import Sampler
+from backend.stablediffusion.models.scheduler_types import SchedulerType
 
 
 class StableDiffusionSetting(BaseModel):
@@ -12,7 +12,7 @@ class StableDiffusionSetting(BaseModel):
     inference_steps: Optional[int] = 20
     guidance_scale: Optional[float] = 7.5
     number_of_images: Optional[int] = 1
-    scheduler: Optional[str] = Sampler.DPMSolverMultistepScheduler.value
+    scheduler: Optional[str] = SchedulerType.DPMSolverMultistepScheduler.value
     seed: Optional[int] = -1
     attention_slicing: Optional[bool] = True
     vae_slicing: Optional[bool] = True

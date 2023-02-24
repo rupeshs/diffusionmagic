@@ -3,7 +3,8 @@ from diffusers import StableDiffusionImg2ImgPipeline, StableDiffusionPipeline
 from PIL import Image
 
 from backend.computing import Computing
-from backend.stablediffusion.models.samplers import SamplerMixin
+from backend.stablediffusion.scheduler_mixin import SamplerMixin
+from backend.stablediffusion.models.scheduler_types import SchedulerType
 from backend.stablediffusion.models.setting import (
     StableDiffusionImageToImageSetting,
     StableDiffusionSetting,
@@ -22,12 +23,16 @@ class StableDiffusion(SamplerMixin):
         self,
         model_id: str = "stabilityai/stable-diffusion-2-1-base",
         low_vram_mode: bool = False,
+        sampler: str = SchedulerType.DPMSolverMultistepScheduler.value,
     ):
         self.model_id = model_id
         self.low_vram_mode = low_vram_mode
         print(f"StableDiffusion - {self.compute.name},{self.compute.datatype}")
         print(f"using model {model_id}")
-        self.load_samplers(model_id)
+        self.default_sampler = self.find_sampler(
+            sampler,
+            self.model_id,
+        )
         tic = time()
         self._load_model()
         delta = time() - tic
@@ -43,7 +48,10 @@ class StableDiffusion(SamplerMixin):
         if self.pipeline is None:
             raise Exception("Text to image pipeline not initialized")
 
-        self.pipeline.scheduler = self.find_sampler(setting.scheduler)
+        self.pipeline.scheduler = self.find_sampler(
+            setting.scheduler,
+            self.model_id,
+        )
         generator = None
         if setting.seed != -1:
             print(f"Using seed {setting.seed}")
@@ -76,7 +84,10 @@ class StableDiffusion(SamplerMixin):
             raise Exception("Scheduler cannot be  empty")
 
         print("Running image to image pipeline")
-        self.img_to_img_pipeline.scheduler = self.find_sampler(setting.scheduler)  # type: ignore
+        self.img_to_img_pipeline.scheduler = self.find_sampler(  # type: ignore
+            setting.scheduler,
+            self.model_id,
+        )
         generator = None
         if setting.seed != -1 and setting.seed:
             print(f"Using seed {setting.seed}")
@@ -121,7 +132,7 @@ class StableDiffusion(SamplerMixin):
         self.pipeline = StableDiffusionPipeline.from_pretrained(
             self.model_id,
             torch_dtype=self.compute.datatype,
-            scheduler=self.default_sampler(),
+            scheduler=self.default_sampler,
         )
 
     def _load_model(self):
@@ -130,7 +141,7 @@ class StableDiffusion(SamplerMixin):
                 self.pipeline = StableDiffusionPipeline.from_pretrained(
                     self.model_id,
                     torch_dtype=self.compute.datatype,
-                    scheduler=self.default_sampler(),
+                    scheduler=self.default_sampler,
                     revision="fp16",
                 )
             except Exception as ex:

@@ -5,10 +5,11 @@ from diffusers import StableDiffusionDepth2ImgPipeline
 from PIL import Image
 
 from backend.computing import Computing
-from backend.stablediffusion.models.samplers import SamplerMixin
+from backend.stablediffusion.models.scheduler_types import SchedulerType
 from backend.stablediffusion.models.setting import (
     StableDiffusionImageDepthToImageSetting,
 )
+from backend.stablediffusion.scheduler_mixin import SamplerMixin
 
 
 class StableDiffusionDepthToImage(SamplerMixin):
@@ -21,12 +22,17 @@ class StableDiffusionDepthToImage(SamplerMixin):
         self,
         model_id: str = "stabilityai/stable-diffusion-2-depth",
         low_vram_mode: bool = False,
+        sampler: str = SchedulerType.DPMSolverMultistepScheduler.value,
     ):
         self.low_vram_mode = low_vram_mode
         print(f"StableDiffusion - {self.compute.name},{self.compute.datatype}")
         print(f"using model {model_id}")
         self.model_id = model_id
-        self.load_samplers(model_id)
+        self.default_sampler = self.find_sampler(
+            sampler,
+            self.model_id,
+        )
+
         tic = time()
         self._load_model()
         delta = time() - tic
@@ -40,7 +46,10 @@ class StableDiffusionDepthToImage(SamplerMixin):
         if setting.scheduler is None:
             raise Exception("Scheduler cannot be  empty")
         print("Running depth to image pipeline")
-        self.depth_pipeline.scheduler = self.find_sampler(setting.scheduler)
+        self.depth_pipeline.scheduler = self.find_sampler(
+            setting.scheduler,
+            self.model_id,
+        )
         generator = None
         if setting.seed != -1 and setting.seed:
             print(f"Using seed {setting.seed}")
@@ -84,7 +93,7 @@ class StableDiffusionDepthToImage(SamplerMixin):
         self.depth_pipeline = StableDiffusionDepth2ImgPipeline.from_pretrained(
             self.model_id,
             torch_dtype=self.compute.datatype,
-            scheduler=self.default_sampler(),
+            scheduler=self.default_sampler,
         )
 
     def _load_model(self):
@@ -94,7 +103,7 @@ class StableDiffusionDepthToImage(SamplerMixin):
                 self.depth_pipeline = StableDiffusionDepth2ImgPipeline.from_pretrained(
                     self.model_id,
                     torch_dtype=self.compute.datatype,
-                    scheduler=self.default_sampler(),
+                    scheduler=self.default_sampler,
                     revision="fp16",
                 )
             except Exception as ex:

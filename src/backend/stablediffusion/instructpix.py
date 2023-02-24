@@ -5,7 +5,8 @@ from diffusers import StableDiffusionInstructPix2PixPipeline
 from PIL import Image
 
 from backend.computing import Computing
-from backend.stablediffusion.models.samplers import SamplerMixin
+from backend.stablediffusion.scheduler_mixin import SamplerMixin
+from backend.stablediffusion.models.scheduler_types import SchedulerType
 from backend.stablediffusion.models.setting import (
     StableDiffusionImageInstructPixToPixSetting,
 )
@@ -21,12 +22,17 @@ class StableDiffusionInstructPixToPix(SamplerMixin):
         self,
         model_id: str = "timbrooks/instruct-pix2pix",
         low_vram_mode: bool = False,
+        sampler: str = SchedulerType.DPMSolverMultistepScheduler.value,
     ):
         print(f"StableDiffusion - {self.compute.name},{self.compute.datatype}")
         print(f"using model {model_id}")
         self.model_id = model_id
         self.low_vram_mode = low_vram_mode
-        self.load_samplers(model_id)
+        self.default_sampler = self.find_sampler(
+            sampler,
+            self.model_id,
+        )
+
         tic = time()
         self._load_model()
         delta = time() - tic
@@ -37,7 +43,10 @@ class StableDiffusionInstructPixToPix(SamplerMixin):
         if setting.scheduler is None:
             raise Exception("Scheduler cannot be  empty")
         print("Running image to image pipeline")
-        self.instruct_pix_pipeline.scheduler = self.find_sampler(setting.scheduler)
+        self.instruct_pix_pipeline.scheduler = self.find_sampler(
+            setting.scheduler,
+            self.model_id,
+        )
         generator = None
         if setting.seed != -1 and setting.seed:
             print(f"Using seed {setting.seed}")
@@ -83,7 +92,7 @@ class StableDiffusionInstructPixToPix(SamplerMixin):
             StableDiffusionInstructPix2PixPipeline.from_pretrained(
                 self.model_id,
                 torch_dtype=self.compute.datatype,
-                scheduler=self.default_sampler(),
+                scheduler=self.default_sampler,
             )
         )
 
@@ -95,7 +104,7 @@ class StableDiffusionInstructPixToPix(SamplerMixin):
                     StableDiffusionInstructPix2PixPipeline.from_pretrained(
                         self.model_id,
                         torch_dtype=self.compute.datatype,
-                        scheduler=self.default_sampler(),
+                        scheduler=self.default_sampler,
                         revision="fp16",
                     )
                 )

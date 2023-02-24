@@ -2,7 +2,10 @@ from typing import Any
 
 import gradio as gr
 
-from backend.stablediffusion.models.samplers import Sampler
+from backend.stablediffusion.models.scheduler_types import (
+    SchedulerType,
+    get_sampler_names,
+)
 
 random_enabled = True
 
@@ -54,10 +57,9 @@ def get_instruct_pix_to_pix_ui(generate_callback_fn: Any) -> None:
                 num_inference_steps = gr.Slider(
                     1, 100, value=20, step=1, label="Inference Steps"
                 )
-                samplers = [sampler.value for sampler in Sampler]
                 scheduler = gr.Dropdown(
-                    samplers,
-                    value=Sampler.DPMSolverMultistepScheduler.value,
+                    get_sampler_names(),
+                    value=SchedulerType.DPMSolverMultistepScheduler.value,
                     label="Sampler",
                 )
                 guidance_scale = gr.Slider(
