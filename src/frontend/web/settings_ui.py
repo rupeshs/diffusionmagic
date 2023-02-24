@@ -1,5 +1,3 @@
-from typing import Any
-
 import gradio as gr
 from hf_models import StableDiffusionModels
 from settings import AppSettings

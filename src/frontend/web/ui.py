@@ -1,9 +1,5 @@
-from typing import Any
-
 import gradio as gr
 
-from backend.computing import Computing
-from backend.generate import Generate
 from backend.stablediffusion.stable_diffusion_types import get_diffusion_type
 from backend.stablediffusion.stable_diffusion_types import StableDiffusionType
 from frontend.web.depth_to_image_ui import get_depth_to_image_ui

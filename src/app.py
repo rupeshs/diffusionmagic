@@ -4,6 +4,7 @@ from backend.computing import Computing
 from backend.generate import Generate
 
 # mypy --ignore-missing-imports --explicit-package-bases .
+# flake8 --max-line-length=100 .
 if __name__ == "__main__":
     try:
         app_settings = AppSettings()

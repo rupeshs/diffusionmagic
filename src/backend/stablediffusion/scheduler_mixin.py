@@ -1,4 +1,4 @@
-from backend.stablediffusion.models.scheduler_types import SchedulerType, Scheduler
+from backend.stablediffusion.models.scheduler_types import Scheduler
 from backend.stablediffusion.scheduler_factory import SchedulerFactory
 
 
