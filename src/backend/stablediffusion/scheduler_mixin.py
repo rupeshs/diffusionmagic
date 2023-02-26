@@ -17,5 +17,4 @@ class SamplerMixin:
                 scheduler_name,
                 repo_id,
             )
-        print(self.samplers)
         return self.samplers[scheduler_name]

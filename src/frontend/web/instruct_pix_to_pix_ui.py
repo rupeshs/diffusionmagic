@@ -36,9 +36,9 @@ def get_instruct_pix_to_pix_ui(generate_callback_fn: Any) -> None:
                 )
 
                 prompt = gr.Textbox(
-                    label="Describe the image you'd like to see",
+                    label="Edit Instruction",
                     lines=3,
-                    placeholder="A fantasy landscape",
+                    placeholder="Add fireworks to the sky",
                 )
 
                 neg_prompt = gr.Textbox(
@@ -47,50 +47,52 @@ def get_instruct_pix_to_pix_ui(generate_callback_fn: Any) -> None:
                     placeholder="",
                     value="bad, deformed, ugly, bad Anatomy",
                 )
-
-                image_height = gr.Slider(
-                    512, 2048, value=512, step=64, label="Image Height"
-                )
-                image_width = gr.Slider(
-                    512, 2048, value=512, step=64, label="Image Width"
-                )
-                num_inference_steps = gr.Slider(
-                    1, 100, value=20, step=1, label="Inference Steps"
-                )
-                scheduler = gr.Dropdown(
-                    get_sampler_names(),
-                    value=SchedulerType.DPMSolverMultistepScheduler.value,
-                    label="Sampler",
-                )
-                guidance_scale = gr.Slider(
-                    1.0,
-                    30.0,
-                    value=7.5,
-                    step=0.5,
-                    label="Guidance Scale",
-                )
-                num_images = gr.Slider(
-                    1,
-                    50,
-                    value=1,
-                    step=1,
-                    label="Number of images to generate",
-                )
-                attn_slicing = gr.Checkbox(
-                    label="Attention slicing (Enable if low VRAM)",
-                    value=True,
-                )
-                seed = gr.Number(
-                    label="Seed",
-                    value=-1,
-                    precision=0,
-                    interactive=False,
-                )
-                seed_checkbox = gr.Checkbox(
-                    label="Use random seed",
-                    value=True,
-                    interactive=True,
-                )
+                with gr.Accordion("Advanced", open=False):
+                    image_height = gr.Slider(
+                        512, 2048, value=512, step=64, label="Image Height"
+                    )
+                    image_width = gr.Slider(
+                        512, 2048, value=512, step=64, label="Image Width"
+                    )
+                    num_inference_steps = gr.Slider(
+                        1, 100, value=20, step=1, label="Inference Steps"
+                    )
+                    samplers = get_sampler_names()
+                    samplers.remove("DEISMultistep")
+                    scheduler = gr.Dropdown(
+                        samplers,
+                        value=SchedulerType.DPMSolverMultistepScheduler.value,
+                        label="Sampler",
+                    )
+                    guidance_scale = gr.Slider(
+                        1.0,
+                        30.0,
+                        value=7.5,
+                        step=0.5,
+                        label="Guidance Scale",
+                    )
+                    num_images = gr.Slider(
+                        1,
+                        50,
+                        value=1,
+                        step=1,
+                        label="Number of images to generate",
+                    )
+                    attn_slicing = gr.Checkbox(
+                        label="Attention slicing (Enable if low VRAM)",
+                        value=True,
+                    )
+                    seed = gr.Number(
+                        label="Seed",
+                        value=-1,
+                        precision=0,
+                        interactive=False,
+                    )
+                    seed_checkbox = gr.Checkbox(
+                        label="Use random seed",
+                        value=True,
+                        interactive=True,
+                    )
 
                 input_params = [
                     input_image,

@@ -1,6 +1,7 @@
 import gradio as gr
 from hf_models import StableDiffusionModels
 from settings import AppSettings
+from datetime import datetime
 
 
 def save_app_settings(
@@ -17,6 +18,9 @@ def save_app_settings(
     app_settings.get_settings().output_images.use_seperate_folders = use_seperate_folder
     app_settings.get_settings().low_memory_mode = enable_low_vram
     app_settings.save()
+    now = datetime.now()
+    current_time = now.strftime("%H:%M:%S")
+    return "Settings last saved at " + current_time + ""
 
 
 def get_settings_ui() -> None:
@@ -27,10 +31,14 @@ def get_settings_ui() -> None:
     with gr.Blocks():
         with gr.Row():
             with gr.Column():
+                save_status = gr.HTML(
+                    "<center><p>Some settings changes requires the app restarts!</p></center>",
+                    elem_id="settings_header",
+                )
                 model_id = gr.Dropdown(
                     sd_models.get_models(),
                     value=app_settings.model_settings.model_id,
-                    label="Stable diffusion model ",
+                    label="Stable diffusion model (Restart required)",
                 )
                 result_path = gr.TextArea(
                     label="Output folder (Generated images saved here)",
@@ -47,10 +55,12 @@ def get_settings_ui() -> None:
                     value=app_settings.output_images.use_seperate_folders,
                 )
                 enable_low_vram = gr.Checkbox(
-                    label="Enable Low VRAM mode (GPUs with VRAM <3GB, slower to generate images)",
+                    label="Enable Low VRAM mode (GPUs with VRAM <4GB, slower to generate images) (Restart required)",
                     value=app_settings.low_memory_mode,
                 )
-                save_button = gr.Button("Save", elem_id="save_button")
+                with gr.Column():
+                    save_button = gr.Button("Save", elem_id="save_button")
+                    save_status = gr.HTML("")
     save_button.click(
         fn=save_app_settings,
         inputs=[
@@ -60,4 +70,5 @@ def get_settings_ui() -> None:
             use_seperate_folder,
             enable_low_vram,
         ],
+        outputs=save_status,
     )

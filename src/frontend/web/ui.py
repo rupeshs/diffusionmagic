@@ -16,10 +16,11 @@ def diffusionmagic_web_ui(generate) -> gr.Blocks:
     model_id = AppSettings().get_settings().model_settings.model_id
     stable_diffusion_type = get_diffusion_type(model_id)
     with gr.Blocks(
+        theme="dark",
         css=DiffusionMagicPaths.get_css_path(),
         title="DiffusionMagic",
     ) as diffusion_magic_ui:
-        gr.HTML("<center><h3>DiffusionMagic</h3></center>")
+        gr.HTML("<center><H3>DiffusionMagic Beta</H3></center>")
         with gr.Tabs():
             if stable_diffusion_type == StableDiffusionType.base:
                 with gr.TabItem("Text to image"):
@@ -37,4 +38,7 @@ def diffusionmagic_web_ui(generate) -> gr.Blocks:
                     get_instruct_pix_to_pix_ui(generate.diffusion_pix_to_pix)
             with gr.TabItem("Settings"):
                 get_settings_ui()
+        gr.HTML(
+            '<center><p>© 2023 <a href="https://github.com/rupeshs">Rupesh Sreeraman</a></p></center>'
+        )
     return diffusion_magic_ui
