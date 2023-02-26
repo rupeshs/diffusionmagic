@@ -4,5 +4,5 @@ model_settings:
   use_local: false
 output_images:
   format: png
-  path: D:\lab\diffusionmagic\results
+  path: 
   use_seperate_folders: true
