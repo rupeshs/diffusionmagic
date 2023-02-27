@@ -1,8 +1,0 @@
-low_memory_mode: false
-model_settings:
-  model_id: timbrooks/instruct-pix2pix
-  use_local: false
-output_images:
-  format: png
-  path: 
-  use_seperate_folders: true
