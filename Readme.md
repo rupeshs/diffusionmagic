@@ -21,19 +21,28 @@ StableDiffusion workflows using Diffusers.
 ~11 GB disk space after installation (on SSD for best performance)
 ### How to install and run on Windows
 Follow the steps to install and run the Diffusion magic on Windows.
-First we need to run the `install.bat` batch file it will install the necessary dependencies for DiffusionMagic.
-It will take some time to install(depends on your internet speed)
+- First we need to run the `install.bat` batch file it will install the necessary dependencies for DiffusionMagic.
+(It will take some time to install,depends on your internet speed)
 - Run the  `install.bat` script.
 - To start DiffusionMagic click `start.bat`
 ### How to install and run on Linux
 Follow the steps to install and run the Diffusion magic on Linux.
+
+ - Make `install.sh` executable, run the following command:
+  `chmod +x install.sh`
 - Run the  `install.sh` script.
-- To start DiffusionMagic click `start.sh`
+ ` ./install.sh`
+- To start DiffusionMagic run:
+` ./start.sh`
 
 ### How to install and run on Mac (Not tested)
 Follow the steps to install and run the Diffusion magic on Linux.
+ - Make `install-mac.sh` executable, run the following command:
+  `chmod +x install-mac.sh`
 - Run the  `install-mac.sh` script.
-- To start DiffusionMagic click `start.sh`
+`./install-mac.sh`
+- To start DiffusionMagic run:
+` ./start.sh`
 
  Open the browser `http://localhost:7860/`
  Dark theme `http://localhost:7860/?__theme=dark`
