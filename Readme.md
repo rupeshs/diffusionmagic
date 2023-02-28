@@ -28,7 +28,7 @@ Follow the steps to install and run the Diffusion magic on Windows.
 ### How to install and run on Linux
 Follow the steps to install and run the Diffusion magic on Linux.
 
- - Make `install.sh` executable, run the following command:
+ - Run the following command:
   `chmod +x install.sh`
 - Run the  `install.sh` script.
  ` ./install.sh`
@@ -36,8 +36,13 @@ Follow the steps to install and run the Diffusion magic on Linux.
 ` ./start.sh`
 
 ### How to install and run on Mac (Not tested)
-Follow the steps to install and run the Diffusion magic on Linux.
- - Make `install-mac.sh` executable, run the following command:
+Ensure the following prerequisites.
+#### prerequisites 
+- Mac computer with Apple silicon (M1/M2) hardware.
+- macOS 12.6 or later (13.0 or later recommended).
+
+Follow the steps to install and run the Diffusion magic on Mac (Apple Silicon M1/M2).
+ - Run the following command:
   `chmod +x install-mac.sh`
 - Run the  `install-mac.sh` script.
 `./install-mac.sh`
