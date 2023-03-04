@@ -111,6 +111,11 @@ class StableDiffusion(SamplerMixin):
         else:
             self.img_to_img_pipeline.disable_attention_slicing()  # type: ignore
 
+        if setting.vae_slicing:
+            self.pipeline.enable_vae_slicing()
+        else:
+            self.pipeline.disable_vae_slicing()
+
         init_image = setting.image.resize(
             (
                 setting.image_width,
@@ -118,7 +123,6 @@ class StableDiffusion(SamplerMixin):
             ),
             Image.Resampling.LANCZOS,
         )
-
         images = self.img_to_img_pipeline(  # type: ignore
             image=init_image,
             strength=setting.strength,

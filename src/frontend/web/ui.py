@@ -1,10 +1,14 @@
 import gradio as gr
 
-from backend.stablediffusion.stable_diffusion_types import get_diffusion_type
-from backend.stablediffusion.stable_diffusion_types import StableDiffusionType
+from backend.generate import Generate
+from backend.stablediffusion.stable_diffusion_types import (
+    StableDiffusionType,
+    get_diffusion_type,
+)
 from frontend.web.depth_to_image_ui import get_depth_to_image_ui
 from frontend.web.image_inpainting_ui import get_image_inpainting_ui
 from frontend.web.image_to_image_ui import get_image_to_image_ui
+from frontend.web.image_variations_ui import get_image_variations_ui
 from frontend.web.instruct_pix_to_pix_ui import get_instruct_pix_to_pix_ui
 from frontend.web.settings_ui import get_settings_ui
 from frontend.web.text_to_image_ui import get_text_to_image_ui
@@ -12,7 +16,7 @@ from settings import AppSettings
 from utils import DiffusionMagicPaths
 
 
-def diffusionmagic_web_ui(generate) -> gr.Blocks:
+def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
     model_id = AppSettings().get_settings().model_settings.model_id
     stable_diffusion_type = get_diffusion_type(model_id)
     with gr.Blocks(
@@ -22,10 +26,12 @@ def diffusionmagic_web_ui(generate) -> gr.Blocks:
         gr.HTML("<center><H3>DiffusionMagic Beta</H3></center>")
         with gr.Tabs():
             if stable_diffusion_type == StableDiffusionType.base:
-                with gr.TabItem("Text to image"):
+                with gr.TabItem("Text to Image"):
                     get_text_to_image_ui(generate.diffusion_text_to_image)
-                with gr.TabItem("Image to image"):
+                with gr.TabItem("Image to Image"):
                     get_image_to_image_ui(generate.diffusion_image_to_image)
+                with gr.TabItem("Image Variations"):
+                    get_image_variations_ui(generate.diffusion_image_variations)
             elif stable_diffusion_type == StableDiffusionType.inpainting:
                 with gr.TabItem("Image Inpainting"):
                     get_image_inpainting_ui(generate.diffusion_image_inpainting)

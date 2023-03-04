@@ -35,7 +35,7 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                     label="Don't want to see",
                     lines=1,
                     placeholder="",
-                    value="bad, deformed, ugly, bad Anatomy",
+                    value="bad, deformed, ugly, bad anatomy",
                 )
                 with gr.Accordion("Advanced", open=False):
                     image_height = gr.Slider(

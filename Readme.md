@@ -3,13 +3,14 @@ StableDiffusion workflows using Diffusers.
 
  ![ DiffusionMagic](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic.PNG)
 ### Features
-- Supports various image generation methods 
-    -  Text to Image 
-    -  Image to Image 
+- Supports various Stable Diffusion workflows
+    - Text to Image 
+    - Image to Image 
+    - Image variations
     - Image Inpainting
     - Depth to Image
     - Instruction based image editing
--  Supports all stable diffusion hugging face models 
+- Supports all stable diffusion Hugging Face models 
 - Supports Stable diffusion v1 and v2 models and derived models
 - Supports DEIS scheduler for faster image generation (10 steps)
 - Supports 7 different samplers with latest DEIS sampler

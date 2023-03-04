@@ -10,7 +10,7 @@ from backend.stablediffusion.models.scheduler_types import (
 random_enabled = True
 
 
-def get_instruct_pix_to_pix_ui(generate_callback_fn: Any) -> None:
+def get_image_variations_ui(generate_callback_fn: Any) -> None:
     with gr.Blocks():
         with gr.Row():
             with gr.Column():
@@ -27,25 +27,12 @@ def get_instruct_pix_to_pix_ui(generate_callback_fn: Any) -> None:
                     )
 
                 input_image = gr.Image(label="Input image", type="pil")
-                image_guidance_scale = gr.Slider(
+                strength = gr.Slider(
                     0.0,
-                    2.0,
-                    value=1.5,
+                    1.0,
+                    value=0.65,
                     step=0.05,
-                    label="Image Guidance Scale",
-                )
-
-                prompt = gr.Textbox(
-                    label="Edit Instruction",
-                    lines=3,
-                    placeholder="Add fireworks to the sky",
-                )
-
-                neg_prompt = gr.Textbox(
-                    label="Don't want to see",
-                    lines=1,
-                    placeholder="",
-                    value="bad, deformed, ugly, bad anatomy",
+                    label="Variation Strength",
                 )
                 with gr.Accordion("Advanced", open=False):
                     image_height = gr.Slider(
@@ -57,10 +44,8 @@ def get_instruct_pix_to_pix_ui(generate_callback_fn: Any) -> None:
                     num_inference_steps = gr.Slider(
                         1, 100, value=20, step=1, label="Inference Steps"
                     )
-                    samplers = get_sampler_names()
-                    samplers.remove("DEISMultistep")
                     scheduler = gr.Dropdown(
-                        samplers,
+                        get_sampler_names(),
                         value=SchedulerType.DPMSolverMultistepScheduler.value,
                         label="Sampler",
                     )
@@ -96,9 +81,7 @@ def get_instruct_pix_to_pix_ui(generate_callback_fn: Any) -> None:
 
                 input_params = [
                     input_image,
-                    image_guidance_scale,
-                    prompt,
-                    neg_prompt,
+                    strength,
                     image_height,
                     image_width,
                     num_inference_steps,
