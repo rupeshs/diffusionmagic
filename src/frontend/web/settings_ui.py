@@ -32,7 +32,7 @@ def get_settings_ui() -> None:
         with gr.Row():
             with gr.Column():
                 save_status = gr.HTML(
-                    "<center><p>Some settings changes requires the app restarts!</p></center>",
+                    "<center><p>Some setting changes requires app restarts!</p></center>",
                     elem_id="settings_header",
                 )
                 model_id = gr.Dropdown(

@@ -104,6 +104,8 @@ def get_image_inpainting_ui(generate_callback_fn: Any) -> None:
                     label="Generated images",
                     show_label=True,
                     elem_id="gallery",
+                ).style(
+                    grid=2,
                 )
         generate_btn.click(
             fn=generate_callback_fn,

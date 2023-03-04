@@ -10,6 +10,7 @@ from backend.stablediffusion.models.setting import (
     StableDiffusionSetting,
 )
 from time import time
+from backend.stablediffusion.modelmeta import ModelMeta
 
 
 class StableDiffusion(SamplerMixin):
@@ -17,6 +18,7 @@ class StableDiffusion(SamplerMixin):
         self.compute = compute
         self.pipeline = None
         self.device = self.compute.name
+
         super().__init__()
 
     def get_text_to_image_pipleline(
@@ -25,7 +27,16 @@ class StableDiffusion(SamplerMixin):
         low_vram_mode: bool = False,
         sampler: str = SchedulerType.DPMSolverMultistepScheduler.value,
     ):
-        self.model_id = model_id
+        repo_id = model_id
+        model_meta = ModelMeta(repo_id)
+        is_lora_model = model_meta.is_loramodel()
+        if is_lora_model:
+            print("LoRA  model detected")
+            self.model_id = model_meta.get_lora_base_model()
+            print(f"LoRA  base model - {self.model_id}")
+        else:
+            self.model_id = model_id
+
         self.low_vram_mode = low_vram_mode
         print(f"StableDiffusion - {self.compute.name},{self.compute.datatype}")
         print(f"using model {model_id}")
@@ -40,6 +51,8 @@ class StableDiffusion(SamplerMixin):
 
         if self.pipeline is None:
             raise Exception("Text to image pipeline not initialized")
+        if is_lora_model:
+            self.pipeline.unet.load_attn_procs(repo_id)
         self._pipeline_to_device()
         components = self.pipeline.components
         self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components)

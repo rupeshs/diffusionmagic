@@ -16,7 +16,6 @@ def diffusionmagic_web_ui(generate) -> gr.Blocks:
     model_id = AppSettings().get_settings().model_settings.model_id
     stable_diffusion_type = get_diffusion_type(model_id)
     with gr.Blocks(
-        theme="dark",
         css=DiffusionMagicPaths.get_css_path(),
         title="DiffusionMagic",
     ) as diffusion_magic_ui:

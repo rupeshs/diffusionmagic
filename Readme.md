@@ -51,5 +51,15 @@ Follow the steps to install and run the Diffusion magic on Mac (Apple Silicon M1
 
  Open the browser `http://localhost:7860/`
  Dark theme `http://localhost:7860/?__theme=dark`
-<!-- ### How to add new model
-You can add new models hugging face model by adding id to the configs/stable_diffusion_models.txt file. -->
+
+## How to switch models
+Diffusion magic will chnage UI based on the model selected.
+Follow the steps to switch the models() inpainting,depth to image or instruct pix to pix or any other hugging face stable diffusion model)
+- Start the Diffusion Magic app, open the settings tab and change the model
+- Save the settings
+- Close the app and start using start.bat/start.sh
+ ### How to add new model
+You can add new models hugging face model by 
+- Adding huggugg id to the configs/stable_diffusion_models.txt file
+- Adding locally copied model path to configs/stable_diffusion_models.txt file
+
