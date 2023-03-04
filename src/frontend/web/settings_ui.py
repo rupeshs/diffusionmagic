@@ -54,8 +54,12 @@ def get_settings_ui() -> None:
                     label="Save in images in seperate folders (text2img,img2img etc)",
                     value=app_settings.output_images.use_seperate_folders,
                 )
+                vram_label = (
+                    "Enable Low VRAM mode (GPUs with VRAM <4GB,"
+                    "slower to generate images) (Restart required)"
+                )
                 enable_low_vram = gr.Checkbox(
-                    label="Enable Low VRAM mode (GPUs with VRAM <4GB, slower to generate images) (Restart required)",
+                    label=vram_label,
                     value=app_settings.low_memory_mode,
                 )
                 with gr.Column():

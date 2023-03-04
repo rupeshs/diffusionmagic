@@ -43,7 +43,9 @@ def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
                     get_instruct_pix_to_pix_ui(generate.diffusion_pix_to_pix)
             with gr.TabItem("Settings"):
                 get_settings_ui()
-        gr.HTML(
-            '<center><p>© 2023 <a href="https://github.com/rupeshs">Rupesh Sreeraman</a></p></center>'
+        footer_mesage = (
+            '<center><p>© 2023 <a href="https://github.com/rupeshs">'
+            "Rupesh Sreeraman</a></p></center>"
         )
+        gr.HTML(footer_mesage)
     return diffusion_magic_ui

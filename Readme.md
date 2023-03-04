@@ -25,6 +25,8 @@ StableDiffusion workflows using Diffusers.
 - 12 GB System RAM
 ~11 GB disk space after installation (on SSD for best performance)
 ## Screenshots
+## Image variations
+ ![  Image variations](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_image_variations.PNG)
 ## Image Inpainting
  ![ Image Inpainting](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_inpainting.PNG)
 ## Depth to Image
