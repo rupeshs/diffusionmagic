@@ -8,11 +8,15 @@ StableDiffusion workflows using Diffusers.
     -  Image to Image 
     - Image Inpainting
     - Depth to Image
-    - Instruct Pix to Pix generation
--  Latest Stable diffusion 2.1
-- Easy to add new diffuser model by updating stable_diffusion_models.txt 
+    - Instruction based image editing
+-  Supports all stable diffusion hugging face models 
+- Supports Stable diffusion v1 and v2 models and derived models
 - Supports DEIS scheduler for faster image generation (10 steps)
+- Supports 7 different samplers with latest DEIS sampler
+- LoRA(Low-Rank Adaptation of Large Language Models) models support (~3 MB size)
+- Easy to add new diffuser model by updating stable_diffusion_models.txt 
 - Low VRAM mode supports GPU with RAM < 4 GB 
+- Fast model loading
 
 ## System Requirements:
 - Works on Windows/Linux/Mac 64-bit
@@ -64,7 +68,7 @@ Follow the steps to install and run the Diffusion magic on Mac (Apple Silicon M1
  Dark theme `http://localhost:7860/?__theme=dark`
 
 ## How to switch models
-Diffusion magic will chnage UI based on the model selected.
+Diffusion magic will change UI based on the model selected.
 Follow the steps to switch the models() inpainting,depth to image or instruct pix to pix or any other hugging face stable diffusion model)
 - Start the Diffusion Magic app, open the settings tab and change the model
  ![ DiffusionMagic settings page](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic%20setting.PNG)
