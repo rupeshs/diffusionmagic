@@ -34,7 +34,7 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                     step=0.05,
                     label="Variation Strength",
                 )
-                with gr.Accordion("Advanced", open=False):
+                with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
                         512, 2048, value=512, step=64, label="Image Height"
                     )

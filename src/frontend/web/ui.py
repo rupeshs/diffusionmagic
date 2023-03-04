@@ -14,6 +14,16 @@ from frontend.web.settings_ui import get_settings_ui
 from frontend.web.text_to_image_ui import get_text_to_image_ui
 from settings import AppSettings
 from utils import DiffusionMagicPaths
+from constants import VERSION
+
+
+def _get_footer_message() -> str:
+    version = f"<center><p> v{VERSION} "
+    footer_msg = version + (
+        '  © 2023 <a href="https://github.com/rupeshs">'
+        " Rupesh Sreeraman</a></p></center>"
+    )
+    return footer_msg
 
 
 def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
@@ -43,9 +53,6 @@ def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
                     get_instruct_pix_to_pix_ui(generate.diffusion_pix_to_pix)
             with gr.TabItem("Settings"):
                 get_settings_ui()
-        footer_mesage = (
-            '<center><p>© 2023 <a href="https://github.com/rupeshs">'
-            "Rupesh Sreeraman</a></p></center>"
-        )
-        gr.HTML(footer_mesage)
+
+        gr.HTML(_get_footer_message())
     return diffusion_magic_ui

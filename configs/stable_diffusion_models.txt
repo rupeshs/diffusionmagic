@@ -2,8 +2,9 @@ stabilityai/stable-diffusion-2-1-base
 stabilityai/stable-diffusion-2-inpainting
 stabilityai/stable-diffusion-2-depth
 timbrooks/instruct-pix2pix
-dreamlike-art/dreamlike-diffusion-1.0
 runwayml/stable-diffusion-v1-5
+runwayml/stable-diffusion-inpainting
+CompVis/stable-diffusion-v1-4
 prompthero/openjourney-v2
-sayakpaul/sd-model-finetuned-lora-t4
 pcuenq/pokemon-lora
+sayakpaul/sd-model-finetuned-lora-t4
