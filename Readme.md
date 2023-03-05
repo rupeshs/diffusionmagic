@@ -66,7 +66,7 @@ Follow the steps to install and run the Diffusion magic on Linux.
 
 ## How to install and run on Mac (Not tested)
 *Testers needed - If you have MacOS feel free to test and contribute*
-Ensure the following prerequisites.
+
 #### prerequisites 
 - Mac computer with Apple silicon (M1/M2) hardware.
 - macOS 12.6 or later (13.0 or later recommended).
@@ -82,6 +82,10 @@ Follow the steps to install and run the Diffusion magic on Mac (Apple Silicon M1
  Open the browser `http://localhost:7860/`
  Dark theme `http://localhost:7860/?__theme=dark`
 
+## Colab Support
+Yes, you can run DiffusionMagic in Colab.
+
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/116wcgjsvLhw9IrHeBDlvPQSW2oVzsnql?usp=sharing)
 ## How to switch models
 Diffusion magic will change UI based on the model selected.
 Follow the steps to switch the models() inpainting,depth to image or instruct pix to pix or any other hugging face stable diffusion model)
@@ -96,6 +100,6 @@ E.g `https://huggingface.co/dreamlike-art/dreamlike-diffusion-1.0`
 Here model id is `dreamlike-art/dreamlike-diffusion-1.0`
 Or we can clone the model use the local folder path as model id.
 - Adding locally copied model path to configs/stable_diffusion_models.txt file
-
+## Contribute
 Contributions are welcomed.
 
