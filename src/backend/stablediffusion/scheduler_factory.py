@@ -6,6 +6,7 @@ from diffusers import (
     EulerDiscreteScheduler,
     LMSDiscreteScheduler,
     PNDMScheduler,
+    UniPCMultistepScheduler,
 )
 
 from backend.stablediffusion.models.scheduler_types import SchedulerType, Scheduler
@@ -49,6 +50,11 @@ class SchedulerFactory:
             )
         elif scheduler_type == SchedulerType.PNDMScheduler.value:
             return PNDMScheduler.from_pretrained(
+                repo_id,
+                subfolder="scheduler",
+            )
+        elif scheduler_type == SchedulerType.UniPCMultistepScheduler.value:
+            return UniPCMultistepScheduler.from_pretrained(
                 repo_id,
                 subfolder="scheduler",
             )

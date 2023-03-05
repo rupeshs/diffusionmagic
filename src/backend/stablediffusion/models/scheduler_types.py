@@ -9,6 +9,7 @@ from diffusers import (
     EulerDiscreteScheduler,
     LMSDiscreteScheduler,
     PNDMScheduler,
+    UniPCMultistepScheduler
 )
 
 
@@ -23,6 +24,7 @@ class SchedulerType(Enum):
     LMSDiscreteScheduler = "LMSDiscrete"
     PNDMScheduler = "PNDM"
     DEISScheduler = "DEISMultistep"
+    UniPCMultistepScheduler = "UniPCMultistep"
 
 
 Scheduler = Union[
@@ -33,6 +35,7 @@ Scheduler = Union[
     EulerDiscreteScheduler,
     LMSDiscreteScheduler,
     PNDMScheduler,
+    UniPCMultistepScheduler,
 ]
 
 

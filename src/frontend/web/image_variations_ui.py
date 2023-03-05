@@ -46,7 +46,7 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                     )
                     scheduler = gr.Dropdown(
                         get_sampler_names(),
-                        value=SchedulerType.DPMSolverMultistepScheduler.value,
+                        value=SchedulerType.UniPCMultistepScheduler.value,
                         label="Sampler",
                     )
                     guidance_scale = gr.Slider(
