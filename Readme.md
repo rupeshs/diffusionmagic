@@ -90,8 +90,11 @@ Follow the steps to switch the models() inpainting,depth to image or instruct pi
 - Save the settings
 - Close the app and start using start.bat/start.sh
  ## How to add new model
-You can add new models hugging face model by 
-- Adding huggugg id to the configs/stable_diffusion_models.txt file
+We can add any Hugging Face stable diffusion model to DiffusionMagic by 
+- Adding Hugging Face models  id or local folder path to the configs/stable_diffusion_models.txt file
+E.g `https://huggingface.co/dreamlike-art/dreamlike-diffusion-1.0`
+Here model id is `dreamlike-art/dreamlike-diffusion-1.0`
+Or we can clone the model use the local folder path as model id.
 - Adding locally copied model path to configs/stable_diffusion_models.txt file
 
 Contributions are welcomed.
