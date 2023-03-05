@@ -49,6 +49,9 @@ Follow the steps to install and run the Diffusion magic on Windows.
 (It will take some time to install,depends on your internet speed)
 - Run the  `install.bat` script.
 - To start DiffusionMagic double click `start.bat`
+
+
+ ![ DiffusionMagic started on Windows](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_windows.PNG)
 ### How to install and run on Linux
 Follow the steps to install and run the Diffusion magic on Linux.
 
