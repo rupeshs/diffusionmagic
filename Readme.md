@@ -6,7 +6,7 @@ DiffusionMagic focused on the following areas:
 - Modular design, latest best optimizations for speed and memory
 
  ![ DiffusionMagic](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic.PNG)
-### Features
+## Features
 - Supports various Stable Diffusion workflows
     - Text to Image 
     - Image to Image 
@@ -28,13 +28,13 @@ DiffusionMagic focused on the following areas:
 - Simple installation using install.bat/install.sh
 
 ## Screenshots
-## Image variations
+### Image variations
  ![  Image variations](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_image_variations.PNG)
-## Image Inpainting
+### Image Inpainting
  ![ Image Inpainting](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_inpainting.PNG)
-## Depth to Image
+### Depth to Image
  ![ Depth To Image](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_depth_image.PNG)
- ## Instruction based image editing
+ ### Instruction based image editing
  ![ Depth To Image](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_instruct_to_pix.PNG
 )
 ## System Requirements:
@@ -45,7 +45,7 @@ DiffusionMagic focused on the following areas:
 
 ## Download Release
 Download release from the github DiffusionMagic releases.
-### How to install and run on Windows
+## How to install and run on Windows
 Follow the steps to install and run the Diffusion magic on Windows.
 - First we need to run(double click) the `install.bat` batch file it will install the necessary dependencies for DiffusionMagic.
 (It will take some time to install,depends on your internet speed)
@@ -54,7 +54,7 @@ Follow the steps to install and run the Diffusion magic on Windows.
 
 
  ![ DiffusionMagic started on Windows](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_windows.PNG)
-### How to install and run on Linux
+## How to install and run on Linux
 Follow the steps to install and run the Diffusion magic on Linux.
 
  - Run the following command:
@@ -64,7 +64,7 @@ Follow the steps to install and run the Diffusion magic on Linux.
 - To start DiffusionMagic run:
 ` ./start.sh`
 
-### How to install and run on Mac (Not tested)
+## How to install and run on Mac (Not tested)
 *Testers needed - If you have MacOS feel free to test and contribute*
 Ensure the following prerequisites.
 #### prerequisites 
@@ -89,10 +89,10 @@ Follow the steps to switch the models() inpainting,depth to image or instruct pi
  ![ DiffusionMagic settings page](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic%20setting.PNG)
 - Save the settings
 - Close the app and start using start.bat/start.sh
- ### How to add new model
+ ## How to add new model
 You can add new models hugging face model by 
 - Adding huggugg id to the configs/stable_diffusion_models.txt file
 - Adding locally copied model path to configs/stable_diffusion_models.txt file
 
-Contributions are welcomed
+Contributions are welcomed.
 
