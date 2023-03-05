@@ -17,7 +17,7 @@ if __name__ == "__main__":
         exit()
     parser = argparse.ArgumentParser(description="DiffusionMagic")
     parser.add_argument(
-        "-s", "--share", help="Shareable link", required=False, default=False
+        "-s", "--share", help="Shareable link", action="store_true", default=False
     )
     args = parser.parse_args()
     compute = Computing()
