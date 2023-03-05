@@ -17,6 +17,7 @@ DiffusionMagic focused on the following areas:
 - Supports all stable diffusion Hugging Face models 
 - Supports Stable diffusion v1 and v2 models, derived models
 - Works on Windows/Linux/Mac 64-bit
+- Works on CPU,GPU,Apple Silicon M1/M2 hardware
 - Supports DEIS scheduler for faster image generation (10 steps)
 - Supports 7 different samplers with latest DEIS sampler
 - LoRA(Low-Rank Adaptation of Large Language Models) models support (~3 MB size)
@@ -24,6 +25,7 @@ DiffusionMagic focused on the following areas:
 - Low VRAM mode supports GPU with RAM < 4 GB 
 - Fast model loading
 - Supports Attention slicing and VAE slicing
+- Simple installation using install.bat/install.sh
 
 ## Screenshots
 ## Image variations
@@ -45,7 +47,7 @@ DiffusionMagic focused on the following areas:
 Download release from the github DiffusionMagic releases.
 ### How to install and run on Windows
 Follow the steps to install and run the Diffusion magic on Windows.
-- First we need to run the `install.bat` batch file it will install the necessary dependencies for DiffusionMagic.
+- First we need to run(double click) the `install.bat` batch file it will install the necessary dependencies for DiffusionMagic.
 (It will take some time to install,depends on your internet speed)
 - Run the  `install.bat` script.
 - To start DiffusionMagic double click `start.bat`
