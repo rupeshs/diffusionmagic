@@ -39,17 +39,17 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                 )
                 with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
-                        512, 2048, value=512, step=64, label="Image Height"
+                        512, 2048, value=1088, step=64, label="Image Height"
                     )
                     image_width = gr.Slider(
-                        512, 4096, value=512, step=64, label="Image Width"
+                        512, 4096, value=2048, step=64, label="Image Width"
                     )
                     num_inference_steps = gr.Slider(
-                        1, 100, value=20, step=1, label="Inference Steps"
+                        1, 100, value=10, step=1, label="Inference Steps"
                     )
                     scheduler = gr.Dropdown(
                         get_sampler_names(),
-                        value=SchedulerType.DPMSolverMultistepScheduler.value,
+                        value=SchedulerType.DEISScheduler.value,
                         label="Sampler",
                     )
                     guidance_scale = gr.Slider(
