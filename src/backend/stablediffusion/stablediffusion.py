@@ -79,6 +79,9 @@ class StableDiffusion(SamplerMixin):
             self.pipeline.enable_vae_slicing()
         else:
             self.pipeline.disable_vae_slicing()
+            
+        self.pipeline.enable_xformers_memory_efficient_attention()
+        self.pipeline.vae.enable_tiling()
 
         images = self.pipeline(
             setting.prompt,
