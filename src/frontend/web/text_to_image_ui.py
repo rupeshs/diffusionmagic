@@ -64,12 +64,12 @@ def get_text_to_image_ui(generate_callback_fn: Any) -> None:
                     )
                     attn_slicing = gr.Checkbox(
                         label="Attention slicing (Enable if low VRAM)",
-                        value=True,
+                        value=False,
                     )
 
                     vae_slicing = gr.Checkbox(
                         label="VAE slicing  (Enable if low VRAM)",
-                        value=True,
+                        value=False,
                     )
                     seed = gr.Number(
                         label="Seed",

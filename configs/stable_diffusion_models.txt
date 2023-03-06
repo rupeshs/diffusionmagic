@@ -8,3 +8,4 @@ CompVis/stable-diffusion-v1-4
 prompthero/openjourney-v2
 pcuenq/pokemon-lora
 sayakpaul/sd-model-finetuned-lora-t4
+stabilityai/stable-diffusion-2-1
