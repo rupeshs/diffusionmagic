@@ -63,12 +63,7 @@ class Generate:
             images,
             "TextToImage",
         )
-        thumb_images =[]
-        for image in images:
-            resized_image = image.resize((512,512))
-            thumb_images.append(resized_image)
-            
-        return thumb_images
+        return images
 
     def _init_stable_diffusion(self):
         if not self.pipe_initialized:
