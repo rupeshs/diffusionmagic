@@ -5,6 +5,11 @@ DiffusionMagic focused on the following areas:
 - Cross-platform (Windows/Linux/Mac)
 - Modular design, latest best optimizations for speed and memory
 
+## 2K image generation experiment(No upscaler)
+Tested with text to image workflow.
+[![Open 2k image generation in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1O0CZuy1z6Zinrse6nURIxcKg5xtM4BoC?usp=sharing)
+
+
  ![ DiffusionMagic](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic.PNG)
 ## Features
 - Supports various Stable Diffusion workflows
