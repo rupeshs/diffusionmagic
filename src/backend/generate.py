@@ -63,7 +63,11 @@ class Generate:
             images,
             "TextToImage",
         )
-        return images
+        thumb_images =[]
+        for image in images:
+            thumb_images.append(image.thumbnail((512,512)))
+            
+        return thumb_images
 
     def _init_stable_diffusion(self):
         if not self.pipe_initialized:
