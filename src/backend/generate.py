@@ -65,7 +65,8 @@ class Generate:
         )
         thumb_images =[]
         for image in images:
-            thumb_images.append(image.thumbnail((512,512)))
+            resized_image = image.resize((512,512))
+            thumb_images.append(resized_image)
             
         return thumb_images
 
