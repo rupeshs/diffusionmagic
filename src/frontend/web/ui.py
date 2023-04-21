@@ -12,6 +12,7 @@ from frontend.web.image_variations_ui import get_image_variations_ui
 from frontend.web.instruct_pix_to_pix_ui import get_instruct_pix_to_pix_ui
 from frontend.web.settings_ui import get_settings_ui
 from frontend.web.text_to_image_ui import get_text_to_image_ui
+from frontend.web.controlnet.canny_to_image_ui import get_canny_to_image_ui
 from settings import AppSettings
 from utils import DiffusionMagicPaths
 from constants import VERSION
@@ -33,7 +34,7 @@ def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
         css=DiffusionMagicPaths.get_css_path(),
         title="DiffusionMagic",
     ) as diffusion_magic_ui:
-        gr.HTML("<center><H3>DiffusionMagic Beta</H3></center>")
+        gr.HTML("<center><H3>DiffusionMagic 2.0 Alpha</H3></center>")
         with gr.Tabs():
             if stable_diffusion_type == StableDiffusionType.base:
                 with gr.TabItem("Text to Image"):
@@ -51,6 +52,9 @@ def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
             elif stable_diffusion_type == StableDiffusionType.instruct_pix2pix:
                 with gr.TabItem("Instruct Pix to Pix"):
                     get_instruct_pix_to_pix_ui(generate.diffusion_pix_to_pix)
+            elif stable_diffusion_type == StableDiffusionType.controlnet_canny:
+                with gr.TabItem("Controlnet Edge"):
+                    get_canny_to_image_ui(generate.diffusion_canny_to_image)
             with gr.TabItem("Settings"):
                 get_settings_ui()
 

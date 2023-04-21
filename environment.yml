@@ -1,17 +1,19 @@
 name: diffusionmagic-env
 channels:
+  - conda-forge
   - pytorch
+  - nvidia
   - defaults
 dependencies:
   - python=3.8.5
   - pip=20.3
-  - cudatoolkit=11.3
-  - pytorch=1.11.0
-  - torchvision=0.12.0
+  - pytorch-cuda=11.7
+  - pytorch=2.0.0
+  - torchvision=0.15.0
   - numpy=1.19.2
   - pip:
-      - accelerate==0.16.0
-      - diffusers==0.13.1
+      - accelerate==0.17.1
+      - diffusers==0.14.0
       - gradio==3.17.1
       - safetensors==0.2.8
       - scipy==1.10.0
@@ -21,3 +23,5 @@ dependencies:
       - black==23.1.0
       - flake8==6.0.0
       - markupsafe==2.0.1
+      - opencv-contrib-python==4.7.0.72
+      - controlnet-aux==0.0.1

@@ -37,3 +37,7 @@ class StableDiffusionImageDepthToImageSetting(StableDiffusionSetting):
 class StableDiffusionImageInstructPixToPixSetting(StableDiffusionSetting):
     image: Any
     image_guidance_scale: float = 1.5
+
+
+class StableDiffusionControlnetSetting(StableDiffusionSetting):
+    image: Any
