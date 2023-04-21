@@ -58,6 +58,12 @@ def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
             elif stable_diffusion_type == StableDiffusionType.controlnet_line:
                 with gr.TabItem("Controlnet Lines"):
                     get_controlnet_to_image_ui(generate.diffusion_control_to_image)
+            elif stable_diffusion_type == StableDiffusionType.controlnet_normal:
+                with gr.TabItem("Controlnet Normal"):
+                    get_controlnet_to_image_ui(generate.diffusion_control_to_image)
+            elif stable_diffusion_type == StableDiffusionType.controlnet_hed:
+                with gr.TabItem("Controlnet HED"):
+                    get_controlnet_to_image_ui(generate.diffusion_control_to_image)
             with gr.TabItem("Settings"):
                 get_settings_ui()
 

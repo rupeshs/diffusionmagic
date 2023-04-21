@@ -11,3 +11,5 @@ sayakpaul/sd-model-finetuned-lora-t4
 prompthero/openjourney-v4
 lllyasviel/sd-controlnet-canny
 lllyasviel/sd-controlnet-mlsd
+lllyasviel/sd-controlnet-normal
+lllyasviel/sd-controlnet-hed
