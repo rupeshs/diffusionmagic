@@ -8,5 +8,6 @@ CompVis/stable-diffusion-v1-4
 prompthero/openjourney-v2
 pcuenq/pokemon-lora
 sayakpaul/sd-model-finetuned-lora-t4
-lllyasviel/sd-controlnet-canny
 prompthero/openjourney-v4
+lllyasviel/sd-controlnet-canny
+lllyasviel/sd-controlnet-mlsd

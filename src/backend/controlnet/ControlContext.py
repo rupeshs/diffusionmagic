@@ -4,7 +4,7 @@ import numpy as np
 from cv2 import Canny, bitwise_not
 import torch
 from diffusers import StableDiffusionControlNetPipeline, ControlNetModel
-from PIL import Image
+from PIL import Image, ImageOps
 
 from backend.computing import Computing
 from backend.stablediffusion.models.scheduler_types import SchedulerType
@@ -12,15 +12,21 @@ from backend.stablediffusion.models.setting import (
     StableDiffusionControlnetSetting,
 )
 from backend.stablediffusion.scheduler_mixin import SamplerMixin
+from backend.image_ops import resize_pil_image
+from backend.stablediffusion.stable_diffusion_types import (
+    get_diffusion_type,
+    StableDiffusionType,
+)
+from backend.controlnet.controls.image_control_factory import ImageControlFactory
 
 
-class StableDiffusionCannyToImage(SamplerMixin):
+class ControlnetContext(SamplerMixin):
     def __init__(self, compute: Computing):
         self.compute = compute
         self.device = self.compute.name
         super().__init__()
 
-    def get_canny_to_image_pipleline(
+    def init_control_to_image_pipleline(
         self,
         model_id: str = "lllyasviel/sd-controlnet-canny",
         stable_diffusion_model="runwayml/stable-diffusion-v1-5",
@@ -28,7 +34,11 @@ class StableDiffusionCannyToImage(SamplerMixin):
         sampler: str = SchedulerType.UniPCMultistepScheduler.value,
     ):
         self.low_vram_mode = low_vram_mode
+        self.controlnet_type = get_diffusion_type(model_id)
+        image_control_factory = ImageControlFactory()
+        self.image_control = image_control_factory.create_control(self.controlnet_type)
         print(f"StableDiffusion - {self.compute.name},{self.compute.datatype}")
+        print(f"Controlnet - { self.controlnet_type }")
         print(f"Using ControlNet Model  {model_id}")
         print(f"Using Stable diffusion Model  {stable_diffusion_model}")
         self.control_net_model_id = model_id
@@ -44,14 +54,14 @@ class StableDiffusionCannyToImage(SamplerMixin):
         print(f"Model loaded in {delta:.2f}s ")
         self._pipeline_to_device()
 
-    def canny_to_image(
+    def control_to_image(
         self,
         setting: StableDiffusionControlnetSetting,
     ):
         if setting.scheduler is None:
             raise Exception("Scheduler cannot be  empty")
-        print("Running canny to image pipeline")
-        self.canny_pipeline.scheduler = self.find_sampler(
+        print("Running controlnet image pipeline")
+        self.controlnet_pipeline.scheduler = self.find_sampler(
             setting.scheduler,
             self.model_id,
         )
@@ -60,48 +70,44 @@ class StableDiffusionCannyToImage(SamplerMixin):
             print(f"Using seed {setting.seed}")
             generator = torch.Generator(self.device).manual_seed(setting.seed)
 
-        if setting.attention_slicing:
-            self.canny_pipeline.enable_attention_slicing()
-        else:
-            self.canny_pipeline.disable_attention_slicing()
-
-        if setting.vae_slicing:
-            self.canny_pipeline.enable_vae_slicing()
-        else:
-            self.canny_pipeline.disable_vae_slicing()
-
-        base_image = setting.image.convert("RGB").resize(
-            (
-                setting.image_width,
-                setting.image_height,
-            ),
-            Image.Resampling.LANCZOS,
+        self._enable_slicing(setting)
+        base_image = resize_pil_image(
+            setting.image, setting.image_width, setting.image_height
         )
+        control_img = self.image_control.get_control_image(base_image)
 
-        canny_image, canny_image_inv = self.get_canny_image(base_image)
-        images = self.canny_pipeline(
+        images = self.controlnet_pipeline(
             prompt=setting.prompt,
-            image=canny_image,
+            image=control_img,
             guidance_scale=setting.guidance_scale,
             num_inference_steps=setting.inference_steps,
             negative_prompt=setting.negative_prompt,
             num_images_per_prompt=setting.number_of_images,
             generator=generator,
         ).images
-        images.append(canny_image_inv)
+        if (
+            self.controlnet_type == StableDiffusionType.controlnet_canny
+            or self.controlnet_type == StableDiffusionType.controlnet_line
+        ):
+            inverted_image = ImageOps.invert(control_img)
+            images.append(inverted_image)
+        else:
+            images.append(control_img)
+
         return images
 
     def _pipeline_to_device(self):
         if self.low_vram_mode:
             print("Running in low VRAM mode,slower to generate images")
-            self.canny_pipeline.enable_sequential_cpu_offload()
+            self.controlnet_pipeline.enable_sequential_cpu_offload()
         else:
-            self.canny_pipeline.enable_model_cpu_offload()
+            self.controlnet_pipeline.enable_model_cpu_offload()
 
     def _load_full_precision_model(self):
         self.controlnet = ControlNetModel.from_pretrained(self.control_net_model_id)
-        self.canny_pipeline = StableDiffusionControlNetPipeline.from_pretrained(
-            self.model_id, controlnet=self.controlnet
+        self.controlnet_pipeline = StableDiffusionControlNetPipeline.from_pretrained(
+            self.model_id,
+            controlnet=self.controlnet,
         )
 
     def _load_model(self):
@@ -112,11 +118,13 @@ class StableDiffusionCannyToImage(SamplerMixin):
                     self.control_net_model_id,
                     torch_dtype=torch.float16,
                 )
-                self.canny_pipeline = StableDiffusionControlNetPipeline.from_pretrained(
-                    self.model_id,
-                    controlnet=self.controlnet,
-                    torch_dtype=torch.float16,
-                    revision="fp16",
+                self.controlnet_pipeline = (
+                    StableDiffusionControlNetPipeline.from_pretrained(
+                        self.model_id,
+                        controlnet=self.controlnet,
+                        torch_dtype=torch.float16,
+                        revision="fp16",
+                    )
                 )
             except Exception as ex:
                 print(
@@ -135,3 +143,14 @@ class StableDiffusionCannyToImage(SamplerMixin):
         image = image[:, :, None]
         image = np.concatenate([image, image, image], axis=2)
         return Image.fromarray(image), Image.fromarray(image_inv)
+
+    def _enable_slicing(self, setting: StableDiffusionControlnetSetting):
+        if setting.attention_slicing:
+            self.controlnet_pipeline.enable_attention_slicing()
+        else:
+            self.controlnet_pipeline.disable_attention_slicing()
+
+        if setting.vae_slicing:
+            self.controlnet_pipeline.enable_vae_slicing()
+        else:
+            self.controlnet_pipeline.disable_vae_slicing()

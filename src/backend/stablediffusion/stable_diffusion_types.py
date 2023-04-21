@@ -9,6 +9,7 @@ class StableDiffusionType(str, Enum):
     depth2img = "DepthToImage"
     instruct_pix2pix = "InstructPixToPix"
     controlnet_canny = "controlnet_canny"
+    controlnet_line = "controlnet_line"
 
 
 def get_diffusion_type(
@@ -23,5 +24,7 @@ def get_diffusion_type(
         stable_diffusion_type = StableDiffusionType.instruct_pix2pix
     elif "controlnet-canny" in model_id:
         stable_diffusion_type = StableDiffusionType.controlnet_canny
+    elif "controlnet-mlsd" in model_id:
+        stable_diffusion_type = StableDiffusionType.controlnet_line
 
     return stable_diffusion_type

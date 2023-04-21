@@ -13,7 +13,7 @@ from backend.stablediffusion.models.setting import (
     StableDiffusionImageInstructPixToPixSetting,
     StableDiffusionControlnetSetting,
 )
-from backend.controlnet.canny_to_image import StableDiffusionCannyToImage
+from backend.controlnet.ControlContext import ControlnetContext
 from backend.stablediffusion.stablediffusion import StableDiffusion
 from settings import AppSettings
 
@@ -24,12 +24,12 @@ class Generate:
         self.inpaint_pipe_initialized = False
         self.depth_pipe_initialized = False
         self.pix_to_pix_initialized = False
-        self.controlnet_canny_initialized = False
+        self.controlnet_initialized = False
         self.stable_diffusion = StableDiffusion(compute)
         self.stable_diffusion_inpainting = StableDiffusionInpainting(compute)
         self.stable_diffusion_depth = StableDiffusionDepthToImage(compute)
         self.stable_diffusion_pix_to_pix = StableDiffusionInstructPixToPix(compute)
-        self.controlnet_canny_to_image = StableDiffusionCannyToImage(compute)
+        self.controlnet = ControlnetContext(compute)
         self.app_settings = AppSettings().get_settings()
         self.model_id = self.app_settings.model_settings.model_id
         self.low_vram_mode = self.app_settings.low_memory_mode
@@ -311,7 +311,7 @@ class Generate:
         )
         return images
 
-    def diffusion_canny_to_image(
+    def diffusion_control_to_image(
         self,
         image,
         prompt,
@@ -340,17 +340,15 @@ class Generate:
             attention_slicing=attention_slicing,
             vae_slicing=vae_slicing,
         )
-        if not self.controlnet_canny_initialized:
-            print("Initializing controlnet canny to image pipeline")
-            self.controlnet_canny_to_image.get_canny_to_image_pipleline(
+        if not self.controlnet_initialized:
+            print("Initializing controlnet image pipeline")
+            self.controlnet.init_control_to_image_pipleline(
                 model_id=self.model_id,
                 low_vram_mode=self.low_vram_mode,
             )
-            self.controlnet_canny_initialized = True
+            self.controlnet_initialized = True
 
-        images = self.controlnet_canny_to_image.canny_to_image(
-            stable_diffusion_image_settings
-        )
+        images = self.controlnet.control_to_image(stable_diffusion_image_settings)
 
         self._save_images(
             images,
