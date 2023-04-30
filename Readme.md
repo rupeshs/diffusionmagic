@@ -22,6 +22,7 @@ DiffusionMagic focused on the following areas:
    - Pose
    - Depth
    - Scribble
+   - Segmentation
 - Pytorch 2.0 support
 - Supports all stable diffusion Hugging Face models 
 - Supports Stable diffusion v1 and v2 models, derived models
@@ -109,6 +110,10 @@ E.g `https://huggingface.co/dreamlike-art/dreamlike-diffusion-1.0`
 Here model id is `dreamlike-art/dreamlike-diffusion-1.0`
 Or we can clone the model use the local folder path as model id.
 - Adding locally copied model path to configs/stable_diffusion_models.txt file
+## Linting (Development)
+Run the following commands from src folder
+`mypy --ignore-missing-imports --explicit-package-bases .`
+`flake8 --max-line-length=100 .`
 ## Contribute
 Contributions are welcomed.
 

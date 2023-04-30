@@ -9,7 +9,11 @@ from diffusers import (
     EulerDiscreteScheduler,
     LMSDiscreteScheduler,
     PNDMScheduler,
-    UniPCMultistepScheduler
+    UniPCMultistepScheduler,
+    KDPM2DiscreteScheduler,
+    HeunDiscreteScheduler,
+    KDPM2AncestralDiscreteScheduler,
+    DPMSolverSinglestepScheduler,
 )
 
 
@@ -25,6 +29,10 @@ class SchedulerType(Enum):
     PNDMScheduler = "PNDM"
     DEISScheduler = "DEISMultistep"
     UniPCMultistepScheduler = "UniPCMultistep"
+    KDPM2DiscreteScheduler = "KDPM2DiscreteScheduler"
+    HeunDiscreteScheduler = "HeunDiscreteScheduler"
+    KDPM2AncestralDiscreteScheduler = "KDPM2AncestralDiscreteScheduler"
+    DPMSolverSinglestepScheduler = "DPMSolverSinglestepScheduler"
 
 
 Scheduler = Union[
@@ -36,6 +44,10 @@ Scheduler = Union[
     LMSDiscreteScheduler,
     PNDMScheduler,
     UniPCMultistepScheduler,
+    KDPM2DiscreteScheduler,
+    HeunDiscreteScheduler,
+    KDPM2AncestralDiscreteScheduler,
+    DPMSolverSinglestepScheduler,
 ]
 
 

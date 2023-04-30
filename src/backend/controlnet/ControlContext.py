@@ -1,23 +1,19 @@
 from time import time
-from typing import Any
-import numpy as np
-from cv2 import Canny, bitwise_not
+
 import torch
-from diffusers import StableDiffusionControlNetPipeline, ControlNetModel
-from PIL import Image, ImageOps
+from diffusers import ControlNetModel, StableDiffusionControlNetPipeline
+from PIL import ImageOps
 
 from backend.computing import Computing
-from backend.stablediffusion.models.scheduler_types import SchedulerType
-from backend.stablediffusion.models.setting import (
-    StableDiffusionControlnetSetting,
-)
-from backend.stablediffusion.scheduler_mixin import SamplerMixin
-from backend.image_ops import resize_pil_image
-from backend.stablediffusion.stable_diffusion_types import (
-    get_diffusion_type,
-    StableDiffusionType,
-)
 from backend.controlnet.controls.image_control_factory import ImageControlFactory
+from backend.image_ops import resize_pil_image
+from backend.stablediffusion.models.scheduler_types import SchedulerType
+from backend.stablediffusion.models.setting import StableDiffusionControlnetSetting
+from backend.stablediffusion.scheduler_mixin import SamplerMixin
+from backend.stablediffusion.stable_diffusion_types import (
+    StableDiffusionType,
+    get_diffusion_type,
+)
 
 
 class ControlnetContext(SamplerMixin):
@@ -133,16 +129,6 @@ class ControlnetContext(SamplerMixin):
                 self._load_full_precision_model()
         else:
             self._load_full_precision_model()
-
-    def get_canny_image(self, image: Image) -> Any:
-        low_threshold = 100
-        high_threshold = 200
-        image = np.array(image)
-        image = Canny(image, low_threshold, high_threshold)
-        image_inv = bitwise_not(image)
-        image = image[:, :, None]
-        image = np.concatenate([image, image, image], axis=2)
-        return Image.fromarray(image), Image.fromarray(image_inv)
 
     def _enable_slicing(self, setting: StableDiffusionControlnetSetting):
         if setting.attention_slicing:

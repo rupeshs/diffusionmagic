@@ -15,6 +15,7 @@ class StableDiffusionType(str, Enum):
     controlnet_pose = "controlnet_pose"
     controlnet_depth = "controlnet_depth"
     controlnet_scribble = "controlnet_scribble"
+    controlnet_seg = "controlnet_seg"
 
 
 def get_diffusion_type(
@@ -39,6 +40,8 @@ def get_diffusion_type(
         stable_diffusion_type = StableDiffusionType.controlnet_depth
     elif "depth" in model_id:
         stable_diffusion_type = StableDiffusionType.depth2img
-    elif "scribble" in model_id:
+    elif "controlnet-scribble" in model_id:
         stable_diffusion_type = StableDiffusionType.controlnet_scribble
+    elif "controlnet-seg" in model_id:
+        stable_diffusion_type = StableDiffusionType.controlnet_seg
     return stable_diffusion_type

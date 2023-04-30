@@ -7,6 +7,10 @@ from diffusers import (
     LMSDiscreteScheduler,
     PNDMScheduler,
     UniPCMultistepScheduler,
+    KDPM2DiscreteScheduler,
+    HeunDiscreteScheduler,
+    KDPM2AncestralDiscreteScheduler,
+    DPMSolverSinglestepScheduler,
 )
 
 from backend.stablediffusion.models.scheduler_types import SchedulerType, Scheduler
@@ -55,6 +59,26 @@ class SchedulerFactory:
             )
         elif scheduler_type == SchedulerType.UniPCMultistepScheduler.value:
             return UniPCMultistepScheduler.from_pretrained(
+                repo_id,
+                subfolder="scheduler",
+            )
+        elif scheduler_type == SchedulerType.KDPM2DiscreteScheduler.value:
+            return KDPM2DiscreteScheduler.from_pretrained(
+                repo_id,
+                subfolder="scheduler",
+            )
+        elif scheduler_type == SchedulerType.HeunDiscreteScheduler.value:
+            return HeunDiscreteScheduler.from_pretrained(
+                repo_id,
+                subfolder="scheduler",
+            )
+        elif scheduler_type == SchedulerType.KDPM2AncestralDiscreteScheduler.value:
+            return KDPM2AncestralDiscreteScheduler.from_pretrained(
+                repo_id,
+                subfolder="scheduler",
+            )
+        elif scheduler_type == SchedulerType.DPMSolverSinglestepScheduler.value:
+            return DPMSolverSinglestepScheduler.from_pretrained(
                 repo_id,
                 subfolder="scheduler",
             )
