@@ -13,3 +13,6 @@ lllyasviel/sd-controlnet-canny
 lllyasviel/sd-controlnet-mlsd
 lllyasviel/sd-controlnet-normal
 lllyasviel/sd-controlnet-hed
+lllyasviel/sd-controlnet-openpose
+lllyasviel/sd-controlnet-depth
+lllyasviel/sd-controlnet-scribble

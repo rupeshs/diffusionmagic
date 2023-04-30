@@ -5,6 +5,9 @@ from backend.controlnet.controls.canny_control import CannyControl
 from backend.controlnet.controls.line_control import LineControl
 from backend.controlnet.controls.normal_control import NormalControl
 from backend.controlnet.controls.hed_control import HedControl
+from backend.controlnet.controls.pose_control import PoseControl
+from backend.controlnet.controls.depth_control import DepthControl
+from backend.controlnet.controls.scribble_control import ScribbleControl
 
 
 class ImageControlFactory:
@@ -17,6 +20,12 @@ class ImageControlFactory:
             return NormalControl()
         elif controlnet_type == StableDiffusionType.controlnet_hed:
             return HedControl()
+        elif controlnet_type == StableDiffusionType.controlnet_pose:
+            return PoseControl()
+        elif controlnet_type == StableDiffusionType.controlnet_depth:
+            return DepthControl()
+        elif controlnet_type == StableDiffusionType.controlnet_scribble:
+            return ScribbleControl()
         else:
             print("Error: Control type not implemented!")
             raise Exception("Error: Control type not implemented!")

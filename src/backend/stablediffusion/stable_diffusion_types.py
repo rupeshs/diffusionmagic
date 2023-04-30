@@ -12,6 +12,9 @@ class StableDiffusionType(str, Enum):
     controlnet_line = "controlnet_line"
     controlnet_normal = "controlnet_normal"
     controlnet_hed = "controlnet_hed"
+    controlnet_pose = "controlnet_pose"
+    controlnet_depth = "controlnet_depth"
+    controlnet_scribble = "controlnet_scribble"
 
 
 def get_diffusion_type(
@@ -20,8 +23,6 @@ def get_diffusion_type(
     stable_diffusion_type = StableDiffusionType.base
     if "inpainting" in model_id:
         stable_diffusion_type = StableDiffusionType.inpainting
-    elif "depth" in model_id:
-        stable_diffusion_type = StableDiffusionType.depth2img
     elif "instruct-pix2pix" in model_id:
         stable_diffusion_type = StableDiffusionType.instruct_pix2pix
     elif "controlnet-canny" in model_id:
@@ -32,5 +33,12 @@ def get_diffusion_type(
         stable_diffusion_type = StableDiffusionType.controlnet_normal
     elif "controlnet-hed" in model_id:
         stable_diffusion_type = StableDiffusionType.controlnet_hed
-
+    elif "controlnet-openpose" in model_id:
+        stable_diffusion_type = StableDiffusionType.controlnet_pose
+    elif "sd-controlnet-depth" in model_id:
+        stable_diffusion_type = StableDiffusionType.controlnet_depth
+    elif "depth" in model_id:
+        stable_diffusion_type = StableDiffusionType.depth2img
+    elif "scribble" in model_id:
+        stable_diffusion_type = StableDiffusionType.controlnet_scribble
     return stable_diffusion_type

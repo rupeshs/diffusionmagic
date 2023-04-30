@@ -14,6 +14,15 @@ DiffusionMagic focused on the following areas:
     - Image Inpainting
     - Depth to Image
     - Instruction based image editing
+- Supports Controlnet workflows
+   - Canny
+   - MLSD (Line control)
+   -  Normal
+   - HED
+   - Pose
+   - Depth
+   - Scribble
+- Pytorch 2.0 support
 - Supports all stable diffusion Hugging Face models 
 - Supports Stable diffusion v1 and v2 models, derived models
 - Works on Windows/Linux/Mac 64-bit
