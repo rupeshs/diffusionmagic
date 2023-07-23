@@ -13,7 +13,7 @@ dependencies:
   - numpy=1.19.2
   - pip:
       - accelerate==0.17.1
-      - diffusers==0.14.0
+      - diffusers==0.18.2
       - gradio==3.17.1
       - safetensors==0.2.8
       - scipy==1.10.0
@@ -25,3 +25,4 @@ dependencies:
       - markupsafe==2.0.1
       - opencv-contrib-python==4.7.0.72
       - controlnet-aux==0.0.1
+      - invisible-watermark==0.2.0

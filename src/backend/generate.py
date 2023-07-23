@@ -15,6 +15,7 @@ from backend.stablediffusion.models.setting import (
 )
 from backend.controlnet.ControlContext import ControlnetContext
 from backend.stablediffusion.stablediffusion import StableDiffusion
+from backend.stablediffusion.stablediffusionxl import StableDiffusionXl
 from settings import AppSettings
 
 
@@ -30,6 +31,7 @@ class Generate:
         self.stable_diffusion_depth = StableDiffusionDepthToImage(compute)
         self.stable_diffusion_pix_to_pix = StableDiffusionInstructPixToPix(compute)
         self.controlnet = ControlnetContext(compute)
+        self.stable_diffusion_xl = StableDiffusionXl(compute)
         self.app_settings = AppSettings().get_settings()
         self.model_id = self.app_settings.model_settings.model_id
         self.low_vram_mode = self.app_settings.low_memory_mode
@@ -73,6 +75,15 @@ class Generate:
         if not self.pipe_initialized:
             print("Initializing stable diffusion pipeline")
             self.stable_diffusion.get_text_to_image_pipleline(
+                self.model_id,
+                self.low_vram_mode,
+            )
+            self.pipe_initialized = True
+
+    def _init_stable_diffusion_xl(self):
+        if not self.pipe_initialized:
+            print("Initializing stable diffusion xl pipeline")
+            self.stable_diffusion_xl.get_text_to_image_xl_pipleline(
                 self.model_id,
                 self.low_vram_mode,
             )
@@ -353,5 +364,40 @@ class Generate:
         self._save_images(
             images,
             "CannyToImage",
+        )
+        return images
+
+    def diffusion_text_to_image_xl(
+        self,
+        prompt,
+        neg_prompt,
+        image_height,
+        image_width,
+        inference_steps,
+        scheduler,
+        guidance_scale,
+        num_images,
+        attention_slicing,
+        vae_slicing,
+        seed,
+    ) -> Any:
+        stable_diffusion_settings = StableDiffusionSetting(
+            prompt=prompt,
+            negative_prompt=neg_prompt,
+            image_height=image_height,
+            image_width=image_width,
+            inference_steps=inference_steps,
+            guidance_scale=guidance_scale,
+            number_of_images=num_images,
+            scheduler=scheduler,
+            seed=seed,
+            attention_slicing=attention_slicing,
+            vae_slicing=vae_slicing,
+        )
+        self._init_stable_diffusion_xl()
+        images = self.stable_diffusion_xl.text_to_image_xl(stable_diffusion_settings)
+        self._save_images(
+            images,
+            "TextToImage",
         )
         return images
