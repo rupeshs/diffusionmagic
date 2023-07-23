@@ -118,7 +118,6 @@ class StableDiffusionXl(SamplerMixin):
                     self.model_id,
                     torch_dtype=self.compute.datatype,
                     scheduler=self.default_sampler,
-                    revision="fp16",
                 )
             except Exception as ex:
                 print(
