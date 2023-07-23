@@ -62,10 +62,10 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                         step=1,
                         label="Number of images to generate",
                     )
-                    attn_slicing = gr.Checkbox(
-                        label="Attention slicing (Enable if low VRAM)",
-                        value=True,
-                    )
+                    # attn_slicing = gr.Checkbox(
+                    #     label="Attention slicing (Enable if low VRAM)",
+                    #     value=True,
+                    # )
 
                     vae_slicing = gr.Checkbox(
                         label="VAE slicing  (Enable if low VRAM)",
@@ -92,7 +92,7 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                         scheduler,
                         guidance_scale,
                         num_images,
-                        attn_slicing,
+                        False,
                         vae_slicing,
                         seed,
                     ]
