@@ -72,10 +72,10 @@ class StableDiffusionXl(SamplerMixin):
             print(f"Using seed {setting.seed}")
             generator = torch.Generator(self.device).manual_seed(setting.seed)
 
-        if setting.attention_slicing:
-            self.pipeline.enable_attention_slicing()
-        else:
-            self.pipeline.disable_attention_slicing()
+        # if setting.attention_slicing:
+        #     self.pipeline.enable_attention_slicing()
+        # else:
+        #     self.pipeline.disable_attention_slicing()
 
         if setting.vae_slicing:
             self.pipeline.enable_vae_slicing()
@@ -105,7 +105,7 @@ class StableDiffusionXl(SamplerMixin):
                 self.pipeline = self.pipeline.to("mps")
 
     def _load_full_precision_model(self):
-        self.pipeline = StableDiffusionPipeline.from_pretrained(
+        self.pipeline = StableDiffusionXLPipeline.from_pretrained(
             self.model_id,
             torch_dtype=self.compute.datatype,
             scheduler=self.default_sampler,
