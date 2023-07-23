@@ -57,7 +57,7 @@ class StableDiffusionXl(SamplerMixin):
             self.pipeline.unet.load_attn_procs(repo_id)
         self._pipeline_to_device()
         components = self.pipeline.components
-        self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components)
+        # self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components)
 
     def text_to_image_xl(self, setting: StableDiffusionSetting):
         if self.pipeline is None:
