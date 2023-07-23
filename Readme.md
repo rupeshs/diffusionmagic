@@ -5,7 +5,7 @@ DiffusionMagic focused on the following areas:
 - Cross-platform (Windows/Linux/Mac)
 - Modular design, latest best optimizations for speed and memory
 
-## StableDiffusion XL Colab
+## Stable diffusion XL Colab
 We can run StableDiffusion XL 0.9 on Google Colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KrmcU2gONIQ2WihI1s6uITgDDzkbKaJK?usp=sharing)
 
