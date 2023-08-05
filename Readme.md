@@ -117,6 +117,7 @@ Or we can clone the model use the local folder path as model id.
 ## Linting (Development)
 Run the following commands from src folder
 `mypy --ignore-missing-imports --explicit-package-bases .`
+
 `flake8 --max-line-length=100 .`
 ## Contribute
 Contributions are welcomed.

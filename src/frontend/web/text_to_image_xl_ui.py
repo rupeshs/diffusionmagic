@@ -39,17 +39,17 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                 )
                 with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
-                        768, 2048, value=768, step=64, label="Image Height"
+                        768, 2048, value=1024, step=64, label="Image Height"
                     )
                     image_width = gr.Slider(
-                        768, 2048, value=768, step=64, label="Image Width"
+                        768, 2048, value=1024, step=64, label="Image Width"
                     )
                     num_inference_steps = gr.Slider(
                         1, 100, value=20, step=1, label="Inference Steps"
                     )
                     scheduler = gr.Dropdown(
                         get_sampler_names(),
-                        value=SchedulerType.DPMSolverMultistepScheduler.value,
+                        value=SchedulerType.LMSDiscreteScheduler.value,
                         label="Sampler",
                     )
                     guidance_scale = gr.Slider(
@@ -63,8 +63,9 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                         label="Number of images to generate",
                     )
                     attn_slicing = gr.Checkbox(
-                        label="Attention slicing (Not used)",
-                        value=True,
+                        label="Attention slicing (Not supported)",
+                        value=False,
+                        interactive=False,
                     )
 
                     vae_slicing = gr.Checkbox(
