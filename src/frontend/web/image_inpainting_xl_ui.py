@@ -10,7 +10,7 @@ from backend.stablediffusion.models.scheduler_types import (
 random_enabled = True
 
 
-def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
+def get_image_inpainting_xl_ui(generate_callback_fn: Any) -> None:
     with gr.Blocks():
         with gr.Row():
             with gr.Column():
@@ -21,16 +21,18 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                     seed_val = -1
                     if not random_enabled:
                         seed_val = 42
+
                     return gr.Number.update(
                         interactive=not random_enabled, value=seed_val
                     )
 
-                # with gr.Row():
+                input_image = gr.Image(label="Input image", type="pil", tool="sketch")
                 prompt = gr.Textbox(
                     label="Describe the image you'd like to see",
                     lines=3,
                     placeholder="A fantasy landscape",
                 )
+
                 neg_prompt = gr.Textbox(
                     label="Don't want to see",
                     lines=1,
@@ -39,10 +41,10 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                 )
                 with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
-                        768, 2048, value=768, step=64, label="Image Height"
+                        1024, 2048, value=1024, step=64, label="Image Height"
                     )
                     image_width = gr.Slider(
-                        768, 2048, value=768, step=64, label="Image Width"
+                        1024, 2048, value=1024, step=64, label="Image Width"
                     )
                     num_inference_steps = gr.Slider(
                         1, 100, value=20, step=1, label="Inference Steps"
@@ -53,7 +55,11 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                         label="Sampler",
                     )
                     guidance_scale = gr.Slider(
-                        1.0, 30.0, value=7.5, step=0.5, label="Guidance Scale"
+                        1.0,
+                        30.0,
+                        value=7.5,
+                        step=0.5,
+                        label="Guidance Scale",
                     )
                     num_images = gr.Slider(
                         1,
@@ -63,12 +69,7 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                         label="Number of images to generate",
                     )
                     attn_slicing = gr.Checkbox(
-                        label="Attention slicing (Not used)",
-                        value=True,
-                    )
-
-                    vae_slicing = gr.Checkbox(
-                        label="VAE slicing  (Enable if low VRAM)",
+                        label="Attention slicing (Enable if low VRAM)",
                         value=True,
                     )
                     seed = gr.Number(
@@ -83,22 +84,22 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                         interactive=True,
                     )
 
-                    input_params = [
-                        prompt,
-                        neg_prompt,
-                        image_height,
-                        image_width,
-                        num_inference_steps,
-                        scheduler,
-                        guidance_scale,
-                        num_images,
-                        attn_slicing,
-                        vae_slicing,
-                        seed,
-                    ]
+                input_params = [
+                    input_image,
+                    prompt,
+                    neg_prompt,
+                    image_height,
+                    image_width,
+                    num_inference_steps,
+                    scheduler,
+                    guidance_scale,
+                    num_images,
+                    attn_slicing,
+                    seed,
+                ]
 
             with gr.Column():
-                generate_btn = gr.Button("Generate", elem_id="generate_button")
+                generate_btn = gr.Button("Inpaint!", elem_id="generate_button")
                 output = gr.Gallery(
                     label="Generated images",
                     show_label=True,
@@ -106,9 +107,9 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                 ).style(
                     grid=2,
                 )
-    seed_checkbox.change(fn=random_seed, outputs=seed)
-    generate_btn.click(
-        fn=generate_callback_fn,
-        inputs=input_params,
-        outputs=output,
-    )
+        generate_btn.click(
+            fn=generate_callback_fn,
+            inputs=input_params,
+            outputs=output,
+        )
+        seed_checkbox.change(fn=random_seed, outputs=seed)

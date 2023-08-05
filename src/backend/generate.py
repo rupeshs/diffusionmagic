@@ -401,3 +401,83 @@ class Generate:
             "TextToImage",
         )
         return images
+
+    def diffusion_image_to_image_xl(
+        self,
+        image,
+        strength,
+        prompt,
+        neg_prompt,
+        image_height,
+        image_width,
+        inference_steps,
+        scheduler,
+        guidance_scale,
+        num_images,
+        attention_slicing,
+        seed,
+    ) -> Any:
+        stable_diffusion_image_settings = StableDiffusionImageToImageSetting(
+            image=image,
+            strength=strength,
+            prompt=prompt,
+            negative_prompt=neg_prompt,
+            image_height=image_height,
+            image_width=image_width,
+            inference_steps=inference_steps,
+            guidance_scale=guidance_scale,
+            number_of_images=num_images,
+            scheduler=scheduler,
+            seed=seed,
+            attention_slicing=attention_slicing,
+        )
+        self._init_stable_diffusion_xl()
+        images = self.stable_diffusion_xl.image_to_image(
+            stable_diffusion_image_settings
+        )
+
+        self._save_images(
+            images,
+            "ImageToImage",
+        )
+        return images
+
+    def diffusion_image_inpainting_xl(
+        self,
+        image,
+        prompt,
+        neg_prompt,
+        image_height,
+        image_width,
+        inference_steps,
+        scheduler,
+        guidance_scale,
+        num_images,
+        attention_slicing,
+        seed,
+    ) -> Any:
+        stable_diffusion_image_settings = StableDiffusionImageInpaintingSetting(
+            image=image["image"],
+            mask_image=image["mask"],
+            prompt=prompt,
+            negative_prompt=neg_prompt,
+            image_height=image_height,
+            image_width=image_width,
+            inference_steps=inference_steps,
+            guidance_scale=guidance_scale,
+            number_of_images=num_images,
+            scheduler=scheduler,
+            seed=seed,
+            attention_slicing=attention_slicing,
+        )
+
+        self._init_stable_diffusion_xl()
+
+        images = self.stable_diffusion_xl.image_inpainting(
+            stable_diffusion_image_settings
+        )
+        self._save_images(
+            images,
+            "Inpainting",
+        )
+        return images

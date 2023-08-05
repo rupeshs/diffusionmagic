@@ -1,7 +1,8 @@
 from diffusers import StableDiffusionXLPipeline
 
 import torch
-from diffusers import StableDiffusionImg2ImgPipeline, StableDiffusionPipeline
+from diffusers import StableDiffusionXLImg2ImgPipeline, StableDiffusionXLInpaintPipeline
+from diffusers import DiffusionPipeline
 from PIL import Image
 
 from backend.computing import Computing
@@ -13,6 +14,7 @@ from backend.stablediffusion.models.setting import (
 )
 from time import time
 from backend.stablediffusion.modelmeta import ModelMeta
+from backend.stablediffusion.models.setting import StableDiffusionImageInpaintingSetting
 
 
 class StableDiffusionXl(SamplerMixin):
@@ -25,7 +27,7 @@ class StableDiffusionXl(SamplerMixin):
 
     def get_text_to_image_xl_pipleline(
         self,
-        model_id: str = "stabilityai/stable-diffusion-xl-base-0.9",
+        model_id: str = "stabilityai/stable-diffusion-xl-base-1.0",
         low_vram_mode: bool = False,
         sampler: str = SchedulerType.DPMSolverMultistepScheduler.value,
     ):
@@ -57,7 +59,8 @@ class StableDiffusionXl(SamplerMixin):
             self.pipeline.unet.load_attn_procs(repo_id)
         self._pipeline_to_device()
         components = self.pipeline.components
-        # self.img_to_img_pipeline = StableDiffusionImg2ImgPipeline(**components)
+        self.img_to_img_pipeline = StableDiffusionXLImg2ImgPipeline(**components)
+        self.inpainting_pipeline = StableDiffusionXLInpaintPipeline(**components)
 
     def text_to_image_xl(self, setting: StableDiffusionSetting):
         if self.pipeline is None:
@@ -92,6 +95,12 @@ class StableDiffusionXl(SamplerMixin):
             num_images_per_prompt=setting.number_of_images,
             generator=generator,
         ).images
+
+        # self.pipeline.unet = torch.compile(
+        #     self.pipeline.unet,
+        #     mode="reduce-overhead",
+        #     fullgraph=True,
+        # )
         return images
 
     def _pipeline_to_device(self):
@@ -105,7 +114,7 @@ class StableDiffusionXl(SamplerMixin):
                 self.pipeline = self.pipeline.to("mps")
 
     def _load_full_precision_model(self):
-        self.pipeline = StableDiffusionXLPipeline.from_pretrained(
+        self.pipeline = DiffusionPipeline(
             self.model_id,
             torch_dtype=self.compute.datatype,
             scheduler=self.default_sampler,
@@ -114,10 +123,12 @@ class StableDiffusionXl(SamplerMixin):
     def _load_model(self):
         if self.compute.name == "cuda":
             try:
-                self.pipeline = StableDiffusionXLPipeline.from_pretrained(
+                self.pipeline = DiffusionPipeline.from_pretrained(
                     self.model_id,
                     torch_dtype=self.compute.datatype,
                     scheduler=self.default_sampler,
+                    use_safetensors=True,
+                    variant="fp16",
                 )
             except Exception as ex:
                 print(
@@ -126,3 +137,93 @@ class StableDiffusionXl(SamplerMixin):
                 self._load_full_precision_model()
         else:
             self._load_full_precision_model()
+
+    def image_to_image(self, setting: StableDiffusionImageToImageSetting):
+        if setting.scheduler is None:
+            raise Exception("Scheduler cannot be  empty")
+
+        print("Running image to image pipeline")
+        self.img_to_img_pipeline.scheduler = self.find_sampler(  # type: ignore
+            setting.scheduler,
+            self.model_id,
+        )
+        generator = None
+        if setting.seed != -1 and setting.seed:
+            print(f"Using seed {setting.seed}")
+            generator = torch.Generator(self.device).manual_seed(setting.seed)
+
+        if setting.attention_slicing:
+            self.img_to_img_pipeline.enable_attention_slicing()  # type: ignore
+        else:
+            self.img_to_img_pipeline.disable_attention_slicing()  # type: ignore
+
+        if setting.vae_slicing:
+            self.pipeline.enable_vae_slicing()  # type: ignore
+        else:
+            self.pipeline.disable_vae_slicing()  # type: ignore
+
+        init_image = setting.image.resize(
+            (
+                setting.image_width,
+                setting.image_height,
+            ),
+            Image.Resampling.LANCZOS,
+        )
+        images = self.img_to_img_pipeline(  # type: ignore
+            image=init_image,
+            strength=setting.strength,
+            prompt=setting.prompt,
+            guidance_scale=setting.guidance_scale,
+            num_inference_steps=setting.inference_steps,
+            negative_prompt=setting.negative_prompt,
+            num_images_per_prompt=setting.number_of_images,
+            generator=generator,
+        ).images
+        return images
+
+    def image_inpainting(self, setting: StableDiffusionImageInpaintingSetting):
+        if setting.scheduler is None:
+            raise Exception("Scheduler cannot be  empty")
+        print("Running image inpainting pipeline")
+        self.inpainting_pipeline.scheduler = self.find_sampler(
+            setting.scheduler,
+            self.model_id,
+        )
+        generator = None
+        if setting.seed != -1 and setting.seed:
+            print(f"Using seed {setting.seed}")
+            generator = torch.Generator(self.device).manual_seed(setting.seed)
+
+        if setting.attention_slicing:
+            self.inpainting_pipeline.enable_attention_slicing()
+        else:
+            self.inpainting_pipeline.disable_attention_slicing()
+
+        base_image = setting.image.convert("RGB").resize(
+            (
+                setting.image_width,
+                setting.image_height,
+            ),
+            Image.Resampling.LANCZOS,
+        )
+        mask_image = setting.mask_image.convert("RGB").resize(
+            (
+                setting.image_width,
+                setting.image_height,
+            ),
+            Image.Resampling.LANCZOS,
+        )
+
+        images = self.inpainting_pipeline(
+            image=base_image,
+            mask_image=mask_image,
+            height=setting.image_height,
+            width=setting.image_width,
+            prompt=setting.prompt,
+            guidance_scale=setting.guidance_scale,
+            num_inference_steps=setting.inference_steps,
+            negative_prompt=setting.negative_prompt,
+            num_images_per_prompt=setting.number_of_images,
+            generator=generator,
+        ).images
+        return images
