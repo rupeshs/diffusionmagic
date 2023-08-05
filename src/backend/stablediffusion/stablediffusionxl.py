@@ -113,7 +113,7 @@ class StableDiffusionXl(SamplerMixin):
                 self.pipeline = self.pipeline.to("mps")
 
     def _load_full_precision_model(self):
-        self.pipeline = DiffusionPipeline(
+        self.pipeline = DiffusionPipeline.from_pretrained(
             self.model_id,
             torch_dtype=self.compute.datatype,
             scheduler=self.default_sampler,
