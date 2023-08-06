@@ -5,6 +5,8 @@ DiffusionMagic focused on the following areas:
 - Cross-platform (Windows/Linux/Mac)
 - Modular design, latest best optimizations for speed and memory
 
+ ![ DiffusionMagic SDXL support](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_3_sdxl.png)
+
 ## Stable diffusion XL Colab
 We can run StableDiffusion XL 1.0 on Google Colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eEZ_O-Fw87hoEsfSxUnGZhdqvMFEO5iV?usp=sharing)
@@ -12,6 +14,7 @@ We can run StableDiffusion XL 1.0 on Google Colab
  ![ DiffusionMagic](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic.PNG)
 ## Features
 - Supports various Stable Diffusion workflows
+   -  Stable diffusion XL
     - Text to Image 
     - Image to Image 
     - Image variations
@@ -98,11 +101,7 @@ Follow the steps to install and run the Diffusion magic on Mac (Apple Silicon M1
 To get dark theme :
 
  `http://localhost:7860/?__theme=dark`
-
-## Colab Support
-Yes, you can run DiffusionMagic in Colab.
-
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/116wcgjsvLhw9IrHeBDlvPQSW2oVzsnql?usp=sharing)
+ 
 ## How to switch models
 Diffusion magic will change UI based on the model selected.
 Follow the steps to switch the models() inpainting,depth to image or instruct pix to pix or any other hugging face stable diffusion model)
