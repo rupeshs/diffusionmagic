@@ -24,6 +24,6 @@ if __name__ == "__main__":
     generate = Generate(compute)
     dm_web_ui = diffusionmagic_web_ui(generate)
     if args.share:
-        dm_web_ui.launch(share=True)
+        dm_web_ui.queue().launch(share=True)
     else:
-        dm_web_ui.launch()
+        dm_web_ui.queue().launch()
