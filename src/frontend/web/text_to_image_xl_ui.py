@@ -10,7 +10,7 @@ from backend.stablediffusion.models.scheduler_types import (
 random_enabled = True
 
 
-def get_image_variations_ui(generate_callback_fn: Any) -> None:
+def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
     with gr.Blocks():
         with gr.Row():
             with gr.Column():
@@ -21,40 +21,39 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                     seed_val = -1
                     if not random_enabled:
                         seed_val = 42
-
                     return gr.Number.update(
                         interactive=not random_enabled, value=seed_val
                     )
 
-                input_image = gr.Image(label="Input image", type="pil")
-                strength = gr.Slider(
-                    0.0,
-                    1.0,
-                    value=0.65,
-                    step=0.05,
-                    label="Variation Strength",
+                # with gr.Row():
+                prompt = gr.Textbox(
+                    label="Describe the image you'd like to see",
+                    lines=3,
+                    placeholder="A fantasy landscape",
+                )
+                neg_prompt = gr.Textbox(
+                    label="Don't want to see",
+                    lines=1,
+                    placeholder="",
+                    value="bad, deformed, ugly, bad anatomy",
                 )
                 with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
-                        512, 2048, value=512, step=64, label="Image Height"
+                        768, 2048, value=1024, step=64, label="Image Height"
                     )
                     image_width = gr.Slider(
-                        512, 2048, value=512, step=64, label="Image Width"
+                        768, 2048, value=1024, step=64, label="Image Width"
                     )
                     num_inference_steps = gr.Slider(
                         1, 100, value=20, step=1, label="Inference Steps"
                     )
                     scheduler = gr.Dropdown(
                         get_sampler_names(),
-                        value=SchedulerType.UniPCMultistepScheduler.value,
+                        value=SchedulerType.LMSDiscreteScheduler.value,
                         label="Sampler",
                     )
                     guidance_scale = gr.Slider(
-                        1.0,
-                        30.0,
-                        value=7.5,
-                        step=0.5,
-                        label="Guidance Scale",
+                        1.0, 30.0, value=7.5, step=0.5, label="Guidance Scale"
                     )
                     num_images = gr.Slider(
                         1,
@@ -64,7 +63,13 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                         label="Number of images to generate",
                     )
                     attn_slicing = gr.Checkbox(
-                        label="Attention slicing (Enable if low VRAM)",
+                        label="Attention slicing (Not supported)",
+                        value=False,
+                        interactive=False,
+                    )
+
+                    vae_slicing = gr.Checkbox(
+                        label="VAE slicing  (Enable if low VRAM)",
                         value=True,
                     )
                     seed = gr.Number(
@@ -79,18 +84,19 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                         interactive=True,
                     )
 
-                input_params = [
-                    input_image,
-                    strength,
-                    image_height,
-                    image_width,
-                    num_inference_steps,
-                    scheduler,
-                    guidance_scale,
-                    num_images,
-                    attn_slicing,
-                    seed,
-                ]
+                    input_params = [
+                        prompt,
+                        neg_prompt,
+                        image_height,
+                        image_width,
+                        num_inference_steps,
+                        scheduler,
+                        guidance_scale,
+                        num_images,
+                        attn_slicing,
+                        vae_slicing,
+                        seed,
+                    ]
 
             with gr.Column():
                 generate_btn = gr.Button("Generate", elem_id="generate_button")
@@ -101,9 +107,9 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                 ).style(
                     columns=2,
                 )
-        generate_btn.click(
-            fn=generate_callback_fn,
-            inputs=input_params,
-            outputs=output,
-        )
-        seed_checkbox.change(fn=random_seed, outputs=seed)
+    seed_checkbox.change(fn=random_seed, outputs=seed)
+    generate_btn.click(
+        fn=generate_callback_fn,
+        inputs=input_params,
+        outputs=output,
+    )

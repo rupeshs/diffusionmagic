@@ -12,6 +12,8 @@ from frontend.web.image_variations_ui import get_image_variations_ui
 from frontend.web.instruct_pix_to_pix_ui import get_instruct_pix_to_pix_ui
 from frontend.web.settings_ui import get_settings_ui
 from frontend.web.text_to_image_ui import get_text_to_image_ui
+from frontend.web.text_to_image_xl_ui import get_text_to_image_xl_ui
+from frontend.web.image_to_image_xl_ui import get_image_to_image_xl_ui
 from frontend.web.controlnet.controlnet_image_ui import get_controlnet_to_image_ui
 from settings import AppSettings
 from utils import DiffusionMagicPaths
@@ -34,7 +36,7 @@ def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
         css=DiffusionMagicPaths.get_css_path(),
         title="DiffusionMagic",
     ) as diffusion_magic_ui:
-        gr.HTML("<center><H3>DiffusionMagic 2.0 Beta</H3></center>")
+        gr.HTML("<center><H3>DiffusionMagic 3.0</H3></center>")
         with gr.Tabs():
             if stable_diffusion_type == StableDiffusionType.base:
                 with gr.TabItem("Text to Image"):
@@ -76,6 +78,11 @@ def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
             elif stable_diffusion_type == StableDiffusionType.controlnet_seg:
                 with gr.TabItem("Controlnet Segmentation"):
                     get_controlnet_to_image_ui(generate.diffusion_control_to_image)
+            elif stable_diffusion_type == StableDiffusionType.stable_diffusion_xl:
+                with gr.TabItem("Text to Image SDXL"):
+                    get_text_to_image_xl_ui(generate.diffusion_text_to_image_xl)
+                with gr.TabItem("Image to Image SDXL"):
+                    get_image_to_image_xl_ui(generate.diffusion_image_to_image_xl)
             with gr.TabItem("Settings"):
                 get_settings_ui()
 

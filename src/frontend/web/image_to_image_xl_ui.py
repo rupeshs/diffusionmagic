@@ -10,7 +10,7 @@ from backend.stablediffusion.models.scheduler_types import (
 random_enabled = True
 
 
-def get_image_variations_ui(generate_callback_fn: Any) -> None:
+def get_image_to_image_xl_ui(generate_callback_fn: Any) -> None:
     with gr.Blocks():
         with gr.Row():
             with gr.Column():
@@ -30,16 +30,29 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                 strength = gr.Slider(
                     0.0,
                     1.0,
-                    value=0.65,
+                    value=0.75,
                     step=0.05,
-                    label="Variation Strength",
+                    label="Strength",
+                )
+
+                prompt = gr.Textbox(
+                    label="Describe the image you'd like to see",
+                    lines=3,
+                    placeholder="A fantasy landscape",
+                )
+
+                neg_prompt = gr.Textbox(
+                    label="Don't want to see",
+                    lines=1,
+                    placeholder="",
+                    value="bad, deformed, ugly, bad anatomy",
                 )
                 with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
-                        512, 2048, value=512, step=64, label="Image Height"
+                        768, 2048, value=1024, step=64, label="Image Height"
                     )
                     image_width = gr.Slider(
-                        512, 2048, value=512, step=64, label="Image Width"
+                        768, 2048, value=1024, step=64, label="Image Width"
                     )
                     num_inference_steps = gr.Slider(
                         1, 100, value=20, step=1, label="Inference Steps"
@@ -64,8 +77,9 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                         label="Number of images to generate",
                     )
                     attn_slicing = gr.Checkbox(
-                        label="Attention slicing (Enable if low VRAM)",
-                        value=True,
+                        label="Attention slicing (Not supported)",
+                        value=False,
+                        interactive=False,
                     )
                     seed = gr.Number(
                         label="Seed",
@@ -82,6 +96,8 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                 input_params = [
                     input_image,
                     strength,
+                    prompt,
+                    neg_prompt,
                     image_height,
                     image_width,
                     num_inference_steps,

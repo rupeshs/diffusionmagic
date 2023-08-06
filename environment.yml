@@ -12,12 +12,12 @@ dependencies:
   - torchvision=0.15.0
   - numpy=1.19.2
   - pip:
-      - accelerate==0.17.1
-      - diffusers==0.14.0
-      - gradio==3.17.1
-      - safetensors==0.2.8
+      - accelerate==0.21.0
+      - diffusers==0.19.3
+      - gradio==3.32.0
+      - safetensors==0.3.1
       - scipy==1.10.0
-      - transformers==4.26.0
+      - transformers==4.31.0
       - pydantic==1.10.4
       - mypy==1.0.0
       - black==23.1.0
@@ -25,3 +25,4 @@ dependencies:
       - markupsafe==2.0.1
       - opencv-contrib-python==4.7.0.72
       - controlnet-aux==0.0.1
+      - invisible-watermark==0.2.0

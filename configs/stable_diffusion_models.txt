@@ -17,3 +17,4 @@ lllyasviel/sd-controlnet-openpose
 lllyasviel/sd-controlnet-depth
 lllyasviel/sd-controlnet-scribble
 lllyasviel/sd-controlnet-seg
+stabilityai/stable-diffusion-xl-base-1.0

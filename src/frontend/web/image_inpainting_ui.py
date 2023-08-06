@@ -69,7 +69,7 @@ def get_image_inpainting_ui(generate_callback_fn: Any) -> None:
                         label="Number of images to generate",
                     )
                     attn_slicing = gr.Checkbox(
-                        label="Attention slicing (Enable if low VRAM)",
+                        label="Attention slicing (Not used)",
                         value=True,
                     )
                     seed = gr.Number(
@@ -105,7 +105,7 @@ def get_image_inpainting_ui(generate_callback_fn: Any) -> None:
                     show_label=True,
                     elem_id="gallery",
                 ).style(
-                    grid=2,
+                    columns=2,
                 )
         generate_btn.click(
             fn=generate_callback_fn,

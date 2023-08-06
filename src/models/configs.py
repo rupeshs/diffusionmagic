@@ -3,7 +3,7 @@ from utils import DiffusionMagicPaths
 
 
 class StableDiffusionModel(BaseModel):
-    model_id: str = "stabilityai/stable-diffusion-2-1-base"
+    model_id: str = "stabilityai/stable-diffusion-xl-base-1.0"
     use_local: bool = False
 
 

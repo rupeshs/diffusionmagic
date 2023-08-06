@@ -5,6 +5,10 @@ DiffusionMagic focused on the following areas:
 - Cross-platform (Windows/Linux/Mac)
 - Modular design, latest best optimizations for speed and memory
 
+## Stable diffusion XL Colab
+We can run StableDiffusion XL 0.9 on Google Colab
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KrmcU2gONIQ2WihI1s6uITgDDzkbKaJK?usp=sharing)
+
  ![ DiffusionMagic](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic.PNG)
 ## Features
 - Supports various Stable Diffusion workflows
@@ -113,6 +117,7 @@ Or we can clone the model use the local folder path as model id.
 ## Linting (Development)
 Run the following commands from src folder
 `mypy --ignore-missing-imports --explicit-package-bases .`
+
 `flake8 --max-line-length=100 .`
 ## Contribute
 Contributions are welcomed.

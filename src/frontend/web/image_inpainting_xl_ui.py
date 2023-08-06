@@ -10,7 +10,7 @@ from backend.stablediffusion.models.scheduler_types import (
 random_enabled = True
 
 
-def get_image_variations_ui(generate_callback_fn: Any) -> None:
+def get_image_inpainting_xl_ui(generate_callback_fn: Any) -> None:
     with gr.Blocks():
         with gr.Row():
             with gr.Column():
@@ -26,27 +26,32 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                         interactive=not random_enabled, value=seed_val
                     )
 
-                input_image = gr.Image(label="Input image", type="pil")
-                strength = gr.Slider(
-                    0.0,
-                    1.0,
-                    value=0.65,
-                    step=0.05,
-                    label="Variation Strength",
+                input_image = gr.Image(label="Input image", type="pil", tool="sketch")
+                prompt = gr.Textbox(
+                    label="Describe the image you'd like to see",
+                    lines=3,
+                    placeholder="A fantasy landscape",
+                )
+
+                neg_prompt = gr.Textbox(
+                    label="Don't want to see",
+                    lines=1,
+                    placeholder="",
+                    value="bad, deformed, ugly, bad anatomy",
                 )
                 with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
-                        512, 2048, value=512, step=64, label="Image Height"
+                        1024, 2048, value=1024, step=64, label="Image Height"
                     )
                     image_width = gr.Slider(
-                        512, 2048, value=512, step=64, label="Image Width"
+                        1024, 2048, value=1024, step=64, label="Image Width"
                     )
                     num_inference_steps = gr.Slider(
                         1, 100, value=20, step=1, label="Inference Steps"
                     )
                     scheduler = gr.Dropdown(
                         get_sampler_names(),
-                        value=SchedulerType.UniPCMultistepScheduler.value,
+                        value=SchedulerType.DPMSolverMultistepScheduler.value,
                         label="Sampler",
                     )
                     guidance_scale = gr.Slider(
@@ -81,7 +86,8 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
 
                 input_params = [
                     input_image,
-                    strength,
+                    prompt,
+                    neg_prompt,
                     image_height,
                     image_width,
                     num_inference_steps,
@@ -93,7 +99,7 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                 ]
 
             with gr.Column():
-                generate_btn = gr.Button("Generate", elem_id="generate_button")
+                generate_btn = gr.Button("Inpaint!", elem_id="generate_button")
                 output = gr.Gallery(
                     label="Generated images",
                     show_label=True,
