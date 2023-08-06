@@ -45,7 +45,8 @@ We can run StableDiffusion XL 1.0 on Google Colab
 
 ## Screenshots
 ### Image variations
- ![  Image variations](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_image_variations.PNG)
+ ![  Image variations SDXL](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_image_variations_sdxl.PNG)
+
 ### Image Inpainting
  ![ Image Inpainting](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_inpainting.PNG)
 ### Depth to Image
