@@ -1,4 +1,4 @@
-## DiffusionMagic  Beta
+## DiffusionMagic 
 DiffusionMagic is simple to use Stable Diffusion workflows using [diffusers](https://github.com/huggingface/diffusers). 
 DiffusionMagic focused on the following areas:
 - Easy to use
@@ -94,7 +94,10 @@ Follow the steps to install and run the Diffusion magic on Mac (Apple Silicon M1
 ` ./start.sh`
 
  Open the browser `http://localhost:7860/`
- Dark theme `http://localhost:7860/?__theme=dark`
+##  Dark mode 
+To get dark theme :
+
+ `http://localhost:7860/?__theme=dark`
 
 ## Colab Support
 Yes, you can run DiffusionMagic in Colab.
@@ -116,6 +119,7 @@ Or we can clone the model use the local folder path as model id.
 - Adding locally copied model path to configs/stable_diffusion_models.txt file
 ## Linting (Development)
 Run the following commands from src folder
+
 `mypy --ignore-missing-imports --explicit-package-bases .`
 
 `flake8 --max-line-length=100 .`
