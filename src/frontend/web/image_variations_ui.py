@@ -99,7 +99,7 @@ def get_image_variations_ui(generate_callback_fn: Any) -> None:
                     show_label=True,
                     elem_id="gallery",
                 ).style(
-                    grid=2,
+                    columns=2,
                 )
         generate_btn.click(
             fn=generate_callback_fn,
