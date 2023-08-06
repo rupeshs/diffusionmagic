@@ -6,8 +6,8 @@ DiffusionMagic focused on the following areas:
 - Modular design, latest best optimizations for speed and memory
 
 ## Stable diffusion XL Colab
-We can run StableDiffusion XL 0.9 on Google Colab
-[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1KrmcU2gONIQ2WihI1s6uITgDDzkbKaJK?usp=sharing)
+We can run StableDiffusion XL 1.0 on Google Colab
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eEZ_O-Fw87hoEsfSxUnGZhdqvMFEO5iV?usp=sharing)
 
  ![ DiffusionMagic](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic.PNG)
 ## Features
