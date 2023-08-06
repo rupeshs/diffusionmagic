@@ -441,3 +441,41 @@ class Generate:
             "ImageToImage",
         )
         return images
+
+    def diffusion_image_variations_xl(
+        self,
+        image,
+        strength,
+        image_height,
+        image_width,
+        inference_steps,
+        scheduler,
+        guidance_scale,
+        num_images,
+        attention_slicing,
+        seed,
+    ) -> Any:
+        stable_diffusion_image_settings = StableDiffusionImageToImageSetting(
+            image=image,
+            strength=strength,
+            prompt="",
+            negative_prompt="bad, deformed, ugly, bad anatomy",
+            image_height=image_height,
+            image_width=image_width,
+            inference_steps=inference_steps,
+            guidance_scale=guidance_scale,
+            number_of_images=num_images,
+            scheduler=scheduler,
+            seed=seed,
+            attention_slicing=attention_slicing,
+        )
+        self._init_stable_diffusion_xl()
+        images = self.stable_diffusion_xl.image_to_image(
+            stable_diffusion_image_settings
+        )
+
+        self._save_images(
+            images,
+            "ImageVariations",
+        )
+        return images

@@ -14,6 +14,7 @@ from frontend.web.settings_ui import get_settings_ui
 from frontend.web.text_to_image_ui import get_text_to_image_ui
 from frontend.web.text_to_image_xl_ui import get_text_to_image_xl_ui
 from frontend.web.image_to_image_xl_ui import get_image_to_image_xl_ui
+from frontend.web.image_variations_xl_ui import get_image_variations_xl_ui
 from frontend.web.controlnet.controlnet_image_ui import get_controlnet_to_image_ui
 from settings import AppSettings
 from utils import DiffusionMagicPaths
@@ -83,6 +84,10 @@ def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
                     get_text_to_image_xl_ui(generate.diffusion_text_to_image_xl)
                 with gr.TabItem("Image to Image SDXL"):
                     get_image_to_image_xl_ui(generate.diffusion_image_to_image_xl)
+                with gr.TabItem("Image Variations SDXL"):
+                    get_image_variations_xl_ui(generate.diffusion_image_variations_xl)
+            elif stable_diffusion_type == StableDiffusionType.inpainting:
+                get_image_variations_xl_ui
             with gr.TabItem("Settings"):
                 get_settings_ui()
 

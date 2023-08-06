@@ -11,10 +11,9 @@ DiffusionMagic focused on the following areas:
 We can run StableDiffusion XL 1.0 on Google Colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eEZ_O-Fw87hoEsfSxUnGZhdqvMFEO5iV?usp=sharing)
 
- ![ DiffusionMagic](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic.PNG)
 ## Features
+- Supports Stable diffusion XL
 - Supports various Stable Diffusion workflows
-   -  Stable diffusion XL
     - Text to Image 
     - Image to Image 
     - Image variations
@@ -101,7 +100,7 @@ Follow the steps to install and run the Diffusion magic on Mac (Apple Silicon M1
 To get dark theme :
 
  `http://localhost:7860/?__theme=dark`
- 
+
 ## How to switch models
 Diffusion magic will change UI based on the model selected.
 Follow the steps to switch the models() inpainting,depth to image or instruct pix to pix or any other hugging face stable diffusion model)
