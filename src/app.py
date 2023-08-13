@@ -19,6 +19,9 @@ if __name__ == "__main__":
     parser.add_argument(
         "-s", "--share", help="Shareable link", action="store_true", default=False
     )
+    parser.add_argument(
+        "-t", "--tpumode", help="TPU mode", action="store_true", default=False
+    )
     args = parser.parse_args()
     compute = Computing()
     generate = Generate(compute)
