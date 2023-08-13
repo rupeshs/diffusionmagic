@@ -25,7 +25,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     compute = Computing()
     generate = Generate(compute)
-    dm_web_ui = diffusionmagic_web_ui(generate)
+    dm_web_ui = diffusionmagic_web_ui(generate, args.tpumode)
     if args.share:
         dm_web_ui.queue().launch(share=True)
     else:

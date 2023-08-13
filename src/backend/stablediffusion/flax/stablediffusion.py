@@ -32,6 +32,7 @@ class StableDiffusion(SamplerMixin):
         )
 
     def text_to_image(self, setting: StableDiffusionSetting):
+        print("Starting text to image(TPU)")
         prompt = setting.prompt
         prompt = [prompt] * jax.device_count()
         prompt_ids = self.pipeline.prepare_inputs(prompt)
@@ -39,5 +40,7 @@ class StableDiffusion(SamplerMixin):
         prompt_ids = shard(prompt_ids)
         rng = self._create_key(0)
         rng = jax.random.split(rng, jax.device_count())
+        print("Start")
         images = self.pipeline(prompt_ids, p_params, rng, jit=True)[0]
+        print("Processed successfully")
         return images
