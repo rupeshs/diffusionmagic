@@ -14,7 +14,7 @@ dependencies:
   - pip:
       - accelerate==0.21.0
       - diffusers==0.19.3
-      - gradio==3.32.0
+      - gradio==3.39.0
       - safetensors==0.3.1
       - scipy==1.10.0
       - transformers==4.31.0
