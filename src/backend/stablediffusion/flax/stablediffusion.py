@@ -26,7 +26,7 @@ class StableDiffusion(SamplerMixin):
         # sampler: str = SchedulerType.DPMSolverMultistepScheduler.value,
     ):
         self.pipeline, self.params = FlaxStableDiffusionPipeline.from_pretrained(
-            "CompVis/stable-diffusion-v1-4",
+            "stabilityai/stable-diffusion-2-1-base",
             revision="bf16",
             dtype=jnp.bfloat16,
         )
@@ -40,7 +40,9 @@ class StableDiffusion(SamplerMixin):
         prompt_ids = shard(prompt_ids)
         rng = self._create_key(0)
         rng = jax.random.split(rng, jax.device_count())
-        print("Start")
+        print("Starting pipeline")
         images = self.pipeline(prompt_ids, p_params, rng, jit=True)[0]
-        print("Processed successfully")
+        images = images.reshape((images.shape[0],) + images.shape[-3:])
+        images = pipeline.numpy_to_pil(images)
+        print("Pipeline completed successfully")
         return images

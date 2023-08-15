@@ -525,4 +525,5 @@ class Generate:
             images,
             "TextToImage",
         )
+        print("Saving images")
         return images
