@@ -31,17 +31,42 @@ class StableDiffusion(SamplerMixin):
             dtype=jnp.bfloat16,
         )
 
+    def _get_prompt_ids(self, prompt: str, num_images: int):
+        prompt = [prompt] * num_images
+        prompt_ids = self.pipeline.prepare_inputs(prompt)
+        prompt_ids = shard(prompt_ids)
+        return prompt_ids
+
     def text_to_image(self, setting: StableDiffusionSetting):
         print("Starting text to image(TPU)")
-        prompt = setting.prompt
-        prompt = [prompt] * jax.device_count()
-        prompt_ids = self.pipeline.prepare_inputs(prompt)
+        # As of now a little hack
+        setting.number_of_images = jax.device_count()
+
+        prompt_ids = self._get_prompt_ids(
+            setting.prompt,
+            setting.number_of_images,
+        )
+        negative_prompt_ids = self._get_prompt_ids(
+            setting.negative_prompt,
+            setting.number_of_images,
+        )
         p_params = replicate(self.params)
-        prompt_ids = shard(prompt_ids)
         rng = self._create_key(0)
-        rng = jax.random.split(rng, jax.device_count())
+        rng = jax.random.split(
+            rng,
+            setting.number_of_images,
+        )
+
         print("Starting pipeline")
-        images = self.pipeline(prompt_ids, p_params, rng, jit=True)[0]
+        images = self.pipeline(
+            prompt_ids=prompt_ids,
+            neg_prompt_ids=negative_prompt_ids,
+            num_inference_steps=setting.inference_steps,
+            guidance_scale=setting.guidance_scale,
+            params=p_params,
+            prng_seed=rng,
+            jit=True,
+        )[0]
         images = images.reshape((images.shape[0],) + images.shape[-3:])
         images = self.pipeline.numpy_to_pil(images)
         print("Pipeline completed successfully")
