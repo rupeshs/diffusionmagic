@@ -17,12 +17,14 @@ class StableDiffusionType(str, Enum):
     controlnet_scribble = "controlnet_scribble"
     controlnet_seg = "controlnet_seg"
     stable_diffusion_xl = "StableDiffusionXl"
+    wuerstchen = "Wuerstchen"
 
 
 def get_diffusion_type(
     model_id: str,
 ) -> StableDiffusionType:
     stable_diffusion_type = StableDiffusionType.base
+    model_id = model_id.lower()
     if "inpainting" in model_id:
         stable_diffusion_type = StableDiffusionType.inpainting
     elif "instruct-pix2pix" in model_id:
@@ -47,4 +49,6 @@ def get_diffusion_type(
         stable_diffusion_type = StableDiffusionType.controlnet_seg
     elif "stable-diffusion-xl" in model_id:
         stable_diffusion_type = StableDiffusionType.stable_diffusion_xl
+    elif "wuerstchen" in model_id:
+        stable_diffusion_type = StableDiffusionType.wuerstchen
     return stable_diffusion_type

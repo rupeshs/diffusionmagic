@@ -1,6 +1,6 @@
 from time import time
 
-import torch
+from torch import Generator
 from diffusers import (
     DiffusionPipeline,
     StableDiffusionXLImg2ImgPipeline,
@@ -72,7 +72,7 @@ class StableDiffusionXl(SamplerMixin):
         generator = None
         if setting.seed != -1:
             print(f"Using seed {setting.seed}")
-            generator = torch.Generator(self.device).manual_seed(setting.seed)
+            generator = Generator(self.device).manual_seed(setting.seed)
 
         # if setting.attention_slicing:
         #     self.pipeline.enable_attention_slicing()
@@ -149,7 +149,7 @@ class StableDiffusionXl(SamplerMixin):
         generator = None
         if setting.seed != -1 and setting.seed:
             print(f"Using seed {setting.seed}")
-            generator = torch.Generator(self.device).manual_seed(setting.seed)
+            generator = Generator(self.device).manual_seed(setting.seed)
 
         if setting.attention_slicing:
             self.img_to_img_pipeline.enable_attention_slicing()  # type: ignore
