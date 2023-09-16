@@ -22,7 +22,11 @@ from settings import AppSettings
 
 
 class Generate:
-    def __init__(self, compute: Computing):
+    def __init__(
+        self,
+        compute: Computing,
+        model_id: str,
+    ):
         self.pipe_initialized = False
         self.inpaint_pipe_initialized = False
         self.depth_pipe_initialized = False
@@ -35,7 +39,7 @@ class Generate:
         self.controlnet = ControlnetContext(compute)
         self.stable_diffusion_xl = StableDiffusionXl(compute)
         self.app_settings = AppSettings().get_settings()
-        self.model_id = self.app_settings.model_settings.model_id
+        self.model_id = model_id
         self.low_vram_mode = self.app_settings.low_memory_mode
         self.wuerstchen = Wuerstchen(compute)
 

@@ -32,10 +32,14 @@ if __name__ == "__main__":
     )
     args = parser.parse_args()
     compute = Computing()
-    generate = Generate(compute)
     model_id = _get_model(args.model)
 
     print(f"Model : {model_id}")
+
+    generate = Generate(
+        compute,
+        model_id,
+    )
 
     dm_web_ui = diffusionmagic_web_ui(
         generate,
