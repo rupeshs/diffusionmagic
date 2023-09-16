@@ -104,7 +104,6 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                     label="Generated images",
                     show_label=True,
                     elem_id="gallery",
-                ).style(
                     columns=2,
                 )
     seed_checkbox.change(fn=random_seed, outputs=seed)

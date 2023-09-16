@@ -34,10 +34,10 @@ def get_text_to_image_wuerstchen_ui(generate_callback_fn: Any) -> None:
                 )
                 with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
-                        768, 2048, value=1024, step=64, label="Image Height"
+                        1024, 2048, value=1024, step=64, label="Image Height"
                     )
                     image_width = gr.Slider(
-                        768, 2048, value=1536, step=64, label="Image Width"
+                        1024, 2048, value=1536, step=64, label="Image Width"
                     )
                     prior_guidance_scale = gr.Slider(
                         1.0, 10.0, value=4.0, step=0.5, label="Prior guidance Scale"
@@ -77,7 +77,6 @@ def get_text_to_image_wuerstchen_ui(generate_callback_fn: Any) -> None:
                     label="Generated images",
                     show_label=True,
                     elem_id="gallery",
-                ).style(
                     columns=2,
                 )
     seed_checkbox.change(fn=random_seed, outputs=seed)
