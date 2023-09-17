@@ -12,6 +12,7 @@ We can run StableDiffusion XL 1.0 on Google Colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eEZ_O-Fw87hoEsfSxUnGZhdqvMFEO5iV?usp=sharing)
 
 ## Features
+- Supports Würstchen
 - Supports Stable diffusion XL
 - Supports various Stable Diffusion workflows
     - Text to Image 

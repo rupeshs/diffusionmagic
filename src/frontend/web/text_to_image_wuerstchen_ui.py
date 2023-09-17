@@ -1,16 +1,11 @@
 from typing import Any
-
 import gradio as gr
 
-from backend.stablediffusion.models.scheduler_types import (
-    SchedulerType,
-    get_sampler_names,
-)
 
 random_enabled = True
 
 
-def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
+def get_text_to_image_wuerstchen_ui(generate_callback_fn: Any) -> None:
     with gr.Blocks():
         with gr.Row():
             with gr.Column():
@@ -39,21 +34,13 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                 )
                 with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
-                        768, 2048, value=1024, step=64, label="Image Height"
+                        1024, 2048, value=1024, step=64, label="Image Height"
                     )
                     image_width = gr.Slider(
-                        768, 2048, value=1024, step=64, label="Image Width"
+                        1024, 2048, value=1536, step=64, label="Image Width"
                     )
-                    num_inference_steps = gr.Slider(
-                        1, 100, value=20, step=1, label="Inference Steps"
-                    )
-                    scheduler = gr.Dropdown(
-                        get_sampler_names(),
-                        value=SchedulerType.LMSDiscreteScheduler.value,
-                        label="Sampler",
-                    )
-                    guidance_scale = gr.Slider(
-                        1.0, 30.0, value=7.5, step=0.5, label="Guidance Scale"
+                    prior_guidance_scale = gr.Slider(
+                        1.0, 10.0, value=4.0, step=0.5, label="Prior guidance Scale"
                     )
                     num_images = gr.Slider(
                         1,
@@ -61,16 +48,6 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                         value=1,
                         step=1,
                         label="Number of images to generate",
-                    )
-                    attn_slicing = gr.Checkbox(
-                        label="Attention slicing (Not supported)",
-                        value=False,
-                        interactive=False,
-                    )
-
-                    vae_slicing = gr.Checkbox(
-                        label="VAE slicing  (Enable if low VRAM)",
-                        value=True,
                     )
                     seed = gr.Number(
                         label="Seed",
@@ -89,12 +66,8 @@ def get_text_to_image_xl_ui(generate_callback_fn: Any) -> None:
                         neg_prompt,
                         image_height,
                         image_width,
-                        num_inference_steps,
-                        scheduler,
-                        guidance_scale,
+                        prior_guidance_scale,
                         num_images,
-                        attn_slicing,
-                        vae_slicing,
                         seed,
                     ]
 

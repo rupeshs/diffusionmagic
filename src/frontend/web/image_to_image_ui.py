@@ -113,7 +113,6 @@ def get_image_to_image_ui(generate_callback_fn: Any) -> None:
                     label="Generated images",
                     show_label=True,
                     elem_id="gallery",
-                ).style(
                     columns=2,
                 )
         generate_btn.click(

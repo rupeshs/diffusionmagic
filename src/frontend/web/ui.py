@@ -5,20 +5,20 @@ from backend.stablediffusion.stable_diffusion_types import (
     StableDiffusionType,
     get_diffusion_type,
 )
+from constants import VERSION
+from frontend.web.controlnet.controlnet_image_ui import get_controlnet_to_image_ui
 from frontend.web.depth_to_image_ui import get_depth_to_image_ui
 from frontend.web.image_inpainting_ui import get_image_inpainting_ui
 from frontend.web.image_to_image_ui import get_image_to_image_ui
+from frontend.web.image_to_image_xl_ui import get_image_to_image_xl_ui
 from frontend.web.image_variations_ui import get_image_variations_ui
+from frontend.web.image_variations_xl_ui import get_image_variations_xl_ui
 from frontend.web.instruct_pix_to_pix_ui import get_instruct_pix_to_pix_ui
 from frontend.web.settings_ui import get_settings_ui
 from frontend.web.text_to_image_ui import get_text_to_image_ui
+from frontend.web.text_to_image_wuerstchen_ui import get_text_to_image_wuerstchen_ui
 from frontend.web.text_to_image_xl_ui import get_text_to_image_xl_ui
-from frontend.web.image_to_image_xl_ui import get_image_to_image_xl_ui
-from frontend.web.image_variations_xl_ui import get_image_variations_xl_ui
-from frontend.web.controlnet.controlnet_image_ui import get_controlnet_to_image_ui
-from settings import AppSettings
 from utils import DiffusionMagicPaths
-from constants import VERSION
 
 
 def _get_footer_message() -> str:
@@ -30,14 +30,16 @@ def _get_footer_message() -> str:
     return footer_msg
 
 
-def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
-    model_id = AppSettings().get_settings().model_settings.model_id
+def diffusionmagic_web_ui(
+    generate: Generate,
+    model_id: str,
+) -> gr.Blocks:
     stable_diffusion_type = get_diffusion_type(model_id)
     with gr.Blocks(
         css=DiffusionMagicPaths.get_css_path(),
         title="DiffusionMagic",
     ) as diffusion_magic_ui:
-        gr.HTML("<center><H3>DiffusionMagic 3.0</H3></center>")
+        gr.HTML("<center><H3>DiffusionMagic 3.5</H3></center>")
         with gr.Tabs():
             if stable_diffusion_type == StableDiffusionType.base:
                 with gr.TabItem("Text to Image"):
@@ -86,6 +88,12 @@ def diffusionmagic_web_ui(generate: Generate) -> gr.Blocks:
                     get_image_to_image_xl_ui(generate.diffusion_image_to_image_xl)
                 with gr.TabItem("Image Variations SDXL"):
                     get_image_variations_xl_ui(generate.diffusion_image_variations_xl)
+            elif stable_diffusion_type == StableDiffusionType.wuerstchen:
+                with gr.TabItem("Text to Image Würstchen"):
+                    get_text_to_image_wuerstchen_ui(
+                        generate.diffusion_text_to_image_wuerstchen
+                    )
+
             elif stable_diffusion_type == StableDiffusionType.inpainting:
                 get_image_variations_xl_ui
             with gr.TabItem("Settings"):
