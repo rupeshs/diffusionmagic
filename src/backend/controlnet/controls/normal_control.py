@@ -18,10 +18,10 @@ class NormalControl(ControlInterface):
 
         bg_threhold = 0.4
 
-        x = cv2.Sobel(image, cv2.CV_32F, 1, 0, ksize=3)
+        x = cv2.Sobel(image, cv2.CV_32F, 1, 0, ksize=3)  # type: ignore
         x[image_depth < bg_threhold] = 0
 
-        y = cv2.Sobel(image, cv2.CV_32F, 0, 1, ksize=3)
+        y = cv2.Sobel(image, cv2.CV_32F, 0, 1, ksize=3)  # type: ignore
         y[image_depth < bg_threhold] = 0
 
         z = np.ones_like(x) * np.pi * 2.0
