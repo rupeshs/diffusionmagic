@@ -8,8 +8,12 @@ DiffusionMagic focused on the following areas:
  ![ DiffusionMagic SDXL support](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_3_sdxl.png)
 
 ## Stable diffusion XL Colab
-We can run StableDiffusion XL 1.0 on Google Colab
+You can run StableDiffusion XL 1.0 on Google Colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eEZ_O-Fw87hoEsfSxUnGZhdqvMFEO5iV?usp=sharing)
+
+## Würstchen Colab
+You can run Würstchen 2.0 on Google Colab
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ib6W1CeK9V533Nc9MnoBe3TmU7Uaghtg?usp=sharing)
 
 ## Features
 - Supports Würstchen
