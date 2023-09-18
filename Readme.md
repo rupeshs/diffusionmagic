@@ -15,7 +15,7 @@ You can run StableDiffusion XL 1.0 on Google Colab
 You can run Würstchen 2.0 on Google Colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ib6W1CeK9V533Nc9MnoBe3TmU7Uaghtg?usp=sharing)
 
-## LOW VRAM mode < 4GB
+## Low VRAM mode < 4GB
 DiffusionMagic runs on low VRAM GPUs.
 [Here](https://nolowiz.com/easy-way-to-run-stable-diffusion-xl-on-low-vram-gpus/) is our guide to run StableDiffusion XL on low VRAM GPUs.
 
