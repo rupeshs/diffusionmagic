@@ -15,7 +15,7 @@ from backend.stablediffusion.scheduler_mixin import SamplerMixin
 from backend.stablediffusion.stable_diffusion_types import (
     get_diffusion_type,
 )
-from image_ops import get_black_and_white_image
+from backend.image_ops import get_black_and_white_image
 
 
 class IllusionDiffusion(SamplerMixin):
