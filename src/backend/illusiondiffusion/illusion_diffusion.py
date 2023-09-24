@@ -1,3 +1,4 @@
+# Based on https://huggingface.co/spaces/AP123/IllusionDiffusion/
 from time import time
 
 import torch
@@ -14,6 +15,7 @@ from backend.stablediffusion.scheduler_mixin import SamplerMixin
 from backend.stablediffusion.stable_diffusion_types import (
     get_diffusion_type,
 )
+from image_ops import get_black_and_white_image
 
 
 class IllusionDiffusion(SamplerMixin):
@@ -64,16 +66,16 @@ class IllusionDiffusion(SamplerMixin):
             print(f"Using seed {setting.seed}")
             generator = torch.Generator(self.device).manual_seed(setting.seed)
 
-        control_image_small = self._center_crop_resize(
-            setting.control_image, (512, 512)
-        )
+        control_image_bw = get_black_and_white_image(setting.control_image)
+
+        control_image_small = self._center_crop_resize(control_image_bw, (512, 512))
         inf_steps = (
             setting.inference_steps - 5
             if setting.inference_steps
             else setting.inference_steps
         )
 
-        out = self.controlnet_pipeline(
+        latents = self.controlnet_pipeline(
             prompt=setting.prompt,
             negative_prompt=setting.negative_prompt,
             image=control_image_small,
@@ -85,10 +87,8 @@ class IllusionDiffusion(SamplerMixin):
             num_inference_steps=inf_steps,
             output_type="latent",
         )
-        control_image_large = self._center_crop_resize(
-            setting.control_image, (1024, 1024)
-        )
-        upscaled_latents = self._upscale(out, "nearest-exact", 2)
+        control_image_large = self._center_crop_resize(control_image_bw, (1024, 1024))
+        upscaled_latents = self._upscale(latents, "nearest-exact", 2)
         out_images = self.image_pipeline(
             prompt=setting.prompt,
             negative_prompt=setting.negative_prompt,

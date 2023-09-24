@@ -1,4 +1,4 @@
-from PIL import Image
+from PIL import Image, ImageEnhance
 
 
 def resize_pil_image(
@@ -13,3 +13,9 @@ def resize_pil_image(
         ),
         Image.Resampling.LANCZOS,
     )
+
+
+def get_black_and_white_image(pil_image: Image):
+    img_enhance = ImageEnhance.Color(pil_image)
+    bw_image = img_enhance.enhance(0)
+    return bw_image
