@@ -25,6 +25,7 @@ Illusion diffusion supports :
  - Color images
  - Text images
  - Patterns
+ 
   You need to adjust the illusion strength to get desired result.
 
   ![  Color image](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusionmagic-illusion-diffusion-color-image.jpg)
