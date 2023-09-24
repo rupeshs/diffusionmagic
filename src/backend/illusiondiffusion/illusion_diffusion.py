@@ -89,7 +89,7 @@ class IllusionDiffusion(SamplerMixin):
             setting.control_image, (1024, 1024)
         )
         upscaled_latents = self._upscale(out, "nearest-exact", 2)
-        images = self.image_pipeline(
+        out_images = self.image_pipeline(
             prompt=setting.prompt,
             negative_prompt=setting.negative_prompt,
             control_image=control_image_large,
@@ -102,7 +102,7 @@ class IllusionDiffusion(SamplerMixin):
             control_guidance_end=setting.control_guidance_end,
             controlnet_conditioning_scale=setting.controlnet_conditioning_scale,
         )
-        return images
+        return out_images["images"]
 
     def _pipeline_to_device(self):
         if self.compute.name == "cuda":
