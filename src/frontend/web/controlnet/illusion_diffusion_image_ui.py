@@ -31,7 +31,7 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                 prompt = gr.Textbox(
                     label="Describe the image you'd like to see",
                     lines=3,
-                    placeholder="An ancient buildings seen from a distance",
+                    placeholder="A beautiful sunset",
                 )
 
                 neg_prompt = gr.Textbox(
@@ -40,19 +40,40 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                     placeholder="",
                     value="low quality,bad, deformed, ugly, bad anatomy",
                 )
+                controlnet_conditioning_scale = gr.Slider(
+                    0.0,
+                    5.0,
+                    value=0.8,
+                    step=0.01,
+                    label="Illusion strength",
+                )
                 with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
-                        512, 2048, value=512, step=64, label="Image Height"
+                        512,
+                        2048,
+                        value=512,
+                        step=64,
+                        label="Image Height",
+                        visible=False,
                     )
                     image_width = gr.Slider(
-                        512, 2048, value=512, step=64, label="Image Width"
+                        512,
+                        2048,
+                        value=512,
+                        step=64,
+                        label="Image Width",
+                        visible=False,
                     )
                     num_inference_steps = gr.Slider(
-                        1, 100, value=20, step=1, label="Inference Steps"
+                        1,
+                        100,
+                        value=20,
+                        step=1,
+                        label="Inference Steps",
                     )
                     scheduler = gr.Dropdown(
                         get_sampler_names(),
-                        value=SchedulerType.EulerDiscreteScheduler.value,
+                        value=SchedulerType.EulerAncestralDiscreteScheduler.value,
                         label="Sampler",
                     )
                     guidance_scale = gr.Slider(
@@ -81,13 +102,7 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                         value=True,
                         interactive=True,
                     )
-                    controlnet_conditioning_scale = gr.Slider(
-                        0.0,
-                        5.0,
-                        value=0.8,
-                        step=0.01,
-                        label="Illusion strength",
-                    )
+
                     control_guidance_start = gr.Slider(
                         0.0,
                         1.0,
@@ -128,7 +143,9 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                 ]
 
             with gr.Column():
-                generate_btn = gr.Button("Generate", elem_id="generate_button")
+                generate_btn = gr.Button(
+                    "Generate illusion Image", elem_id="generate_button"
+                )
                 output = gr.Gallery(
                     label="Generated images",
                     show_label=True,

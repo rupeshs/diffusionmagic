@@ -41,7 +41,7 @@ def diffusionmagic_web_ui(
         css=DiffusionMagicPaths.get_css_path(),
         title="DiffusionMagic",
     ) as diffusion_magic_ui:
-        gr.HTML("<center><H3>DiffusionMagic 3.5</H3></center>")
+        gr.HTML("<center><H3>DiffusionMagic 3.8 beta</H3></center>")
         with gr.Tabs():
             if stable_diffusion_type == StableDiffusionType.base:
                 with gr.TabItem("Text to Image"):
