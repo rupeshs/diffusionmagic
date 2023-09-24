@@ -99,6 +99,7 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                         value=1,
                         step=1,
                         label="Number of images to generate",
+                        visible=False,
                     )
 
                     seed = gr.Number(
@@ -130,7 +131,7 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                     upscaler_strength = gr.Slider(
                         0.0,
                         1.0,
-                        value=0.5,
+                        value=1.0,
                         step=0.1,
                         label="Upscaler strength",
                         visible=False,
@@ -161,6 +162,7 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                     label="Generated images",
                     show_label=True,
                     elem_id="gallery",
+                    show_share_button=True,
                 ).style(
                     grid=2,
                 )
