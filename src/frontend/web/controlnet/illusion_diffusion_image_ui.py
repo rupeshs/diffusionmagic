@@ -130,9 +130,10 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                     upscaler_strength = gr.Slider(
                         0.0,
                         1.0,
-                        value=1.0,
+                        value=0.5,
                         step=0.1,
                         label="Upscaler strength",
+                        visible=False,
                     )
 
                 input_params = [
