@@ -19,3 +19,4 @@ lllyasviel/sd-controlnet-scribble
 lllyasviel/sd-controlnet-seg
 stabilityai/stable-diffusion-xl-base-1.0
 warp-ai/wuerstchen
+monster-labs/control_v1p_sd15_qrcode_monster

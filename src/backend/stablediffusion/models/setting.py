@@ -41,3 +41,20 @@ class StableDiffusionImageInstructPixToPixSetting(StableDiffusionSetting):
 
 class StableDiffusionControlnetSetting(StableDiffusionSetting):
     image: Any
+
+
+class IllusionDiffusionSetting(BaseModel):
+    prompt: str
+    negative_prompt: Optional[str]
+    image_height: Optional[int] = 512
+    image_width: Optional[int] = 512
+    inference_steps: Optional[int] = 20
+    guidance_scale: Optional[float] = 7.5
+    number_of_images: Optional[int] = 1
+    scheduler: Optional[str] = SchedulerType.EulerDiscreteScheduler.value
+    seed: Optional[int] = -1
+    controlnet_conditioning_scale: Optional[float] = 0.8
+    control_guidance_start: Optional[float] = 0
+    control_guidance_end: Optional[float] = 1.0
+    upscaler_strength: Optional[float] = 0.5
+    control_image: Any

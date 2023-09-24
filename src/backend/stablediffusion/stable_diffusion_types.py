@@ -18,6 +18,7 @@ class StableDiffusionType(str, Enum):
     controlnet_seg = "controlnet_seg"
     stable_diffusion_xl = "StableDiffusionXl"
     wuerstchen = "Wuerstchen"
+    illusion_diffusion = "Illusion Diffusion"
 
 
 def get_diffusion_type(
@@ -51,4 +52,6 @@ def get_diffusion_type(
         stable_diffusion_type = StableDiffusionType.stable_diffusion_xl
     elif "wuerstchen" in model_id:
         stable_diffusion_type = StableDiffusionType.wuerstchen
+    elif "control_v1p_sd15_qrcode_monster" in model_id:
+        stable_diffusion_type = StableDiffusionType.illusion_diffusion
     return stable_diffusion_type

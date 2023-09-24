@@ -1,5 +1,4 @@
 import gradio as gr
-
 from backend.generate import Generate
 from backend.stablediffusion.stable_diffusion_types import (
     StableDiffusionType,
@@ -7,6 +6,9 @@ from backend.stablediffusion.stable_diffusion_types import (
 )
 from constants import VERSION
 from frontend.web.controlnet.controlnet_image_ui import get_controlnet_to_image_ui
+from frontend.web.controlnet.illusion_diffusion_image_ui import (
+    get_illusion_diffusion_to_image_ui,
+)
 from frontend.web.depth_to_image_ui import get_depth_to_image_ui
 from frontend.web.image_inpainting_ui import get_image_inpainting_ui
 from frontend.web.image_to_image_ui import get_image_to_image_ui
@@ -92,6 +94,11 @@ def diffusionmagic_web_ui(
                 with gr.TabItem("Text to Image Würstchen"):
                     get_text_to_image_wuerstchen_ui(
                         generate.diffusion_text_to_image_wuerstchen
+                    )
+            elif stable_diffusion_type == StableDiffusionType.illusion_diffusion:
+                with gr.TabItem("Illusion Diffusion"):
+                    get_illusion_diffusion_to_image_ui(
+                        generate.diffusion_text_to_image_illusion
                     )
 
             elif stable_diffusion_type == StableDiffusionType.inpainting:

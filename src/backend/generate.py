@@ -12,12 +12,15 @@ from backend.stablediffusion.models.setting import (
     StableDiffusionSetting,
     StableDiffusionImageInstructPixToPixSetting,
     StableDiffusionControlnetSetting,
+    IllusionDiffusionSetting,
 )
 from backend.wuerstchen.models.setting import WurstchenSetting
 from backend.controlnet.ControlContext import ControlnetContext
 from backend.stablediffusion.stablediffusion import StableDiffusion
 from backend.stablediffusion.stablediffusionxl import StableDiffusionXl
 from backend.wuerstchen.wuerstchen import Wuerstchen
+from backend.illusiondiffusion.illusion_diffusion import IllusionDiffusion
+
 from settings import AppSettings
 
 
@@ -42,6 +45,8 @@ class Generate:
         self.model_id = model_id
         self.low_vram_mode = self.app_settings.low_memory_mode
         self.wuerstchen = Wuerstchen(compute)
+        self.illusion_diffusion = IllusionDiffusion(compute)
+        self.illusion_controlnet_initialized = False
 
     def diffusion_text_to_image(
         self,
@@ -100,6 +105,15 @@ class Generate:
         if not self.pipe_initialized:
             print("Initializing wuerstchen pipeline")
             self.wuerstchen.get_text_to_image_wuerstchen_pipleline(
+                self.model_id,
+                self.low_vram_mode,
+            )
+            self.pipe_initialized = True
+
+    def _init_illusion_diffusion(self):
+        if not self.pipe_initialized:
+            print("Initializing illusion diffusion pipeline")
+            self.illusion_diffusion.g(
                 self.model_id,
                 self.low_vram_mode,
             )
@@ -520,5 +534,52 @@ class Generate:
         self._save_images(
             images,
             "TextToImage",
+        )
+        return images
+
+    def diffusion_text_to_image_illusion(
+        self,
+        image,
+        prompt,
+        neg_prompt,
+        image_height,
+        image_width,
+        inference_steps,
+        scheduler,
+        guidance_scale,
+        num_images,
+        seed,
+        controlnet_conditioning_scale,
+        control_guidance_start,
+        control_guidance_end,
+        upscaler_strength,
+    ) -> Any:
+        illusion_diffusion_settings = IllusionDiffusionSetting(
+            prompt=prompt,
+            negative_prompt=neg_prompt,
+            image_height=image_height,
+            image_width=image_width,
+            inference_steps=inference_steps,
+            guidance_scale=guidance_scale,
+            number_of_images=num_images,
+            scheduler=scheduler,
+            seed=seed,
+            controlnet_conditioning_scale=controlnet_conditioning_scale,
+            control_guidance_start=control_guidance_start,
+            control_guidance_end=control_guidance_end,
+            upscaler_strength=upscaler_strength,
+            image=image,
+        )
+        if not self.illusion_controlnet_initialized:
+            print("Initializing illusion controlnet image pipeline")
+            self.illusion_diffusion.init_control_to_image_pipleline(
+                model_id=self.model_id,
+                low_vram_mode=self.low_vram_mode,
+            )
+            self.illusion_controlnet_initialized = True
+        images = self.illusion_diffusion.control_to_image(illusion_diffusion_settings)
+        self._save_images(
+            images,
+            "IllusionDiffusion",
         )
         return images

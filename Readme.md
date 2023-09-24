@@ -130,7 +130,7 @@ Run the following commands from src folder
 
 `mypy --ignore-missing-imports --explicit-package-bases .`
 
-`flake8 --max-line-length=100 .`
+`flake8 --max-line-length=100 --ignore=E203,W503  .`
 ## Contribute
 Contributions are welcomed.
 
