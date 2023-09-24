@@ -568,7 +568,7 @@ class Generate:
             control_guidance_start=control_guidance_start,
             control_guidance_end=control_guidance_end,
             upscaler_strength=upscaler_strength,
-            image=image,
+            control_image=image,
         )
         if not self.illusion_controlnet_initialized:
             print("Initializing illusion controlnet image pipeline")
