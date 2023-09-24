@@ -137,15 +137,19 @@ class IllusionDiffusion(SamplerMixin):
                     StableDiffusionControlNetPipeline.from_pretrained(
                         self.model_id,
                         controlnet=self.controlnet,
+                        safety_checker=None,
                         torch_dtype=torch.float16,
                     )
                 )
 
-                self.image_pipeline = StableDiffusionControlNetImg2ImgPipeline.from_pretrained(
-                    self.model_id,
-                    unet=self.controlnet_pipeline.unet,
-                    controlnet=self.controlnet,
-                    # torch_dtype=torch.float16,
+                self.image_pipeline = (
+                    StableDiffusionControlNetImg2ImgPipeline.from_pretrained(
+                        self.model_id,
+                        unet=self.controlnet_pipeline.unet,
+                        controlnet=self.controlnet,
+                        safety_checker=None,
+                        torch_dtype=torch.float16,
+                    )
                 )
 
             except Exception as ex:
