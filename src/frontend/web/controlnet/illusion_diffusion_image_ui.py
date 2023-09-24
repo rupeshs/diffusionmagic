@@ -62,14 +62,12 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                         step=0.5,
                         label="Guidance Scale",
                     )
-                    num_images = (
-                        gr.Slider(
-                            1,
-                            50,
-                            value=1,
-                            step=1,
-                            label="Number of images to generate",
-                        ),
+                    num_images = gr.Slider(
+                        1,
+                        50,
+                        value=1,
+                        step=1,
+                        label="Number of images to generate",
                     )
 
                     seed = gr.Number(
@@ -119,9 +117,9 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                     image_height,
                     image_width,
                     num_inference_steps,
-                    scheduler,
                     guidance_scale,
                     num_images,
+                    scheduler,
                     seed,
                     controlnet_conditioning_scale,
                     control_guidance_start,
