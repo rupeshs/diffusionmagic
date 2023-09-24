@@ -53,7 +53,7 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                     examples=[
                         "spiral.jpeg",
                         "diffusion_text.jpg",
-                        "women.jpg",
+                        "woman.jpg",
                     ],
                     inputs=input_image,
                 )
