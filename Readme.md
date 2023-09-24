@@ -23,9 +23,15 @@ You can run  Illusion Diffusion on Google Colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1M3igyVklKkUh1Pgzy68JWms2KQy2z7s7?usp=sharing)
 Illusion diffusion supports :
  - Color images
- - Patterns
  - Text images
- 
+ - Patterns
+  You need to adjust the illusion strength to get desired result.
+
+  ![  Color image](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusionmagic-illusion-diffusion-color-image.jpg)
+
+   ![ Text image](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusionmagic-illusion-diffusion-text.jpg)
+
+   ![ Patterns](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusionmagic-illusion-diffusion-pattern.jpg)
 ## Features
 - Supports Würstchen
 - Supports Stable diffusion XL
