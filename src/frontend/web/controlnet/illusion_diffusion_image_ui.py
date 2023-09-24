@@ -26,7 +26,9 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                         interactive=not random_enabled, value=seed_val
                     )
 
-                input_image = gr.Image(label="Input image", type="pil")
+                input_image = gr.Image(
+                    label="Input image", type="pil", elem_id="control_image"
+                )
 
                 prompt = gr.Textbox(
                     label="Describe the image you'd like to see",
@@ -47,6 +49,14 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                     step=0.01,
                     label="Illusion strength",
                 )
+                gr.Examples(
+                    examples=[
+                        "spiral.jpeg",
+                        "diffusion_text.jpg",
+                        "women.jpg",
+                    ],
+                    inputs=input_image,
+                )
                 with gr.Accordion("Advanced options", open=False):
                     image_height = gr.Slider(
                         512,
@@ -65,7 +75,7 @@ def get_illusion_diffusion_to_image_ui(generate_callback_fn: Any) -> None:
                         visible=False,
                     )
                     num_inference_steps = gr.Slider(
-                        1,
+                        2,
                         100,
                         value=20,
                         step=1,

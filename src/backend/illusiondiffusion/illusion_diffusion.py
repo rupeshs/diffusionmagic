@@ -69,11 +69,7 @@ class IllusionDiffusion(SamplerMixin):
         control_image_bw = get_black_and_white_image(setting.control_image)
 
         control_image_small = self._center_crop_resize(control_image_bw, (512, 512))
-        inf_steps = (
-            setting.inference_steps - 5
-            if setting.inference_steps
-            else setting.inference_steps
-        )
+        inf_steps = int(setting.inference_steps * 0.75)
 
         latents = self.controlnet_pipeline(
             prompt=setting.prompt,
