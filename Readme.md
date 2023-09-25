@@ -14,11 +14,9 @@ You can run StableDiffusion XL 1.0 on Google Colab
 ## Würstchen Colab
 You can run Würstchen 2.0 on Google Colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ib6W1CeK9V533Nc9MnoBe3TmU7Uaghtg?usp=sharing)
-## Low VRAM mode < 4GB
-DiffusionMagic runs on low VRAM GPUs.
-[Here](https://nolowiz.com/easy-way-to-run-stable-diffusion-xl-on-low-vram-gpus/) is our guide to run StableDiffusion XL on low VRAM GPUs.
 
-## Illusion Diffusion Colab( beta)
+
+## Illusion Diffusion Colab (beta)
 You can run  Illusion Diffusion on Google Colab
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1M3igyVklKkUh1Pgzy68JWms2KQy2z7s7?usp=sharing)
 
@@ -34,6 +32,7 @@ Illusion diffusion supports following types of input images as illusion control 
    ![ Text image](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusionmagic-illusion-diffusion-text.jpg)
 
    ![ Patterns](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusionmagic-illusion-diffusion-pattern.jpg)
+
 ## Features
 - Supports Würstchen
 - Supports Stable diffusion XL
@@ -84,8 +83,12 @@ Illusion diffusion supports following types of input images as illusion control 
 - 12 GB System RAM
 - ~11 GB disk space after installation (on SSD for best performance)
 
+## Low VRAM mode < 4GB
+DiffusionMagic runs on low VRAM GPUs.
+[Here](https://nolowiz.com/easy-way-to-run-stable-diffusion-xl-on-low-vram-gpus/) is our guide to run StableDiffusion XL on low VRAM GPUs.
+
 ## Download Release
-Download release from the github DiffusionMagic releases.
+Download release from the github DiffusionMagic [releases](https://github.com/rupeshs/diffusionmagic/releases/).
 ## How to install and run on Windows
 Follow the steps to install and run the Diffusion magic on Windows.
 - First we need to run(double click) the `install.bat` batch file it will install the necessary dependencies for DiffusionMagic.
