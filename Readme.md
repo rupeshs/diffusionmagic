@@ -56,7 +56,7 @@ Illusion diffusion supports following types of input images as illusion control 
 - Supports all stable diffusion Hugging Face models 
 - Supports Stable diffusion v1 and v2 models, derived models
 - Works on Windows/Linux/Mac 64-bit
-- Works on CPU,GPU,Apple Silicon M1/M2 hardware
+- Works on CPU,GPU(Recent Nvidia GPU),Apple Silicon M1/M2 hardware
 - Supports DEIS scheduler for faster image generation (10 steps)
 - Supports 7 different samplers with latest DEIS sampler
 - LoRA(Low-Rank Adaptation of Large Language Models) models support (~3 MB size)
@@ -66,6 +66,7 @@ Illusion diffusion supports following types of input images as illusion control 
 - Supports Attention slicing and VAE slicing
 - Simple installation using install.bat/install.sh
 
+Please note that AMD GPUs are not supported.
 ## Screenshots
 ### Image variations
  ![  Image variations SDXL](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_image_variations_sdxl.PNG)
