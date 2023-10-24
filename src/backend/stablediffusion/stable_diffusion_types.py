@@ -47,7 +47,7 @@ def get_diffusion_type(
         stable_diffusion_type = StableDiffusionType.controlnet_scribble
     elif "controlnet-seg" in model_id:
         stable_diffusion_type = StableDiffusionType.controlnet_seg
-    elif "stable-diffusion-xl" in model_id:
+    elif "stable-diffusion-xl" in model_id or "segmind/SSD-1B" in model_id:
         stable_diffusion_type = StableDiffusionType.stable_diffusion_xl
     elif "wuerstchen" in model_id:
         stable_diffusion_type = StableDiffusionType.wuerstchen
