@@ -5,26 +5,29 @@ DiffusionMagic focused on the following areas:
 - Cross-platform (Windows/Linux/Mac)
 - Modular design, latest best optimizations for speed and memory
 
+ ![ DiffusionMagic SDXL support](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_3_sdxl.png)
+
 ## Segmind Stable Diffusion 1B (SSD-1B) 
 The Segmind Stable Diffusion Model (SSD-1B) is a smaller version of the Stable Diffusion XL (SDXL) that is 50% smaller but maintains high-quality text-to-image generation. It offers a 60% speedup compared to SDXL.
 
 You can run SSD-1B on Google Colab
+
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1z-3upaBQCqBw-QNeFYdNsLxbNE_pw1Rx?usp=sharing)
-
-
- ![ DiffusionMagic SDXL support](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_3_sdxl.png)
 
 ## Stable diffusion XL Colab
 You can run StableDiffusion XL 1.0 on Google Colab
+
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1eEZ_O-Fw87hoEsfSxUnGZhdqvMFEO5iV?usp=sharing)
 
 ## Würstchen Colab
 You can run Würstchen 2.0 on Google Colab
+
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1ib6W1CeK9V533Nc9MnoBe3TmU7Uaghtg?usp=sharing)
 
 
 ## Illusion Diffusion Colab (beta)
 You can run  Illusion Diffusion on Google Colab
+
 [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1M3igyVklKkUh1Pgzy68JWms2KQy2z7s7?usp=sharing)
 
 Illusion diffusion supports following types of input images as illusion control :
