@@ -5,6 +5,13 @@ DiffusionMagic focused on the following areas:
 - Cross-platform (Windows/Linux/Mac)
 - Modular design, latest best optimizations for speed and memory
 
+## Segmind Stable Diffusion 1B (SSD-1B) 
+The Segmind Stable Diffusion Model (SSD-1B) is a smaller version of the Stable Diffusion XL (SDXL) that is 50% smaller but maintains high-quality text-to-image generation. It offers a 60% speedup compared to SDXL.
+
+You can run SSD-1B on Google Colab
+[![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1z-3upaBQCqBw-QNeFYdNsLxbNE_pw1Rx?usp=sharing)
+
+
  ![ DiffusionMagic SDXL support](https://raw.githubusercontent.com/rupeshs/diffusionmagic/main/docs/images/diffusion_magic_3_sdxl.png)
 
 ## Stable diffusion XL Colab
