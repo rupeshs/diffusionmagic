@@ -14,7 +14,7 @@ class Computing:
         if Computing.__fetch:
             self._device = self._detect_processor()
             self._torch_datatype = (
-                torch.float32 if self._device == "cpu" else torch.float16
+                torch.float32 if self._device == "cpu" or self._device == "mps" else torch.float16
             )
             Computing.__fetch = False
 
